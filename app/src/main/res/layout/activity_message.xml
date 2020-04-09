@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:orientation="vertical"
+    tools:context=".activities.user.messaging.ActivityMessage">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/txt_username_logo_ann"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:contentDescription="@string/avatar_du_vendeur"
+                    android:src="@color/colorPrimary" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txt_username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp" />
+
+                    <!--<TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/hors_ligne"
+                        android:textColor="@android:color/white"
+                        android:visibility="gone" />-->
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:id="@+id/lltitre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?actionBarSize"
+        android:background="@color/dracula_primary"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/affiche"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/affiche_de_l_annonce"
+            android:scaleType="centerCrop"
+            android:src="@color/colorPrimary"
+            android:visibility="gone" />
+
+
+        <TextView
+            android:id="@+id/txt_titre_annonce"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/txt_no_annonce_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/l_annonce_n_existe_plus"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <include layout="@layout/layout_busy_system" />
+
+    <LinearLayout
+        android:id="@+id/no_message"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:drawableTop="@drawable/chat"
+            android:fontFamily="@font/raleway_medium"
+            android:text="@string/aucun_message"
+            android:textSize="20sp"
+            android:tint="#63ffffff" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/loading_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lltitre"
+        android:paddingTop="5dp"
+        android:paddingBottom="40dp"
+        android:scrollbars="vertical" />
+
+    <include
+        layout="@layout/layout_offline"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toStartOf="@+id/iv_send"
+        android:background="@drawable/border_round_solid_white"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/border_round_solid_white"
+            android:hint="@string/entrer_message"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine|text"
+            android:maxHeight="100dp"
+            android:textSize="14sp" />
+
+        <ImageButton
+            android:id="@+id/btn_attachment"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="3dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/pieces_jointes"
+            android:src="@drawable/ic_add_a_photo_black_24dp" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/iv_send"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="5dp"
+        android:background="@drawable/border_round_solid"
+        android:contentDescription="@string/envoyer_message_direct"
+        android:elevation="2dp"
+        android:padding="10dp"
+        android:src="@drawable/ic_send_white" />
+
+</RelativeLayout>

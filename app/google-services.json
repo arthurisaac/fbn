@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "670618371850",
+    "firebase_url": "https://faso-biz-ness-fbb1c.firebaseio.com",
+    "project_id": "faso-biz-ness-fbb1c",
+    "storage_bucket": "faso-biz-ness-fbb1c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:670618371850:android:ffdb2a8470227597",
+        "android_client_info": {
+          "package_name": "bf.fasobizness"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "670618371850-5ed6aip221i2lvbfaskeakn79b9ek7m9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCs3-zh84lEtLCKNWNmaafP3kP3sSMB4Lw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "670618371850-5ed6aip221i2lvbfaskeakn79b9ek7m9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:670618371850:android:6e173f9172e663ff",
+        "android_client_info": {
+          "package_name": "bf.fasobizness.bafatech"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "670618371850-5ed6aip221i2lvbfaskeakn79b9ek7m9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCs3-zh84lEtLCKNWNmaafP3kP3sSMB4Lw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "670618371850-5ed6aip221i2lvbfaskeakn79b9ek7m9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

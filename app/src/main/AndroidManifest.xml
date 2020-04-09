@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="bf.fasobizness.bafatech">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="q">
+        <activity
+            android:name=".ActivityBoutique"
+            android:theme="@style/AppTheme.Main" />
+        <activity
+            android:name=".activities.annonce.ActivityAnnounceFilter"
+            android:theme="@style/AppTheme.Main" />
+        <activity
+            android:name=".activities.annonce.ActivityAnnonceCategory"
+            android:theme="@style/AppTheme.Main" />
+        <activity
+            android:name=".activities.ActivityPromouvoirAnnonces"
+            android:theme="@style/AppTheme.Main" />
+        <activity
+            android:name=".activities.user.ActivitySignUp"
+            android:theme="@style/AppTheme.Main" />
+        <activity
+            android:name=".activities.user.ActivityForgetPasswd"
+            android:theme="@style/AppTheme.Main" />
+        <activity
+            android:name=".activities.annonce.ActivityAnnonceEditPhotos"
+            android:theme="@style/AppTheme.Main" />
+        <activity
+            android:name=".activities.annonce.ActivityAnnonceEditer"
+            android:theme="@style/AppTheme.Main" />
+        <activity
+            android:name=".activities.annonce.ActivityDetailAnnonceUser"
+            android:theme="@style/AppTheme.TranslucideBar" />
+        <activity
+            android:name=".activities.annonce.ActivityAnnoncesPublished"
+            android:theme="@style/AppTheme.Main" />
+        <activity
+            android:name=".activities.ActivitySuggestion"
+            android:theme="@style/AppTheme.Main" />
+        <activity
+            android:name=".activities.annonce.ActivityOffreOr"
+            android:theme="@style/AppTheme.Main" />
+        <activity
+            android:name=".activities.recrutement.ActivityRecrutementRecherche"
+            android:theme="@style/AppTheme.Main" />
+        <activity
+            android:name=".activities.recrutement.ActivityDetailsRecrutement"
+            android:theme="@style/AppTheme.Main" />
+        <activity
+            android:name=".activities.recrutement.ActivityRecrutements"
+            android:theme="@style/AppTheme.Main" />
+        <activity
+            android:name=".ActivitySplash"
+            android:theme="@style/AppTheme.Main">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="www.fasobizness.com"
+                    android:scheme="http" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.ActivityUserProfile"
+            android:theme="@style/AppTheme.Main" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/app_id" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/megaphone" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorPrimary" />
+
+        <service
+            android:name=".helper.MyFirebaseMessagingService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".activities.user.ActivityFavorite"
+            android:theme="@style/AppTheme.Main" />
+        <activity
+            android:name=".activities.annonce.ActivitySearchAnnonce"
+            android:theme="@style/AppTheme.Main" />
+        <activity
+            android:name=".activities.ActivityInfos"
+            android:theme="@style/AppTheme.Main" />
+        <activity
+            android:name=".activities.annonce.ActivityNouvelleAnnonce"
+            android:theme="@style/AppTheme.Main" />
+        <activity
+            android:name=".activities.ActivityFullScreen"
+            android:theme="@style/AppTheme.TranslucideBar" />
+        <activity
+            android:name=".activities.ActivityDetailsPub"
+            android:theme="@style/AppTheme.Main" />
+        <activity
+            android:name=".activities.user.messaging.ActivityMessage"
+            android:theme="@style/AppTheme.Main" />
+        <activity
+            android:name=".activities.user.messaging.ActivityDiscussions"
+            android:theme="@style/AppTheme.Main" />
+        <activity
+            android:name=".activities.entreprise.ActivityDetailsEntreprise"
+            android:theme="@style/AppTheme.TranslucideBar" />
+        <activity
+            android:name=".activities.entreprise.ActivityEntreprisesUne"
+            android:theme="@style/AppTheme.Main" />
+        <activity
+            android:name=".activities.user.ActivityProfile"
+            android:theme="@style/AppTheme.Main" />
+        <activity
+            android:name=".activities.user.LoginActivity"
+            android:theme="@style/AppTheme.TranslucideBar" />
+        <activity
+            android:name=".activities.annonce.ActivityDetailsAnnonce"
+            android:theme="@style/AppTheme.Main" />
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="bf.fasobizness.bafatech.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths_public" />
+        </provider>
+    </application>
+
+</manifest>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp">
+
+    <RelativeLayout
+        android:id="@+id/mat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="190dp"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="8dp">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/txt_affiche_ann"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:src="@color/colorPrimary"
+                app:riv_corner_radius="8dip"
+                app:riv_mutate_background="true" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="190dp">
+
+                <TextView
+                    android:id="@+id/txt_texte_ann"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/li"
+                    android:layout_alignParentStart="true"
+                    android:background="#80000000"
+                    android:maxLines="2"
+                    android:padding="10dp"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:id="@+id/li"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="#80000000"
+                    android:padding="7dp">
+
+                    <ImageView
+                        android:layout_width="17dp"
+                        android:layout_height="17dp"
+                        android:layout_marginStart="9dp"
+                        android:contentDescription="@string/nombre_de_vue"
+                        android:src="@drawable/ic_vue" />
+
+                    <TextView
+                        android:id="@+id/txt_nb_view_ann"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="30dp"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp" />
+
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/vip"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:contentDescription="@string/vip"
+        android:src="@drawable/corner_ribbon"
+        android:visibility="visible"
+        app:layout_anchor="@+id/mat"
+        app:layout_anchorGravity="right|top" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

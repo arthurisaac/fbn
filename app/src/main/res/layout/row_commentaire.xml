@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="1dp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="6dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/txt_username_logo_commentaire"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="@string/avatar_de_l_utilisateur"
+                android:src="@mipmap/ic_launcher" />
+
+
+            <TextView
+                android:id="@+id/txt_username_commentaire"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/raleway_medium"
+                android:text="@string/nom_d_utlisateur"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txt_commentaire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="57dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="13dp"
+            android:fontFamily="@font/raleway"
+            android:gravity="start"
+            android:text="@string/description" />
+
+        <TextView
+            android:id="@+id/txt_heure_commentaire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_commentaire"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="3dp"
+            android:layout_toStartOf="@+id/txt_date_pub_commentaire"
+            android:fontFamily="@font/amaranth"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/txt_date_pub_commentaire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_commentaire"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="12dp"
+            android:fontFamily="@font/amaranth"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

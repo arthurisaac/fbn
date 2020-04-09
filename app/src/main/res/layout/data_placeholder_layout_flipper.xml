@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/txt_affiche_ann"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:contentDescription="@string/ads"
+        android:scaleType="centerCrop"
+        android:src="@color/background"
+        android:tint="#86000000"
+        app:riv_corner_radius="8dip"
+        app:riv_mutate_background="true" />
+
+</RelativeLayout>

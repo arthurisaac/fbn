@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="categories_2">
+        <item>Immobilier (vente et location)</item>
+        <item>Articles pour bébés et enfants</item>
+        <item>Vêtements accessoires pour hommes</item>
+        <item>Vêtements accessoires pour femmes</item>
+        <item>Beauté et Santé</item>
+        <item>Informatique et accessoires</item>
+        <item>Téléphones, tablettes et accessoires</item>
+        <item>Auto-moto</item>
+        <item>Electroménager, articles et linge de maison</item>
+        <item>Meubles et décoration d\'intérieur</item>
+        <item>Image, son, et jeux vidéo</item>
+        <item>Electronique et solaire</item>
+        <item>Agrobusiness, alimentation et restauration</item>
+        <item>Art, sport, et divertissement</item>
+        <item>Services, emplois et formations</item>
+        <item>Matériels de construction et équipements professionnels</item>
+        <item>Commerce général</item>
+        <item>Autres catégories</item>
+    </string-array>
+
+    <string-array name="categories">
+        <item>Choisir Categorie</item>
+        <item>Immobilier (vente et location)</item>
+        <item>Articles pour bébés et enfants</item>
+        <item>Vêtements accessoires pour hommes</item>
+        <item>Vêtements accessoires pour femmes</item>
+        <item>Beauté et Santé</item>
+        <item>Informatique et accessoires</item>
+        <item>Téléphones, tablettes et accessoires</item>
+        <item>Auto-moto</item>
+        <item>Electroménager, articles et linge de maison</item>
+        <item>Meubles et décoration d\'intérieur</item>
+        <item>Image, son, et jeux vidéo</item>
+        <item>Electronique et solaire</item>
+        <item>Agrobusiness, alimentation et restauration</item>
+        <item>Art, sport, et divertissement</item>
+        <item>Services, emplois et formations</item>
+        <item>Matériels de construction et équipements professionnels</item>
+        <item>Commerce général</item>
+        <item>Autres catégories</item>
+    </string-array>
+
+    <string-array name="villes">
+        <item>Choisir ville</item>
+        <item>Ouagadougou</item>
+        <item>Bobo Dioulasso</item>
+        <item>Koudougou</item>
+        <item>Kaya</item>
+        <item>Fada</item>
+        <item>Ouahigouya</item>
+        <item>Livre partout au Burkina</item>
+    </string-array>
+</resources>

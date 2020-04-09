@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_annonce"
+            android:icon="@drawable/megaphone"
+            android:title="@string/offres_et_annonces" />
+
+        <!--<item android:id="@+id/nav_entreprise"
+            android:icon="@drawable/entreprise"
+            android:title="@string/entreprises_la_une" />-->
+
+        <!--<item android:id="@+id/nav_vip_offres"
+            android:icon="@drawable/premium"
+            android:title="@string/offres_ne_pas_rater" />-->
+
+        <item
+            android:id="@+id/nav_recrutement"
+            android:icon="@drawable/selection"
+            android:title="@string/recrutements" />
+
+        <item
+            android:id="@+id/nav_my_post"
+            android:icon="@drawable/megaphone"
+            android:title="@string/mes_annonces" />
+
+        <item android:title="@string/communication">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <!--<item android:id="@+id/nav_chat"
+                        android:icon="@drawable/chat"
+                        android:title="@string/discussions" />-->
+
+                    <item
+                        android:id="@+id/nav_suggestion"
+                        android:icon="@drawable/idea"
+                        android:title="@string/suggestions" />
+
+                    <item
+                        android:id="@+id/nav_faq"
+                        android:icon="@drawable/faq"
+                        android:title="@string/infos_pratiques" />
+                </group>
+            </menu>
+        </item>
+    </group>
+
+
+</menu>
