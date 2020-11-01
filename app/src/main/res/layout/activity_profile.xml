@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:text="@string/chargement_en_cours"
             android:textAlignment="center"
-            android:textSize="20sp" />
+            android:textSize="@dimen/chargement_en_cours_message_size" />
 
     </LinearLayout>
 

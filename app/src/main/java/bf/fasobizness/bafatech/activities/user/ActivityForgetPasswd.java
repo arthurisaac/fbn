@@ -10,16 +10,22 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import bf.fasobizness.bafatech.R;
@@ -46,7 +52,6 @@ public class ActivityForgetPasswd extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.left_white);
         toolbar.setNavigationOnClickListener(view -> finish());
-
 
         code = findViewById(R.id.code);
         email = findViewById(R.id.email);
@@ -84,14 +89,15 @@ public class ActivityForgetPasswd extends AppCompatActivity {
     private void verifyEmail() {
         progressBar.setVisibility(View.VISIBLE);
         final String e = Objects.requireNonNull(email.getEditText()).getText().toString();
-        String url = Constants.HOST_URL + "v1/users/reset/" + e;
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, url, null, response -> {
+        String url = Constants.HOST_URL + "v1/users/reset-password";
+        StringRequest request = new StringRequest(Request.Method.POST, url, response -> {
             progressBar.setVisibility(View.GONE);
             try {
-                String message = response.getString("message");
-                boolean status = response.getBoolean("status");
-                pin = response.getString("code");
-                user = response.getInt("user");
+                JSONObject object = new JSONObject(response);
+                String message = object.getString("message");
+                boolean status = object.getBoolean("status");
+                pin = object.getString("code");
+                user = object.getInt("user");
 
                 if (!status) {
                     Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
@@ -108,9 +114,29 @@ public class ActivityForgetPasswd extends AppCompatActivity {
             } catch (Exception e1) {
                 progressBar.setVisibility(View.GONE);
                 e1.printStackTrace();
-                Toast.makeText(this, R.string.pas_d_acces_internet, Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+                builder.setMessage(getString(R.string.cet_email_nexiste_pas));
+                builder.setPositiveButton(R.string.ok, (dialog, id) -> dialog.dismiss());
+                builder.setNegativeButton(R.string.annuler, (dialog, which) -> dialog.dismiss());
+                androidx.appcompat.app.AlertDialog dialog = builder.create();
+                dialog.show();
             }
-        }, Throwable::printStackTrace);
+        }, error -> {
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(this, R.string.pas_d_acces_internet, Toast.LENGTH_SHORT).show();
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("email", e);
+                return params;
+            }
+        };
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 10,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES * 3,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT * 1)
+        );
         Volley.newRequestQueue(this).add(request);
     }
 

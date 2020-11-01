@@ -209,7 +209,7 @@ public class ActivityDetailAnnonceUser extends AppCompatActivity implements OnIm
             txt_email.setVisibility(View.GONE);
         }
         if (annonce.getPrix().length() == 0) {
-            txt_prix.setText(R.string.prix_non_renseigne);
+            txt_prix.setText(R.string.prix_sur_demande);
         }
         if (annonce.getLocation().length() == 0) {
             txt_location.setVisibility(View.GONE);

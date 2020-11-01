@@ -13,8 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
-import java.util.Objects;
-
 import bf.fasobizness.bafatech.R;
 import bf.fasobizness.bafatech.activities.user.LoginActivity;
 
@@ -33,7 +31,7 @@ public class FragmentNotConnected extends AppCompatDialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = Objects.requireNonNull(getActivity()).getLayoutInflater();
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
         @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.fragment_not_connected, null);
         Button btn_continuer = view.findViewById(R.id.btn_continuer);
         btn_continuer.setOnClickListener(v -> startActivity(new Intent(getContext(), LoginActivity.class)));

@@ -8,6 +8,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONObject;
+
 import java.util.Objects;
 
 import bf.fasobizness.bafatech.R;
@@ -44,12 +46,18 @@ public class ActivityAnnonceCategory extends AppCompatActivity implements OnItem
 
     @Override
     public void onItemClicked(int position) {
-        String arguments = "{\"ville\": \"\", \"categorie\": \"" + categories[position] + "\"}";
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("categorie", categories[position]);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // String arguments = "{\"ville\": \"\", \"categorie\": \"" + categories[position] + "\"}";
 
         Intent intent = new Intent(this, ActivityAnnounceFilter.class);
         intent.putExtra("filter", "multiple");
         intent.putExtra("title", categories[position]);
-        intent.putExtra("params", arguments);
+        intent.putExtra("params", jsonObject.toString());
         startActivity(intent);
 
     }

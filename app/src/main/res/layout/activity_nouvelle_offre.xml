@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="#D8D6D6"
+    android:background="@color/colorBackground"
     tools:context=".activities.annonce.ActivityNouvelleAnnonce">
 
     <RelativeLayout
@@ -482,8 +482,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/file_list"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="10dp" />
+                        android:layout_height="match_parent" />
 
                 </LinearLayout>
 

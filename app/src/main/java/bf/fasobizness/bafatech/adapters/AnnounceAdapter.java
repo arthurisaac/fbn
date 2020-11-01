@@ -56,7 +56,13 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.Annonc
         String vip = annonce.getVip();
 
         annonceHolder.TexteView.setText(annonce.getTitre().toUpperCase());
-        annonceHolder.btnVueView.setText(annonce.getVue());
+        if (annonce.getPrix().isEmpty() || annonce.getPrix() == null || annonce.getPrix().equals("0")) {
+            annonceHolder.PrixView.setText(R.string.prix_non_renseigne);
+        } else {
+            String prix = annonce.getPrix() + " F CFA";
+            annonceHolder.PrixView.setText(prix);
+        }
+        // annonceHolder.btnVueView.setText(annonce.getVue());
         annonceHolder.AfficheView.setContentDescription(annonce.getTitre());
 
         try {
@@ -112,7 +118,8 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.Annonc
     class AnnonceHolder extends RecyclerView.ViewHolder {
 
         final TextView TexteView;
-        final TextView btnVueView;
+        final TextView PrixView;
+        // final TextView btnVueView;
         final ImageView vipView;
         final RoundedImageView AfficheView;
 
@@ -120,7 +127,8 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.Annonc
             super(itemView);
 
             TexteView = itemView.findViewById(R.id.txt_texte_ann);
-            btnVueView = itemView.findViewById(R.id.txt_nb_view_ann);
+            PrixView = itemView.findViewById(R.id.txt_prix_ann);
+            // btnVueView = itemView.findViewById(R.id.txt_nb_view_ann);
             AfficheView = itemView.findViewById(R.id.txt_affiche_ann);
             vipView = itemView.findViewById(R.id.vip);
         }

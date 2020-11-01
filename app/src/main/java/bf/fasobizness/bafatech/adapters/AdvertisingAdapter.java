@@ -22,10 +22,10 @@ import java.util.ArrayList;
 import bf.fasobizness.bafatech.R;
 import bf.fasobizness.bafatech.models.Advertising;
 
-public class AdvertisingAdapter extends BaseAdapter {
+class AdvertisingAdapter extends BaseAdapter {
 
-    private ArrayList<Advertising.Ads> arrayList;
-    private Context mContext;
+    private final ArrayList<Advertising.Ads> arrayList;
+    private final Context mContext;
 
     public AdvertisingAdapter(Context context, ArrayList<Advertising.Ads> advertisings) {
         this.mContext = context;

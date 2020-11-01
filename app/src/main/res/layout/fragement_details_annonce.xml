@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:id="@+id/ann"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.denzcoskun.imageslider.ImageSlider
+                    android:id="@+id/flipper_affiche_annonce"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:visibility="visible"
+                    app:auto_cycle="true"
+                    app:delay="0"
+                    app:error_image="@color/colorPrimaryDark"
+                    app:period="2000"
+                    app:placeholder="@color/colorPrimary" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/txt_date_pub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:textAlignment="textEnd"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/txt_date_modification"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="@string/derni_re_mise_jour_le_1_s"
+                android:textAlignment="textEnd"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+
+            <TextView
+                android:id="@+id/txt_titre_annonce"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="20dp"
+                android:textAlignment="center"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txt_prix_annonce"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:drawablePadding="10dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="@string/description"
+                android:textAlignment="textStart"
+                android:textAllCaps="true"
+                android:textStyle="normal"
+                android:typeface="normal" />
+
+            <View
+                android:layout_width="200dp"
+                android:layout_height="0.5dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#a9a9a9" />
+
+            <TextView
+                android:id="@+id/txt_texte_ann"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:autoLink="all"
+                android:paddingStart="10dp"
+                android:paddingTop="20dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="20dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/txt_email_util"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:drawableStart="@drawable/ic_email"
+                    android:drawablePadding="10dp"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <TextView
+                    android:id="@+id/txt_tel_annonce"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:autoLink="phone"
+                    android:drawableStart="@drawable/ic_phone"
+                    android:drawablePadding="10dp"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <TextView
+                    android:id="@+id/txt_tel1_annonce"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:autoLink="phone"
+                    android:drawableStart="@drawable/ic_phone"
+                    android:drawablePadding="10dp"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <TextView
+                    android:id="@+id/txt_tel2_annonce"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:autoLink="phone"
+                    android:drawableStart="@drawable/ic_phone"
+                    android:drawablePadding="10dp"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <TextView
+                    android:id="@+id/txt_location_annonce"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:drawableStart="@drawable/ic_location_on_black"
+                    android:drawablePadding="10dp" />
+
+                <TextView
+                    android:id="@+id/txt_categorie_annonce"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:drawableStart="@drawable/ic_category"
+                    android:drawablePadding="10dp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="10dp"
+                android:background="#a9a9a9" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_share"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="20dp"
+                    android:drawableEnd="@drawable/ic_share_primary_24dp"
+                    android:text="@string/partager_annonce"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@color/colorPrimaryDark" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6sp"
+                    android:layout_marginEnd="7dp" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/see_more_annonce"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/colorPrimaryLighter"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="5dp"
+                android:paddingStart="10dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="0dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/txt_username_logo_ann"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:contentDescription="@string/avatar_du_vendeur"
+                    android:src="@drawable/user" />
+
+                <TextView
+                    android:id="@+id/mis_en_ligne"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_toEndOf="@+id/txt_username_logo_ann"
+                    android:text="@string/mise_en_ligne_par" />
+
+                <TextView
+                    android:id="@+id/txt_username_ann"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/mis_en_ligne"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_toEndOf="@+id/txt_username_logo_ann"
+                    android:maxLines="1"
+                    android:text="@string/nom_d_utlisateur"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:ignore="RelativeOverlap" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_username_ann"
+                    android:layout_alignStart="@+id/txt_username_ann"
+                    android:layout_marginTop="3dp"
+                    android:text="@string/plus_d_article_de_ce_utilisateur"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="37dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/voir_plus"
+                    android:src="@drawable/ic_chevron_right" />
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/signaler_annonce"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:drawableEnd="@drawable/ic_warning"
+                android:text="@string/signaler_l_annonce"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="#3e3e3e"
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="70dp" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="#FFFFFF"
+        android:orientation="horizontal"
+        app:layout_anchor="@+id/nestedScrollView"
+        app:layout_anchorGravity="end|bottom">
+
+        <Button
+            android:id="@+id/send_direct_message"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/border_rounded_solid_primary"
+            android:drawablePadding="10dp"
+            android:text="@string/message"
+            android:textAllCaps="false"
+            android:textColor="#3e3e3e" />
+
+        <Button
+            android:id="@+id/send_whatsapp_message"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/border_rounded_solid_primary"
+            android:drawablePadding="10dp"
+            android:text="@string/whatsapp"
+            android:textAllCaps="false"
+            android:textColor="#3e3e3e" />
+
+    </LinearLayout>
+
+</LinearLayout>

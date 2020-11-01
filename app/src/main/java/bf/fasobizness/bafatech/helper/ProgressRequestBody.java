@@ -71,7 +71,7 @@ public class ProgressRequestBody extends RequestBody {
                 if (progress == 100)
                     mListener.onFinish();
                 else
-                    mListener.onProgressUpdate(progress, mFile.getPath());
+                    mListener.onProgressUpdate(progress);
             } catch (ArithmeticException e) {
                 mListener.onError();
                 e.printStackTrace();

@@ -26,6 +26,7 @@
         <item
             android:id="@+id/nav_my_post"
             android:icon="@drawable/megaphone"
+            android:visible="false"
             android:title="@string/mes_annonces" />
 
         <item android:title="@string/communication">

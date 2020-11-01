@@ -81,63 +81,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    /*private void logIn() {
-        String url = Constants.HOST_URL + "user/login";
-
-        final String txt_email = Objects.requireNonNull(email.getEditText()).getText().toString();
-        final String txt_password = Objects.requireNonNull(password.getEditText()).getText().toString();
-
-
-            StringRequest request = new StringRequest(Request.Method.POST, url, response -> {
-                initBtn();
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    if (jsonObject.getBoolean("status")) {
-                        JSONObject user = jsonObject.getJSONObject("user");
-                        String id = user.getString("id_personne");
-                        String username = user.getString("username");
-                        String photo = user.getString("photo");
-                        String email = user.getString("email");
-
-                        MySharedManager shared = new MySharedManager(this);
-                        shared.setUsername(username);
-                        shared.setUser(id);
-                        shared.setPhoto(photo);
-                        shared.setEmail(email);
-
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                    } else {
-
-                        String message = jsonObject.getString("message");
-                        Log.v(TAG, message);
-                        failed_login_error.setText(message);
-                        failed_login_error.setVisibility(View.VISIBLE);
-                    }
-
-                } catch (Exception e) {
-                    initBtn();
-                    e.printStackTrace();
-                }
-            }, error -> Log.v(TAG, error.toString())){
-                @Override
-                protected Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("email", txt_email);
-                    params.put("mdp", txt_password);
-                    return params;
-                }
-            };
-            request.setRetryPolicy(new DefaultRetryPolicy(
-                    DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 40,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES * 4,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT * 2)
-            );
-            Volley.newRequestQueue(this).add(request);
-
-    }*/
-
     private void logIn() {
 
         final String txt_email = Objects.requireNonNull(email.getEditText()).getText().toString();
@@ -230,7 +173,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void action() {
-        final CharSequence[] items = {getString(R.string.entreprise), getString(R.string.utilisateur)};
+        final CharSequence[] items = {getString(R.string.entreprise), getString(R.string.particulier)};
         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
         builder.setTitle("Type de compte");
         builder.setItems(items, (dialog, i) -> {
@@ -238,9 +181,9 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, ActivitySignUp.class);
                 intent.putExtra("type", "entreprise");
                 startActivity(intent);
-            } else if (items[i].equals(getString(R.string.utilisateur))) {
+            } else if (items[i].equals(getString(R.string.particulier))) {
                 Intent intent = new Intent(this, ActivitySignUp.class);
-                intent.putExtra("type", "utilisateur");
+                intent.putExtra("type", "particulier");
                 startActivity(intent);
             } else {
                 dialog.dismiss();

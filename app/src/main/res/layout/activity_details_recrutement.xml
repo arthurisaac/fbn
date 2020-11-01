@@ -47,24 +47,71 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:fontFamily="@font/raleway_medium"
                 android:padding="10dp"
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_recrutement_nom_ent"
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/raleway_medium"
-                android:textStyle="bold" />
+                android:layout_height="2dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#a9a9a9" />
 
-            <TextView
-                android:id="@+id/tv_recrutement_domaine2"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/raleway_medium" />
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textview_structure"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/structure" />
+
+                <TextView
+                    android:id="@+id/tv_recrutement_nom_ent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_toEndOf="@+id/textview_structure" />
+
+            </RelativeLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#a9a9a9" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textview_domaine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/domaine" />
+
+                <TextView
+                    android:id="@+id/tv_recrutement_domaine2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_toEndOf="@id/textview_domaine" />
+
+            </RelativeLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#a9a9a9" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -74,7 +121,6 @@
                     android:id="@+id/textview_dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/raleway_medium"
                     android:text="@string/date_de_depot" />
 
                 <TextView
@@ -86,6 +132,13 @@
 
             </RelativeLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#a9a9a9" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -94,7 +147,6 @@
                     android:id="@+id/textview_hd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/raleway_medium"
                     android:text="@string/heure_de_depot" />
 
                 <TextView
@@ -102,17 +154,30 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"
-                    android:layout_toEndOf="@+id/textview_hd"
-                    android:fontFamily="@font/raleway_medium" />
+                    android:layout_toEndOf="@+id/textview_hd" />
 
             </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#a9a9a9" />
 
             <TextView
                 android:id="@+id/tv_recrutement_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/raleway_medium" />
+                android:autoLink="all" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#a9a9a9" />
 
             <TextView
                 android:id="@+id/tv_recrutement_date_pub_2"
@@ -124,6 +189,14 @@
                 android:textAlignment="textEnd"
                 android:textSize="12sp"
                 android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#a9a9a9" />
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -149,7 +222,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:drawableEnd="@drawable/ic_site"
-                android:fontFamily="@font/raleway_medium"
                 android:text="@string/postuler"
                 android:textAlignment="textStart"
                 android:textAllCaps="false"

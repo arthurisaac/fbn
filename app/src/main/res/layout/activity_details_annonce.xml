@@ -19,59 +19,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!--<com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        &lt;!&ndash;<com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/main"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            app:collapsedTitleTextAppearance="@android:color/transparent"
-            app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleMarginEnd="64dp"
-            app:expandedTitleMarginStart="48dp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-            <ImageView
-                android:id="@+id/iv_affiche_annonce"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/affiche_de_l_annonce"
-                android:fitsSystemWindows="true"
-                android:scaleType="centerCrop"
-                android:tint="#86000000"
-                app:layout_collapseMode="parallax" />
-
-            <TextView
-                android:id="@+id/txt_titre_annonce"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:alpha="0.5"
-                android:gravity="center"
-                android:maxLines="2"
-                android:paddingBottom="?attr/actionBarSize"
-                android:textAlignment="center"
-                android:textColor="#fff"
-                android:textSize="30sp" />
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>&ndash;&gt;
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize" />
-    </com.google.android.material.appbar.AppBarLayout>-->
-
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
@@ -85,13 +32,79 @@
             android:orientation="vertical"
             android:visibility="visible">
 
-            <!--<TextView
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.denzcoskun.imageslider.ImageSlider
+                    android:id="@+id/flipper_affiche_annonce"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:visibility="visible"
+                    app:auto_cycle="true"
+                    app:delay="0"
+                    app:error_image="@color/colorPrimaryDark"
+                    app:period="2000"
+                    app:placeholder="@color/colorPrimary" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/txt_date_pub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:textAlignment="textEnd"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/txt_date_modification"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="@string/derni_re_mise_jour_le_1_s"
+                android:textAlignment="textEnd"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+
+            <TextView
+                android:id="@+id/txt_titre_annonce"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="20dp"
+                android:textAlignment="center"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txt_prix_annonce"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="@string/description"
                 android:textSize="20sp"
-                android:textStyle="bold" />-->
+                android:drawablePadding="10dp"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="@string/description"
+                android:textAlignment="textStart"
+                android:textAllCaps="true"
+                android:textStyle="normal"
+                android:typeface="normal" />
+
+            <View
+                android:layout_width="200dp"
+                android:layout_height="0.5dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#a9a9a9" />
 
             <TextView
                 android:id="@+id/txt_texte_ann"
@@ -99,8 +112,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:autoLink="all"
-                android:background="#FFFFFF"
-                android:fontFamily="@font/raleway"
                 android:paddingStart="10dp"
                 android:paddingTop="20dp"
                 android:paddingEnd="10dp"
@@ -113,49 +124,43 @@
                 android:padding="10dp">
 
                 <TextView
-                    android:id="@+id/txt_prix_annonce"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:drawableStart="@drawable/ic_tag"
-                    android:drawablePadding="10dp"
-                    android:fontFamily="@font/raleway" />
-
-                <TextView
                     android:id="@+id/txt_email_util"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:drawableStart="@drawable/ic_email"
                     android:drawablePadding="10dp"
-                    android:fontFamily="@font/raleway" />
+                    android:textColor="@color/colorPrimaryDark" />
 
                 <TextView
                     android:id="@+id/txt_tel_annonce"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:drawableStart="@drawable/ic_phone_android_black_24dp"
+                    android:autoLink="phone"
                     android:drawablePadding="10dp"
-                    android:fontFamily="@font/raleway" />
+                    android:drawableStart="@drawable/ic_phone"
+                    android:textColor="@color/colorPrimaryDark" />
 
                 <TextView
                     android:id="@+id/txt_tel1_annonce"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:drawableStart="@drawable/ic_phone_android_black_24dp"
+                    android:autoLink="phone"
                     android:drawablePadding="10dp"
-                    android:fontFamily="@font/raleway" />
+                    android:drawableStart="@drawable/ic_phone"
+                    android:textColor="@color/colorPrimaryDark" />
 
                 <TextView
                     android:id="@+id/txt_tel2_annonce"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:drawableStart="@drawable/ic_phone_iphone_black_24dp"
+                    android:autoLink="phone"
                     android:drawablePadding="10dp"
-                    android:fontFamily="@font/raleway" />
+                    android:drawableStart="@drawable/ic_phone"
+                    android:textColor="@color/colorPrimaryDark" />
 
                 <TextView
                     android:id="@+id/txt_location_annonce"
@@ -163,8 +168,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:drawableStart="@drawable/ic_location_on_black"
-                    android:drawablePadding="10dp"
-                    android:fontFamily="@font/raleway" />
+                    android:drawablePadding="10dp" />
 
                 <TextView
                     android:id="@+id/txt_categorie_annonce"
@@ -172,8 +176,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:drawableStart="@drawable/ic_category"
-                    android:drawablePadding="10dp"
-                    android:fontFamily="@font/raleway" />
+                    android:drawablePadding="10dp" />
 
             </LinearLayout>
 
@@ -183,93 +186,50 @@
                 android:layout_margin="10dp"
                 android:background="#a9a9a9" />
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="15dp">
+                android:gravity="end"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_share"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="20dp"
+                    android:drawableEnd="@drawable/ic_share_primary_24dp"
+                    android:text="@string/partager_annonce"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@color/colorPrimaryDark" />
 
                 <TextView
-                    android:id="@+id/txt_date_pub"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:fontFamily="@font/raleway"
-                    android:textSize="12sp" />
+                    android:layout_marginTop="6sp"
+                    android:layout_marginEnd="7dp" />
 
-                <TextView
-                    android:id="@+id/txt_date_modification"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginStart="16dp"
-                    android:layout_toEndOf="@+id/txt_date_pub"
-                    android:fontFamily="@font/autour_one"
-                    android:text="@string/derni_re_mise_jour_le_1_s"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <com.denzcoskun.imageslider.ImageSlider
-                    android:id="@+id/flipper_affiche_annonce"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_marginTop="10dp"
-                    android:visibility="visible"
-                    app:auto_cycle="true"
-                    app:delay="0"
-                    app:error_image="@color/colorPrimaryDark"
-                    app:period="2000"
-                    app:placeholder="@color/colorPrimary" />
-
-                <!--<androidx.viewpager.widget.ViewPager
-                    android:id="@+id/flipper_affiche_annonce"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_marginTop="10dp"
-                    android:visibility="visible"/>
-
-                <me.relex.circleindicator.CircleIndicator
-                    android:id="@+id/indicator"
-                    android:layout_width="match_parent"
-                    android:layout_alignParentBottom="true"
-                    android:layout_height="48dp"/>-->
-
-            </RelativeLayout>
-
-            <Button
-                android:id="@+id/btn_share"
-                android:layout_width="190dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/share"
-                android:fontFamily="@font/raleway_medium"
-                android:paddingStart="40dp"
-                android:paddingEnd="0dp"
-                android:text="@string/partager_annonce"
-                android:textAllCaps="false"
-                android:textColor="#3F3E3E" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:background="#a9a9a9" />
+            </LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/see_more_annonce"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
+                android:background="@color/colorPrimaryLighter"
+                android:paddingStart="10dp"
+                android:paddingTop="10dp"
                 android:clickable="true"
                 android:focusable="true"
+                android:paddingEnd="0dp"
                 android:padding="5dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -280,15 +240,25 @@
                     android:src="@drawable/user" />
 
                 <TextView
-                    android:id="@+id/txt_username_ann"
+                    android:id="@+id/mis_en_ligne"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/txt_username_logo_ann"
                     android:layout_alignParentTop="true"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="3dp"
+                    android:text="@string/mise_en_ligne_par" />
+
+                <TextView
+                    android:id="@+id/txt_username_ann"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/mis_en_ligne"
+                    android:layout_marginStart="15dp"
                     android:layout_toEndOf="@+id/txt_username_logo_ann"
-                    android:fontFamily="@font/raleway_medium"
+                    android:layout_marginTop="3dp"
                     android:maxLines="1"
+                    android:textStyle="bold"
                     android:text="@string/nom_d_utlisateur"
                     android:textSize="20sp"
                     tools:ignore="RelativeOverlap" />
@@ -299,70 +269,18 @@
                     android:layout_below="@+id/txt_username_ann"
                     android:layout_alignStart="@+id/txt_username_ann"
                     android:layout_marginTop="3dp"
-                    android:fontFamily="@font/raleway_medium"
                     android:text="@string/plus_d_article_de_ce_utilisateur"
                     android:textSize="14sp" />
 
                 <ImageView
                     android:layout_width="37dp"
                     android:layout_height="50dp"
-                    android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
                     android:contentDescription="@string/voir_plus"
                     android:src="@drawable/ic_chevron_right" />
 
             </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:background="#a9a9a9" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/send_direct_message"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/raleway_medium"
-                    android:text="@string/discuter_avec_le_vender"
-                    android:textAlignment="textStart"
-                    android:textAllCaps="false"
-                    android:textColor="#3e3e3e"
-                    android:textSize="18sp" />
-
-                <ProgressBar
-                    android:id="@+id/progress_bar_discussion"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="25dp"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/iv_chat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="25dp"
-                    android:contentDescription="@string/discuter_avec_le_vender"
-                    android:src="@drawable/chat_bubble" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="5dp"
-                android:background="#a9a9a9" />
 
             <Button
                 android:id="@+id/signaler_annonce"
@@ -371,16 +289,71 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:drawableEnd="@drawable/ic_warning"
-                android:fontFamily="@font/raleway_medium"
                 android:text="@string/signaler_l_annonce"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textColor="#3e3e3e"
                 android:textSize="18sp" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="70dp" />
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="#FFFFFF"
+        android:orientation="horizontal"
+        app:layout_anchor="@+id/nestedScrollView"
+        app:layout_anchorGravity="end|bottom">
+
+        <Button
+            android:id="@+id/send_direct_message"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/border_rounded_solid_primary"
+            android:drawablePadding="10dp"
+            android:text="@string/message"
+            android:textAllCaps="false"
+            android:textColor="#3e3e3e" />
+
+        <Button
+            android:id="@+id/send_whatsapp_message"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/border_rounded_solid_primary"
+            android:drawablePadding="10dp"
+            android:text="@string/whatsapp"
+            android:textAllCaps="false"
+            android:textColor="#3e3e3e" />
+
+        <!--<ProgressBar
+            android:id="@+id/progress_bar_discussion"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="25dp"
+            android:visibility="gone" />-->
+
+        <!--<ImageView
+            android:id="@+id/iv_chat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="25dp"
+            android:contentDescription="@string/discuter_avec_le_vender"
+            android:src="@drawable/chat_bubble" />-->
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/loading_indicator_ann"
@@ -394,7 +367,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/chargement_en_cours"
-            android:textSize="30sp" />
+            android:textSize="@dimen/chargement_en_cours_message_size" />
 
     </LinearLayout>
 
@@ -424,10 +397,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/raleway_medium"
             android:padding="10dp"
             android:text="@string/l_annonce_n_existe_plus"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
 
     </LinearLayout>
 
@@ -442,7 +414,7 @@
         android:src="@drawable/ic_star_white"
         app:backgroundTint="@color/colorPrimary"
         app:layout_anchor="@+id/nestedScrollView"
-        app:layout_anchorGravity="end|bottom"
+        app:layout_anchorGravity="end|top"
         app:maxImageSize="35dp" />
 
     <include layout="@layout/layout_offline" />

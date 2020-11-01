@@ -189,27 +189,26 @@ public class ActivityProfile extends AppCompatActivity {
                 btn_update_profil.setText(R.string.enregistrer);
                 btn_update_profil.setEnabled(true);
                 progress_bar_head.setVisibility(View.GONE);
-
                 if (response.isSuccessful()) {
 
                     User user = response.body();
 
                     if (user != null) {
 
-                        if (user.getError() != null) {
-                            if (user.getError().equals("email")) {
+                        if (user.getMessage() != null) {
+                            if (user.getMessage().equals("email")) {
                                 email.setError(getString(R.string.cet_email_existe_deja));
                             }
-                            if (user.getError().equals("tel")) {
+                            if (user.getMessage().equals("tel")) {
                                 telephone.setError(getString(R.string.ce_numero_de_telephone_existe));
                             }
-                            if (user.getError().equals("username")) {
+                            if (user.getMessage().equals("username")) {
                                 username.setError(getString(R.string.ce_nom_d_utilisateur_existe_deja));
                             }
-                            if (user.getError().equals("nom")) {
+                            if (user.getMessage().equals("nom")) {
                                 nom.setError(getString(R.string.ce_nom_existe_deja));
                             }
-                            if (user.getError().equals("user")) {
+                            if (user.getMessage().equals("user")) {
                                 Toast.makeText(ActivityProfile.this, R.string.votre_compte_a_ete_supprime, Toast.LENGTH_SHORT).show();
                             }
                         } else {
@@ -429,7 +428,7 @@ public class ActivityProfile extends AppCompatActivity {
 
     private void updatePhoto() {
         progressBar.setVisibility(View.VISIBLE);
-        String url = Constants.HOST_URL + "v1/users/avatar/" + user;
+        String url = Constants.HOST_URL + "v1/users/avatar";
         StringRequest request = new StringRequest(Request.Method.POST, url, response -> {
             photo_profil.setImageBitmap(bitmap);
             progressBar.setVisibility(View.GONE);
@@ -457,6 +456,7 @@ public class ActivityProfile extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
+                params.put("user", user);
                 if (bitmap != null) {
                     String file = getStringImage(bitmap);
                     params.put("file", file);

@@ -142,7 +142,7 @@
                 android:gravity="center"
                 android:text="@string/veuillez_patienter_pendant_le_chargement"
                 android:textColor="@android:color/white"
-                android:textSize="16sp">
+                android:textSize="12sp">
 
             </TextView>
 

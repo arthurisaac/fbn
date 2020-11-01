@@ -26,30 +26,6 @@ public class Discussion {
         @SerializedName("timestamp")
         private String timestamp;
 
-        @SerializedName("id_receiver")
-        private String receiver_id;
-
-        @SerializedName("username")
-        private String nom;
-
-        @SerializedName("id_ann")
-        private String id_ann;
-
-        @SerializedName("id_user")
-        private String id_user;
-
-        public String getId_user() {
-            return id_user;
-        }
-
-        public String getId_ann() {
-            return id_ann;
-        }
-
-        public String getReceiver_id() {
-            return receiver_id;
-        }
-
         public String getDiscussion_id() {
             return discussion_id;
         }

@@ -256,7 +256,7 @@ public class ActivityAnnonceEditPhotos extends AppCompatActivity implements OnIt
     }
 
     @Override
-    public void onProgressUpdate(int percentage, String path) {
+    public void onProgressUpdate(int percentage) {
         // Toast.makeText(this, percentage+"%", Toast.LENGTH_SHORT).show();
         progressDoalog.setMessage(percentage + "%");
     }

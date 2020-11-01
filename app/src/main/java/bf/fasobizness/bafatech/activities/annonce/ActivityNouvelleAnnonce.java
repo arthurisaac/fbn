@@ -473,7 +473,7 @@ public class ActivityNouvelleAnnonce extends AppCompatActivity implements OnItem
     }
 
     @Override
-    public void onProgressUpdate(int percentage, String path) {
+    public void onProgressUpdate(int percentage) {
         String percent = getString(R.string._pourcent, String.valueOf(percentage));
         pourcent.setText(percent);
         progressBar.setIndeterminate(false);

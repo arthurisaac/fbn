@@ -2,6 +2,7 @@ package bf.fasobizness.bafatech.activities.user.messaging;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -32,7 +33,7 @@ import retrofit2.Response;
 public class ActivityDiscussions extends AppCompatActivity
         implements OnItemListener {
 
-    private String user, token;
+    private String token;
     private ArrayList<Discussion.Discussions> mDiscussion;
     private DiscussionAdapter discussionAdapter;
     private LinearLayout no_message;
@@ -76,7 +77,7 @@ public class ActivityDiscussions extends AppCompatActivity
         discussionAdapter.setOnItemListener(this);
 
         MySharedManager sharedManager = new MySharedManager(ActivityDiscussions.this);
-        user = sharedManager.getUser();
+        String user = sharedManager.getUser();
         token = "Bearer " + sharedManager.getToken();
 
         if (user.isEmpty()) {
@@ -119,6 +120,7 @@ public class ActivityDiscussions extends AppCompatActivity
             @Override
             public void onFailure(@NonNull Call<Discussion> call, @NonNull Throwable t) {
 
+                Log.d("ActivityDiscussions ", t.toString());
                 layout_ent_offline.setVisibility(View.VISIBLE);
                 no_message.setVisibility(View.GONE);
                 loading_indicator.setVisibility(View.GONE);
@@ -189,15 +191,15 @@ public class ActivityDiscussions extends AppCompatActivity
         discussionAdapter.notifyDataSetChanged();
 
         Intent intent = new Intent(ActivityDiscussions.this, ActivityMessage.class);
-        String receiver = null;
-        if (discussion.getReceiver_id().equals(user)) {
+        //String receiver = null;
+        /*if (discussion.getReceiver_id().equals(user)) {
             receiver = discussion.getId_user();
         } else if (discussion.getId_user().equals(user)) {
             receiver = discussion.getReceiver_id();
-        }
+        }*/
         intent.putExtra("discussion_id", discussion.getDiscussion_id());
-        intent.putExtra("receiver_id", receiver);
-        intent.putExtra("id_ann", discussion.getId_ann());
+        //intent.putExtra("receiver_id", receiver);
+        // intent.putExtra("id_ann", discussion.getId_ann());
         startActivity(intent);
     }
 }

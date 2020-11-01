@@ -61,21 +61,12 @@ public class MySharedManager {
         mEditor.apply();
     }
 
-    public float geRating() {
-        return mPreferences.getFloat("rating", 0);
-    }
-
     public String getToken() {
         return mPreferences.getString("token", "");
     }
 
     public void setToken(String token) {
         mEditor.putString("token", token);
-        mEditor.apply();
-    }
-
-    public void setRating(float rating) {
-        mEditor.putFloat("rating", rating);
         mEditor.apply();
     }
 

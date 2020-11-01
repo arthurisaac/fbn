@@ -1,7 +1,7 @@
 package bf.fasobizness.bafatech.interfaces;
 
 public interface UploadCallbacks {
-    void onProgressUpdate(int percentage, String path);
+    void onProgressUpdate(int percentage);
 
     void onError();
 

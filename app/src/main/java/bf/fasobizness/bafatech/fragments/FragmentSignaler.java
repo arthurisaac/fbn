@@ -57,7 +57,7 @@ public class FragmentSignaler extends AppCompatDialogFragment {
             id_element = bundle.getString("id_element");
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = Objects.requireNonNull(getActivity()).getLayoutInflater();
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
         @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.fragment_signaler, null);
         Button btn_signaler = view.findViewById(R.id.btn_signaler);
         raison = view.findViewById(R.id.til_raison);
@@ -81,7 +81,7 @@ public class FragmentSignaler extends AppCompatDialogFragment {
                 JSONObject object = new JSONObject(response);
                 boolean status = object.getBoolean("status");
                 if (status) {
-                    androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                    androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(requireContext());
                     builder.setMessage(getString(R.string.votre_requete_a_bien_ete_envoyee));
                     builder.setPositiveButton(R.string.ok, (dialog, id) -> Objects.requireNonNull(getDialog()).dismiss());
                     androidx.appcompat.app.AlertDialog dialog = builder.create();
@@ -109,7 +109,7 @@ public class FragmentSignaler extends AppCompatDialogFragment {
                 return params;
             }
         };
-        Volley.newRequestQueue(Objects.requireNonNull(getContext())).add(request);
+        Volley.newRequestQueue(requireContext()).add(request);
 
     }
 }

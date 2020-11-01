@@ -1,6 +1,7 @@
 package bf.fasobizness.bafatech.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -153,7 +154,8 @@ public class ActivityFullScreen extends AppCompatActivity implements OnItemListe
     }
 
 
-    private class DownloadingTask extends AsyncTask<Void, Void, Void> {
+    @SuppressLint("StaticFieldLeak")
+    class DownloadingTask extends AsyncTask<Void, Void, Void> {
 
         private static final String TAG = "Activity";
         File apkStorage = null;
@@ -250,7 +252,7 @@ public class ActivityFullScreen extends AppCompatActivity implements OnItemListe
                 InputStream is = c.getInputStream();//Get InputStream for connection
 
                 byte[] buffer = new byte[1024];//Set buffer type
-                int len1 = 0;//init length
+                int len1;//init length
                 while ((len1 = is.read(buffer)) != -1) {
                     fos.write(buffer, 0, len1);//Write new file
                 }

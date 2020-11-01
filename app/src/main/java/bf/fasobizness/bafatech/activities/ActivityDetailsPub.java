@@ -1,7 +1,9 @@
 package bf.fasobizness.bafatech.activities;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
 import android.view.View;
@@ -129,6 +131,15 @@ public class ActivityDetailsPub extends AppCompatActivity {
         });
     }
 
+    @SuppressWarnings("deprecation")
+    public static Spanned fromHtml(String source) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return Html.fromHtml(source, Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            return Html.fromHtml(source);
+        }
+    }
+
     private void populateData(Advertising.Ads ad) {
         String desc = ad.getDescription();
         Button btn_share = findViewById(R.id.btn_share);
@@ -137,8 +148,9 @@ public class ActivityDetailsPub extends AppCompatActivity {
             description.setVisibility(View.GONE);
         } else {
             try {
-                Spanned d = HtmlCompat.fromHtml(desc, HtmlCompat.FROM_HTML_MODE_LEGACY);
-                description.setText(d.toString());
+                // Spanned d = HtmlCompat.fromHtml(desc, HtmlCompat.FROM_HTML_MODE_COMPACT);
+                Spanned d = fromHtml(desc);
+                description.setText(d);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -155,9 +167,11 @@ public class ActivityDetailsPub extends AppCompatActivity {
         }
 
         btn_share.setOnClickListener(v -> {
+            Spanned d = HtmlCompat.fromHtml(desc, HtmlCompat.FROM_HTML_MODE_COMPACT);
+
             Intent sharingIntent = new Intent(Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
-            String shareBodyText = getString(R.string.telecharger_et_partager_l_application, "http://fasobizness.com/ads/" + ad.getId());
+            String shareBodyText = d + getString(R.string.telecharger_et_partager_l_application, "http://fasobizness.com/ads/" + ad.getId());
             sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "");
             sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBodyText);
             startActivity(Intent.createChooser(sharingIntent, getString(R.string.partager_avec)));
@@ -166,21 +180,24 @@ public class ActivityDetailsPub extends AppCompatActivity {
     }
 
     private void share_ad(String id) {
-        API api = RetrofitClient.getClient().create(API.class);
-        Call<MyResponse> call = api.shareAd(Integer.valueOf(id));
-        call.enqueue(new Callback<MyResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<MyResponse> call, @NonNull Response<MyResponse> response) {
-                if (response.isSuccessful()) {
-                    Log.d(TAG, response.toString());
+        if (id != null) {
+            API api = RetrofitClient.getClient().create(API.class);
+            Call<MyResponse> call = api.shareAd(Integer.valueOf(id));
+            call.enqueue(new Callback<MyResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<MyResponse> call, @NonNull Response<MyResponse> response) {
+                    if (response.isSuccessful()) {
+                        Log.d(TAG, response.toString());
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(@NonNull Call<MyResponse> call, @NonNull Throwable t) {
-                Log.d(TAG, t.toString());
-            }
-        });
+                @Override
+                public void onFailure(@NonNull Call<MyResponse> call, @NonNull Throwable t) {
+                    Log.d(TAG, t.toString());
+                }
+            });
+        }
+
     }
 
     /*private void vuePub(final String id) {

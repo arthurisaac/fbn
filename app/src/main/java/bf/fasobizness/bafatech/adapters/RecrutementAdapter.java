@@ -14,15 +14,15 @@ import java.util.ArrayList;
 
 import bf.fasobizness.bafatech.R;
 import bf.fasobizness.bafatech.interfaces.OnItemListener;
-import bf.fasobizness.bafatech.models.Recrutement;
+import bf.fasobizness.bafatech.models.Recruit;
 
 public class RecrutementAdapter extends RecyclerView.Adapter<RecrutementAdapter.RecrutementHolder> {
 
     private final Context mContext;
-    private final ArrayList<Recrutement> mRecrutements;
+    private final ArrayList<Recruit.Recrutement> mRecrutements;
     private OnItemListener onItemListener;
 
-    public RecrutementAdapter(Context context, ArrayList<Recrutement> recrutements) {
+    public RecrutementAdapter(Context context, ArrayList<Recruit.Recrutement> recrutements) {
         this.mContext = context;
         this.mRecrutements = recrutements;
     }
@@ -41,7 +41,7 @@ public class RecrutementAdapter extends RecyclerView.Adapter<RecrutementAdapter.
     @Override
     public void onBindViewHolder(@NonNull final RecrutementHolder recrutementHolder, int i) {
 
-        final Recrutement recrutement = mRecrutements.get(i);
+        final Recruit.Recrutement recrutement = mRecrutements.get(i);
 
         String titre = recrutement.getNom_r();
         String date_pub = recrutement.getDate_pub();

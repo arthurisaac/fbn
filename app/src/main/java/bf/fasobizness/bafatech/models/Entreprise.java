@@ -47,7 +47,7 @@ public class Entreprise {
         @SerializedName("location")
         private String location;
         @SerializedName("aimer")
-        private String aimer;
+        private int aimer;
         @SerializedName("id_aime")
         private String id_aime;
         @SerializedName("vue")
@@ -121,11 +121,11 @@ public class Entreprise {
             return nbVue;
         }
 
-        public String getAimer() {
+        public int getAimer() {
             return aimer;
         }
 
-        public void setAimer(String aimer) {
+        public void setAimer(int aimer) {
             this.aimer = aimer;
         }
 

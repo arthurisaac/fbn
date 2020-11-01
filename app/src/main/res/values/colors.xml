@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorPrimaryLighter">#60D7DB</color>
     <color name="colorPrimary">#12c0c7</color>
     <color name="colorPrimaryDark">#0ca3a9</color>
     <color name="colorAccent">#0ca3a9</color>
     <color name="bg_bubble_self">#E1E1E1</color>
     <color name="background">#dddddd</color>
+    <color name="colorBackground">#F6F3F7</color>
 
 </resources>

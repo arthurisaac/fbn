@@ -18,10 +18,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import bf.fasobizness.bafatech.R;
@@ -30,7 +28,7 @@ import bf.fasobizness.bafatech.adapters.IllustrationRecAdapter;
 import bf.fasobizness.bafatech.helper.RetrofitClient;
 import bf.fasobizness.bafatech.interfaces.API;
 import bf.fasobizness.bafatech.interfaces.OnItemListener;
-import bf.fasobizness.bafatech.models.Recrutement;
+import bf.fasobizness.bafatech.models.Recruit;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,7 +51,7 @@ public class ActivityDetailsRecrutement extends AppCompatActivity implements OnI
         toolbar.setNavigationOnClickListener(view -> finish());
 
         Intent extras = getIntent();
-        final Recrutement recrutement = (Recrutement) extras.getSerializableExtra("recrutement");
+        final Recruit.Recrutement recrutement = (Recruit.Recrutement) extras.getSerializableExtra("recrutement");
 
         TextView tv_nom_r = findViewById(R.id.tv_recrutement_nom_r);
         TextView tv_domaine = findViewById(R.id.tv_recrutement_domaine2);
@@ -101,7 +99,7 @@ public class ActivityDetailsRecrutement extends AppCompatActivity implements OnI
                 });
 
                 seen(recrutement.getId_recr());
-                jsonParse(recrutement.getAffiches());
+                jsonParse(recrutement);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -133,18 +131,16 @@ public class ActivityDetailsRecrutement extends AppCompatActivity implements OnI
         });
     }
 
-    private void jsonParse(String affiches) {
+    private void jsonParse(Recruit.Recrutement recrutement) {
         mIllustrations = new ArrayList<>();
         RecyclerView recyclerView = findViewById(R.id.recyclerview_piece_jointe);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         try {
-            JSONArray jsonArray = new JSONArray(affiches);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject data = jsonArray.getJSONObject(i);
-                String nom = data.getString("nom");
-                mIllustrations.add(nom);
+            List<Recruit.Recrutement.Affiche> affiches = recrutement.affiches;
+            for (int i = 0; i < affiches.size(); i++) {
+                mIllustrations.add(affiches.get(i).getNom());
             }
 
             IllustrationRecAdapter mIllustrationAdapter = new IllustrationRecAdapter(this, mIllustrations);

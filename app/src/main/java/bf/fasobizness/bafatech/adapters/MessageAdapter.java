@@ -65,8 +65,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
             itemView = LayoutInflater.from(mContext)
                     .inflate(R.layout.chat_item_other, viewGroup, false);
         }
-        /*itemView = LayoutInflater.from( mContext )
-                .inflate( R.layout.chat_item_self, viewGroup, false );*/
 
         return new MessageHolder(itemView);
     }
@@ -103,9 +101,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
 
     @Override
     public int getItemViewType(int position) {
-        //return super.getItemViewType( position );
         Message.Messages messages = mMessages.get(position);
-        if (messages.getUser_id().equals(userId)) {
+        if (messages.getSender().equals(userId)) {
             return SELF;
         }
 

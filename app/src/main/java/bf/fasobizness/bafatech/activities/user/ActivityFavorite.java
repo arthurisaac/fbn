@@ -99,6 +99,9 @@ public class ActivityFavorite extends AppCompatActivity implements OnAnnonceList
         mAnnonceAdapter.clearAll();
         mAnnonces.clear();
         mAnnonceAdapter.notifyDataSetChanged();
+        layout_ent_offline.setVisibility(View.GONE);
+        layout_no_annonce.setVisibility(View.GONE);
+        mSwipeRefreshLayout.setVisibility(View.GONE);
         shimmer_view_container.setVisibility(View.VISIBLE);
 
         jsonParse();
@@ -145,58 +148,6 @@ public class ActivityFavorite extends AppCompatActivity implements OnAnnonceList
 
             }
         });
-
-        /*String url = Constants.HOST_URL + "annonce/favorite/"+user;
-        StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
-            shimmer_view_container.setVisibility(View.GONE);
-            mSwipeRefreshLayout.setRefreshing(false);
-            try {
-                JSONObject jsonObject = new JSONObject(response);
-                JSONArray jsonArray = jsonObject.getJSONArray("data");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject data = jsonArray.getJSONObject(i);
-
-                    String titre = data.getString("titre");
-                    String vue = data.getString("vue");
-                    String id_ann = data.getString("id_ann");
-                    String categorie = data.getString("categorie");
-                    String vip = data.getString("vip");
-
-                    String affiche = data.getString("illNom");
-
-                    Annonce annonce = new Annonce();
-                    annonce.setAffiche(affiche);
-                    annonce.setVue(vue);
-                    annonce.setId_ann(id_ann);
-                    annonce.setCategorie(categorie);
-                    annonce.setTitre(titre);
-                    annonce.setVip(vip);
-
-                    mAnnonces.add(annonce);
-                }
-                mAnnonceAdapter.notifyDataSetChanged();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                layout_busy_system.setVisibility(View.VISIBLE);
-            }
-            if (mAnnonces.size() == 0) {
-                layout_no_annonce.setVisibility(View.VISIBLE);
-            }
-
-        }, error -> {
-            Log.d(TAG, "" + error.toString());
-            error.printStackTrace();
-            layout_ent_offline.setVisibility(View.VISIBLE);
-            shimmer_view_container.setVisibility(View.GONE);
-            mSwipeRefreshLayout.setRefreshing(false);
-        });
-        request.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 40,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES * 4,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT * 2)
-        );
-        requestQueue.add(request);*/
     }
 
     @Override

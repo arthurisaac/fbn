@@ -64,7 +64,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="?actionBarSize"
-        android:background="@color/dracula_primary"
         android:orientation="horizontal"
         android:padding="10dp">
 
@@ -79,24 +78,48 @@
             android:visibility="gone" />
 
 
-        <TextView
-            android:id="@+id/txt_titre_annonce"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:visibility="gone" />
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/txt_no_annonce_error"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/l_annonce_n_existe_plus"
-            android:textAlignment="center"
-            android:textColor="@color/colorAccent"
-            android:visibility="gone" />
+            <TextView
+                android:id="@+id/txt_titre_annonce"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:padding="5dp"
+                android:text="@string/aucun_resultat"
+                android:textColor="@color/dracula_primary_dark"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/txt_no_annonce_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/l_annonce_n_existe_plus"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btn_see_annonce"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/border_rounded_solid_primary"
+                android:drawableEnd="@drawable/ic_chevron_right_white"
+                android:drawablePadding="5dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="14dp"
+                android:text="@string/voir_l_annonce"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:visibility="gone" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 
@@ -188,15 +211,29 @@
 
     <ImageButton
         android:id="@+id/iv_send"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="5dp"
-        android:background="@drawable/border_round_solid"
+        android:background="@drawable/border_round_solid_white"
         android:contentDescription="@string/envoyer_message_direct"
         android:elevation="2dp"
         android:padding="10dp"
-        android:src="@drawable/ic_send_white" />
+        android:src="@drawable/ic_send_primary"
+        android:visibility="visible" />
+
+    <ProgressBar
+        android:id="@+id/iv_send_progress"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="5dp"
+        android:background="@drawable/border_round_solid_white"
+        android:contentDescription="@string/chargement_en_cours"
+        android:elevation="2dp"
+        android:padding="10dp"
+        android:visibility="gone" />
 
 </RelativeLayout>

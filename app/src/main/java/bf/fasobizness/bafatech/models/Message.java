@@ -37,22 +37,16 @@ public class Message {
 
     public class Messages {
         private String message_id;
-        private String user_id;
-        private String receiver_id;
         private String message;
         private String created_at;
         private String discussion_id;
-        private String isdeleted_receiver_id;
-        private String isdeleted_user_id;
+        private String bellow;
+        private String sender;
         private String type;
+        private String is_deleted;
 
-
-        public String getType() {
-            return type;
-        }
-
-        public String getUser_id() {
-            return user_id;
+        public String getMessage_id() {
+            return message_id;
         }
 
         public String getMessage() {
@@ -63,6 +57,25 @@ public class Message {
             return created_at;
         }
 
+        public String getDiscussion_id() {
+            return discussion_id;
+        }
+
+        public String getBellow() {
+            return bellow;
+        }
+
+        public String getSender() {
+            return sender;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public String getIs_deleted() {
+            return is_deleted;
+        }
     }
 
 }

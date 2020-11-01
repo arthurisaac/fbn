@@ -29,7 +29,53 @@
                 android:layout_width="wrap_content"
                 android:layout_height="190dp">
 
-                <TextView
+                <RelativeLayout
+                    android:id="@+id/li"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="#80000000"
+                    android:padding="7dp">
+
+                    <TextView
+                        android:id="@+id/txt_texte_ann"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginEnd="45dp"
+                        android:layout_marginBottom="4dp"
+                        android:maxLines="2"
+                        android:paddingStart="10dp"
+                        android:paddingTop="10dp"
+                        android:text="VENTRE DE PRIX"
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txt_prix_ann"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txt_texte_ann"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="45dp"
+                        android:layout_marginBottom="10dp"
+                        android:maxLines="1"
+                        android:text="75000"
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_alignParentEnd="true"
+                        android:contentDescription="@string/favoris"
+                        android:src="@drawable/ic_star_white" />
+
+                </RelativeLayout>
+
+                <!--<TextView
                     android:id="@+id/txt_texte_ann"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -40,9 +86,9 @@
                     android:padding="10dp"
                     android:textColor="@android:color/white"
                     android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold" />-->
 
-                <RelativeLayout
+                <!--<RelativeLayout
                     android:id="@+id/li"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -66,7 +112,7 @@
                         android:textSize="12sp" />
 
 
-                </RelativeLayout>
+                </RelativeLayout>-->
 
             </RelativeLayout>
 

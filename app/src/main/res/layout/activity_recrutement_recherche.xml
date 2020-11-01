@@ -29,6 +29,41 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+    <LinearLayout
+        android:id="@+id/layout_no_recruit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginTop="-50dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="186dp"
+            android:layout_height="186dp"
+            android:layout_margin="30dp"
+            android:adjustViewBounds="false"
+            android:contentDescription="@string/recrutements"
+            android:cropToPadding="false"
+            android:padding="10dp"
+            android:src="@drawable/ic_searching" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/raleway_medium"
+            android:padding="10dp"
+            android:text="@string/aucun_resultat"
+            android:textSize="20sp" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="30dp" />
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/resultats"
         android:layout_width="wrap_content"

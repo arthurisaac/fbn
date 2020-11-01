@@ -55,7 +55,7 @@ public class FragmentPasswordUpdate extends AppCompatDialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = Objects.requireNonNull(getActivity()).getLayoutInflater();
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
         @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.fragment_password_update, null);
         ancien = view.findViewById(R.id.oldpassword);
         mdp = view.findViewById(R.id.password);
@@ -75,7 +75,6 @@ public class FragmentPasswordUpdate extends AppCompatDialogFragment {
             MySharedManager sharedManager = new MySharedManager(getContext());
             id = sharedManager.getUser();
         }
-        Log.d("activity", "id: " + id);
 
         btn_update.setOnClickListener(view1 -> {
             try {
@@ -106,7 +105,7 @@ public class FragmentPasswordUpdate extends AppCompatDialogFragment {
             mdp.setError(getString(R.string.mot_de_passe_requis));
             return false;
         } else if (passwd.length() < 6) {
-            mdp.setError(getString(R.string.mot_de_passe_superieur_6_caracteres));
+            mdp.setError(getString(R.string.minimum_6_caracteres));
             return false;
         } else if (conf.isEmpty()) {
             confirm.setError(getString(R.string.mot_de_passe_requis));
@@ -143,13 +142,12 @@ public class FragmentPasswordUpdate extends AppCompatDialogFragment {
                     btn_update.setText(R.string.mettre_a_jour);
                     btn_update.setEnabled(true);
                     try {
-                        Log.d("ActivityPasswd", response);
                         JSONObject jsonObject = new JSONObject(response);
                         boolean status = jsonObject.getBoolean("status");
                         String message = jsonObject.getString("message");
                         if (status) {
 
-                            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(requireContext());
                             builder.setMessage(getString(R.string.mot_de_passe_modifie_avec_succes));
                             builder.setPositiveButton(R.string.ok, (dialog, id) -> {
                                 Objects.requireNonNull(getDialog()).dismiss();
@@ -207,7 +205,7 @@ public class FragmentPasswordUpdate extends AppCompatDialogFragment {
                 return params;
             }
         };
-        Volley.newRequestQueue(Objects.requireNonNull(getContext())).add(request);
+        Volley.newRequestQueue(requireContext()).add(request);
     }
 
 }

@@ -2,7 +2,6 @@ package bf.fasobizness.bafatech.activities.annonce;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -91,6 +90,8 @@ public class ActivityAnnoncesPublished extends AppCompatActivity implements OnAn
         layout_busy_system.setVisibility(View.GONE);
 
         shimmer_view_container = findViewById(R.id.shimmer_view_container);
+        shimmer_view_container.setVisibility(View.VISIBLE);
+        fetchAnnounces();
     }
 
     private void refresh() {
@@ -99,10 +100,10 @@ public class ActivityAnnoncesPublished extends AppCompatActivity implements OnAn
         mAnnonceAdapter.notifyDataSetChanged();
         shimmer_view_container.setVisibility(View.VISIBLE);
 
-        jsonParse();
+        fetchAnnounces();
     }
 
-    private void jsonParse() {
+    private void fetchAnnounces() {
         layout_ent_offline.setVisibility(View.GONE);
         layout_busy_system.setVisibility(View.GONE);
         layout_no_annonce.setVisibility(View.GONE);
@@ -115,7 +116,6 @@ public class ActivityAnnoncesPublished extends AppCompatActivity implements OnAn
             public void onResponse(@NonNull Call<Announce> call, @NonNull Response<Announce> response) {
                 shimmer_view_container.setVisibility(View.GONE);
                 mSwipeRefreshLayout.setRefreshing(false);
-                Log.v(TAG, response.toString());
 
                 Announce announce = response.body();
                 List<Announce.Annonce> annonces = null;
@@ -158,6 +158,6 @@ public class ActivityAnnoncesPublished extends AppCompatActivity implements OnAn
     protected void onStart() {
         super.onStart();
 
-        refresh();
+        // refresh();
     }
 }

@@ -63,14 +63,14 @@
     <string name="description">Description</string>
 
     <string name="aucune_categorie_renseignee">Aucune catégorie renseignée</string>
-    <string name="prix_non_renseigne">Prix non renseigné</string>
+    <string name="prix_sur_demande">Prix sur demande</string>
 
-    <string name="pour_publier_une_annonce_ouvrez_la_barre_de_navigation_et_choisir_le_menu_offres_et_annonces_cliquer_sur_le_button_ajouter_annonce_situ_vers_le_bas_de_votre_cran_remplissez_les_champs_demand_s_et_clicker_sur_le_button_publier_pour_publier_votre_annonce">Pour publier une annonce, ouvrez la barre de navigation et choisir le menu \'Offres et Annonces\'. Cliquer sur le button \'Ajouter annonce\' situé vers le bas de votre écran. Remplissez les champs demandés et clicker sur le button publier pour publier votre annonce.</string>
+    <string name="pour_publier_une_annonce_ouvrez_la_barre_de_navigation_et_choisir_le_menu_offres_et_annonces_cliquer_sur_le_bouton_ajouter_annonce_situ_vers_le_bas_de_votre_cran_remplissez_les_champs_demand_s_et_cliquer_sur_le_bouton_publier_pour_publier_votre_annonce">Pour publier une annonce, ouvrez la barre de navigation et choisir le menu \'Offres et Annonces\'. Cliquer sur le bouton \'Ajouter annonce\' situé vers le bas de votre écran. Remplissez les champs demandés et cliquer sur le bouton publier pour publier votre annonce.</string>
     <string name="remarque_pour_publier_une_annonce_il_faudra_tre_connect_au_pr_alable">Remarque: Pour publier une annonce, il faudra être connecté au préalable.</string>
     <string name="comment_s_enregistrer">Comment s\'enregistrer ?</string>
     <string name="pour_s_enregistrer_rendez_vous_dans_la_barre_de_navigation_et_cliquer_sur_connectez_vous_puis_cliquer_sur_s_inscrire_ici">Pour s\'enregistrer, rendez-vous dans la barre de navigation et cliquer sur \'Connectez-vous\' puis cliquer sur \'S\'inscrire ici\'.</string>
 
-    <string name="telecharger_et_partager_l_application">Téléchargez ou parcourez l\'application Faso Biz Nèss pour en savoir plus. Pour android: http://bit.ly/AndroidFBN. Pour Iphone: http://bit.ly/IphoneFBN. Retrouver l\'article à (%1$s)</string>
+    <string name="telecharger_et_partager_l_application">Téléchargez ou parcourez l\'application Faso Biz Nèss pour en savoir plus. Pour android: http://bit.ly/AndroidFBN. Retrouver l\'article à (%1$s)</string>
     <string name="telecharger_et_partager_l_application_recommender">Je t\'invite à découvrir une application gratuite pour publier tes offres, vendre, acheter, et être informé de toutes les opportunités d\'emploi au Burkina. Disponible sur Playstore: http://bit.ly/AndroidFBN</string>
     <string name="comment_publier_une_annonce">Comment publier une annonce ?</string>
     <string name="comment_nous_contacter">Comment nous contacter ?</string>
@@ -80,7 +80,7 @@
     <string name="erreur_d_authentiication">Erreur d\'authentiication</string>
     <string name="mot_de_passe_oubli">Mot de passe oublié?</string>
     <string name="pas_de_compte">Pas de compte?</string>
-    <string name="s_enregistrer_ici">S\'enregistrer ici</string>
+    <string name="s_inscrire_ici">S\'inscrire ici</string>
     <string name="mot_de_passe">Mot de passe</string>
     <string name="email">Email</string>
     <string name="mot_de_passe_invalide">Mot de passse invalide</string>
@@ -131,7 +131,6 @@
     <string name="vous_devez_ajouter_au_mois_une_image">Vous devez ajouter au moins une image</string>
     <string name="_pourcent">Chargement  %1$s pourcent</string>
     <string name="offer_save_message">Votre offre a été publiée. Elle restera en ligne pendant 365 jours, vous pouvez la modifier ou la supprimer à tout moment</string>
-    <string name="image_en_cours_d_envoi">Image en cours d\'envoi</string>
     <string name="succes">Succès</string>
     <string name="le_serveur_est_occupe">Le serveur est occupé</string>
     <string name="entreprises">Entreprises</string>
@@ -139,8 +138,6 @@
     <string name="envoi_en_cours">Envoi en cours</string>
     <string name="favoris_ajoute">Favoris ajouté</string>
     <string name="pieces_jointes">Pieces jointes</string>
-    <string name="camera">Camera</string>
-    <string name="galerie">Galerie</string>
     <string name="like_button">Like button</string>
     <string name="une_erreur_sest_produite">Une erreur s\'est produite</string>
     <string name="l_exp_rience_digitale_au_service_de_l_entreprenariat">L’expérience digitale au service de l’entreprenariat</string>
@@ -172,7 +169,6 @@
     <string name="mes_favoris">Mes favoris</string>
     <string name="vous_n_avez_pas_de_favoris">Vous n\'avez pas de favoris</string>
     <string name="entreprise">entreprise</string>
-    <string name="utilisateur">utilisateur</string>
     <string name="verifier_les_champs">Vérifier les champs</string>
     <string name="choisir_la_source">Choisir la source</string>
     <string name="numero_de_telephone_requis">Numéro de téléphone requis</string>
@@ -183,19 +179,17 @@
     <string name="votre_compte_a_ete_supprime">Votre compte a été supprimé</string>
     <string name="profil_modifie_avec_succes">Profil modifié avec succès</string>
     <string name="choisir_action">Choisir action</string>
-    <string name="mot_de_passe_superieur_6_caracteres">Mots de passe doit être supérieur à 6 caractères</string>
+    <string name="minimum_6_caracteres">Minimum 06 caractères</string>
     <string name="votre_suggestion_a_bien_t_envoy_e">Votre suggestion a bien été envoyée. Merci pour votre suggestion</string>
     <string name="ressayer">Reéssayer</string>
     <string name="suppresion_en_cours">Suppression en cours…</string>
-    <string name="demander_assistance">Demander assistance</string>
     <string name="noter_l_application">Noter l\'application</string>
-    <string name="assistance">Assistance</string>
     <string name="cgu">Conditions générales d\'utilisateur</string>
     <string name="pomouvoir_mes_annonces">Promouvoir mes annonces</string>
     <string name="promouvoir_mes_annonces">Promouvoir mes annonces</string>
     <string name="recuperation_mdp">Récuperation de mot de passe</string>
     <string name="illustration_email">Illustration email</string>
-    <string name="ce_numero_de_telephone_existe">Ce numro de téléphone existe délà</string>
+    <string name="ce_numero_de_telephone_existe">Ce numéro de téléphone existe délà</string>
     <string name="bonjour_je_souhaite_recourir_a_vos_services">Bonjour, je souhaite recourir à vos services</string>
     <string name="envoyez_un_sms">Envoyez un sms</string>
     <string name="appelez_nous">Appelez nous</string>
@@ -203,15 +197,13 @@
     <string name="contactez_nous_sur_whatsapp">Contactez nous sur whatsapp</string>
     <string name="appel">APPEL</string>
     <string name="sms">SMS</string>
-    <string name="https_www_facebook_com_fasobizness">https://www.facebook.com/Fasobizness/</string>
     <string name="contactez_nous">Contactez-nous</string>
     <string name="quels_sont_nos_tarifs">Quels sont nos tarifs?</string>
-    <string name="aimez_notre_application_sur_facebook">Aimez notre application sur FaceBook</string>
     <string name="raison">Raison</string>
     <string name="signaler">signaler</string>
     <string name="votre_requete_a_bien_ete_envoyee">Votre requète a bien été envoyée</string>
 
-    <string name="pour_poursuivre_cet_action_vous_devez_vous_connecter_votre_compte_faso_biz_n_ss">Pour poursuivre cet action vous devez vous connecter à votre compte Faso Biz Nèss</string>
+    <string name="pour_poursuivre_cette_action_vous_devez_vous_connecter_votre_compte_faso_biz_n_ss">Pour poursuivre cette action vous devez vous connecter à votre compte Faso Biz Nèss</string>
     <string name="background">background</string>
     <string name="panier_achat_en_ligne">Panier achat en ligne</string>
     <string name="tr_s_bient_t">Très bientôt</string>
@@ -221,21 +213,35 @@
     <string name="code_incorrect">Code incorrect</string>
     <string name="en_continuant_d_utiliser_l_application_vous_indiquez_que_vous_acceptez_les_conditions_g_n_rales_de_la_politique_d_utilisation">En continuant d\'utiliser l\'application, vous indiquez que vous acceptez les conditions générales de la politique d\'utilisation</string>
     <string name="je_voudrais_promouvoir_mes_produits">Je voudrais promouvoir mes produits</string>
-    <string name="min">min</string>
-    <string name="max">max</string>
+    <string name="prix_min">Prix min</string>
+    <string name="prix_max">Prix max</string>
     <string name="vous_pouvez_booster_votre_offre_en_la_faisant_ajouter_dans_la_rubrique_offres_en_or_d_s_lors_vous_avez_beaucoup_de_visibilit_et_cela_vous_permet_de_vendre_plus_vite_et_en_plus_grande_quantit_le_label_offre_en_or_appos_sur_votre_offre_vous_distingue_et_maximise_le_succ_s_de_votre_annonce">Vous pouvez booster votre offre en la faisant ajouter dans la rubrique Offres en Or. Dès lors, vous avez beaucoup de visibilité et cela vous permet de vendre plus vite et en plus grande quantité. Le label Offre en Or apposé sur votre Offre vous distingue et maximise le succès de votre annonce.</string>
     <string name="la_souscription_se_fait_moyennant_les_tarifs_suivants">La souscription se fait moyennant les tarifs suivants:</string>
     <string name="label_offre_en_or_pendant_10_jours_5000_fcfa">Label Offre en Or pendant 10 jours: 5000 FCFA</string>
     <string name="label_offre_en_or_pendant_15_jours_7000_fcfa">Label Offre en Or pendant 15 jours: 7000 FCFA</string>
     <string name="label_offre_en_or_pendant_30_jours_15000_fcfa">Label Offre en Or pendant 30 jours: 10000 FCFA</string>
     <string name="label_offre_en_or_pendant_60_jours_15000_fcfa">Label Offre en Or pendant 60 jours: 15000 FCFA</string>
-    <string name="_226_66_69_19_15">+226 66 69 19 15</string>
     <string name="_vues">%1$s vues</string>
     <string name="_partages">%1$s partages</string>
     <string name="ajouter_une_photo_de_profil">Ajouter une photo de profil</string>
     <string name="nom_et_prenom">Nom et Prenom</string>
     <string name="vos_resultats">Vos résultats</string>
-    <string name="aimez_notre_page">Aimez notre page</string>
-    <string name="separateur">Separateur</string>
+    <string name="aimez_notre_page_facebook">Aimez notre page Facebook</string>
     <string name="publie_le">Publié le %1$s</string>
+    <string name="particulier">particulier</string>
+    <string name="conversation_supprimee">Conversation supprimée</string>
+    <string name="veuillez_entrer_un_message">Veuillez entrer un message</string>
+    <string name="domaine">Domaine:</string>
+    <string name="appuyer_sur_retour_pour_quitter">Appuyer sur retour pour quitter</string>
+    <string name="voir_l_annonce">Voir l\'annonce</string>
+    <string name="pipe">|</string>
+    <string name="prenom_requis">Prénom requis</string>
+    <string name="cet_email_nexiste_pas">Cet email n\'existe pas</string>
+    <string name="structure">Structure:</string>
+    <string name="enregistrement_en_cours">Enregistrement en cours</string>
+    <string name="lancer_la_recherche">Lancer la recherche</string>
+    <string name="mise_en_ligne_par">Mise en ligne par</string>
+    <string name="message">Message</string>
+    <string name="whatsapp">WhatsApp</string>
+    <string name="prix_non_renseigne">Prix non renseigné</string>
 </resources>

@@ -129,6 +129,7 @@ public class ActivityAnnounceFilter extends AppCompatActivity implements OnAnnon
         call.enqueue(new Callback<Announce>() {
             @Override
             public void onResponse(@NonNull Call<Announce> call, @NonNull Response<Announce> response) {
+                // Log.d("ActivityAnnounce", response.toString());
                 shimmer_view_container.setVisibility(View.GONE);
                 mSwipeRefreshLayout.setRefreshing(false);
 
@@ -151,6 +152,7 @@ public class ActivityAnnounceFilter extends AppCompatActivity implements OnAnnon
             @Override
             public void onFailure(@NonNull Call<Announce> call, @NonNull Throwable t) {
 
+                // Log.d("ActivityFilter", t.toString());
                 mSwipeRefreshLayout.setRefreshing(false);
                 layout_ent_offline.setVisibility(View.VISIBLE);
                 shimmer_view_container.setVisibility(View.GONE);

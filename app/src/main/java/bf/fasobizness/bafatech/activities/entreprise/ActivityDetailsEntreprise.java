@@ -31,7 +31,7 @@ import java.util.Objects;
 
 import bf.fasobizness.bafatech.R;
 import bf.fasobizness.bafatech.activities.ActivityFullScreen;
-import bf.fasobizness.bafatech.activities.ActivityUserProfile;
+import bf.fasobizness.bafatech.activities.annonce.ActivityUserProfile;
 import bf.fasobizness.bafatech.activities.user.LoginActivity;
 import bf.fasobizness.bafatech.adapters.CommentaireAdapter;
 import bf.fasobizness.bafatech.fragments.FragmentSignaler;

@@ -182,7 +182,7 @@
                     android:layout_marginStart="4dp"
                     android:layout_marginTop="0dp"
                     android:layout_toEndOf="@+id/tv_no_account"
-                    android:text="@string/s_enregistrer_ici"
+                    android:text="@string/s_inscrire_ici"
                     android:textColor="@color/colorPrimaryDark"
                     android:textStyle="bold" />
 

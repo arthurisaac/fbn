@@ -6,8 +6,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,17 +16,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import bf.fasobizness.bafatech.ActivityBoutique;
@@ -36,18 +30,23 @@ import bf.fasobizness.bafatech.activities.entreprise.ActivityEntreprisesUne;
 import bf.fasobizness.bafatech.activities.user.messaging.ActivityDiscussions;
 import bf.fasobizness.bafatech.adapters.RecrutementAdapter;
 import bf.fasobizness.bafatech.fragments.FragmentNotConnected;
+import bf.fasobizness.bafatech.helper.RetrofitClient;
+import bf.fasobizness.bafatech.interfaces.API;
 import bf.fasobizness.bafatech.interfaces.OnItemListener;
-import bf.fasobizness.bafatech.models.Recrutement;
-import bf.fasobizness.bafatech.utils.Constants;
+import bf.fasobizness.bafatech.models.Recruit;
 import bf.fasobizness.bafatech.utils.MySharedManager;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ActivityRecrutements extends AppCompatActivity implements OnItemListener {
 
     private static final String TAG = "ActivityRecrutements";
-    private ArrayList<Recrutement> mRecrutements;
+    private ArrayList<Recruit.Recrutement> mRecrutements;
     private RecrutementAdapter mRecrutementAdapter;
-    private RequestQueue requestQueue;
+    // private RequestQueue requestQueue;
     private ShimmerFrameLayout mShimmerViewContainer;
+    private LinearLayout offline_layout;
     // private MaterialSearchView searchView;
 
     @Override
@@ -68,8 +67,12 @@ public class ActivityRecrutements extends AppCompatActivity implements OnItemLis
         MySharedManager sharedManager = new MySharedManager(this);
         String user = sharedManager.getUser();
 
+        offline_layout = findViewById(R.id.layout_ent_offline);
+        Button refresh = findViewById(R.id.btn_refresh);
+        refresh.setOnClickListener(v -> jsonParse());
+
         mRecrutements = new ArrayList<>();
-        requestQueue = Volley.newRequestQueue(this);
+        // requestQueue = Volley.newRequestQueue(this);
         RecyclerView mRecyclerView = findViewById(R.id.recyclerview_recrutements);
         mRecrutementAdapter = new RecrutementAdapter(this, mRecrutements);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -100,6 +103,38 @@ public class ActivityRecrutements extends AppCompatActivity implements OnItemLis
     }
 
     private void jsonParse() {
+        offline_layout.setVisibility(View.GONE);
+        mShimmerViewContainer.setVisibility(View.VISIBLE);
+        API api = RetrofitClient.getClient().create(API.class);
+        Call<Recruit> call = api.getRecruits();
+        call.enqueue(new Callback<Recruit>() {
+            @Override
+            public void onResponse(@NonNull Call<Recruit> call, @NonNull Response<Recruit> response) {
+                mShimmerViewContainer.setVisibility(View.GONE);
+                Log.d(TAG, response.toString());
+                Recruit recruit = response.body();
+                List<Recruit.Recrutement> recrutements = null;
+                if (recruit != null) {
+                    recrutements = recruit.recrutements;
+                }
+                if (recrutements != null) {
+                    mRecrutements.addAll(recrutements);
+                }
+                mRecrutementAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Recruit> call, @NonNull Throwable t) {
+                mShimmerViewContainer.setVisibility(View.GONE);
+                offline_layout.setVisibility(View.VISIBLE);
+                Log.d(TAG, t.toString());
+            }
+        });
+
+    }
+
+    /*private void jsonParse() {
+        offline_layout.setVisibility(View.GONE);
         String url = Constants.HOST_URL + "v1/recruits";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, response -> {
             try {
@@ -148,6 +183,7 @@ public class ActivityRecrutements extends AppCompatActivity implements OnItemLis
         }, error -> {
             mShimmerViewContainer.setVisibility(View.GONE);
             Log.d(TAG, error.toString());
+            offline_layout.setVisibility(View.VISIBLE);
         });
         request.setRetryPolicy(new DefaultRetryPolicy(
                 DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 10,
@@ -155,11 +191,11 @@ public class ActivityRecrutements extends AppCompatActivity implements OnItemLis
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT * 1)
         );
         requestQueue.add(request);
-    }
+    }*/
 
     @Override
     public void onItemClicked(int position) {
-        Recrutement recrutement = mRecrutements.get(position);
+        Recruit.Recrutement recrutement = mRecrutements.get(position);
         Intent intent = new Intent(getApplicationContext(), ActivityDetailsRecrutement.class);
         intent.putExtra("recrutement", recrutement);
         startActivity(intent);

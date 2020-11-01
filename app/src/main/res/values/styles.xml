@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -6,15 +6,11 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <!--<item name="android:fontFamily">@font/raleway_medium</item>-->
+        <item name="android:fontFamily">@font/raleway_medium</item>
         <item name="android:textSize">17sp</item>
-        <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
+    <style name="AppTheme.NoActionBar" />
 
     <style name="AppTheme.Main">
         <item name="windowActionBar">false</item>

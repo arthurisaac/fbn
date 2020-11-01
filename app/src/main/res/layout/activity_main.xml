@@ -51,6 +51,7 @@
                     android:layout_marginStart="10dp"
                     android:text="@string/pomouvoir_mes_annonces"
                     android:textColor="@android:color/white"
+                    android:textSize="12sp"
                     android:textStyle="bold">
 
                 </TextView>
@@ -85,7 +86,6 @@
                 android:theme="@style/AppTheme.AppBarOverlay">
 
                 <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:background="?attr/colorPrimary"
@@ -124,9 +124,10 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:background="@drawable/frame"
-                        android:hint="@string/min"
+                        android:hint="@string/prix_min"
                         android:importantForAutofill="no"
-                        android:inputType="number" />
+                        android:inputType="number"
+                        android:textSize="12sp" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -142,8 +143,9 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:background="@drawable/frame"
-                        android:hint="@string/max"
+                        android:hint="@string/prix_max"
                         android:importantForAutofill="no"
+                        android:textSize="12sp"
                         android:inputType="number" />
 
                 </LinearLayout>
@@ -154,7 +156,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:background="@color/colorPrimary"
-                    android:text="@string/enregistrer"
+                    android:text="@string/lancer_la_recherche"
+                    android:textSize="12sp"
                     android:textColor="#FCF4F4" />
 
             </LinearLayout>

@@ -60,7 +60,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/pour_publier_une_annonce_ouvrez_la_barre_de_navigation_et_choisir_le_menu_offres_et_annonces_cliquer_sur_le_button_ajouter_annonce_situ_vers_le_bas_de_votre_cran_remplissez_les_champs_demand_s_et_clicker_sur_le_button_publier_pour_publier_votre_annonce" />
+                android:text="@string/pour_publier_une_annonce_ouvrez_la_barre_de_navigation_et_choisir_le_menu_offres_et_annonces_cliquer_sur_le_bouton_ajouter_annonce_situ_vers_le_bas_de_votre_cran_remplissez_les_champs_demand_s_et_cliquer_sur_le_bouton_publier_pour_publier_votre_annonce" />
 
             <TextView
                 android:layout_width="wrap_content"

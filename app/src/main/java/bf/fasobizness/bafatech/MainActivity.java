@@ -37,6 +37,8 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -48,7 +50,7 @@ import bf.fasobizness.bafatech.activities.ActivitySuggestion;
 import bf.fasobizness.bafatech.activities.annonce.ActivityAnnonceCategory;
 import bf.fasobizness.bafatech.activities.annonce.ActivityAnnoncesPublished;
 import bf.fasobizness.bafatech.activities.annonce.ActivityAnnounceFilter;
-import bf.fasobizness.bafatech.activities.annonce.ActivityDetailsAnnonce;
+import bf.fasobizness.bafatech.activities.annonce.ActivityDetailsAnnonces;
 import bf.fasobizness.bafatech.activities.annonce.ActivityNouvelleAnnonce;
 import bf.fasobizness.bafatech.activities.annonce.ActivityOffreOr;
 import bf.fasobizness.bafatech.activities.annonce.ActivitySearchAnnonce;
@@ -177,7 +179,33 @@ public class MainActivity extends AppCompatActivity
                 cat = "";
             }
             filtre = "multiple";
-            arguments = "{\"ville\": \"" + ville + "\", \"categorie\": \"" + cat + "\", \"prix\": {\"min\": " + txt_min + ", \"max\": " + txt_max + "}}";
+            JSONObject jsonObject = new JSONObject();
+            if (!ville.isEmpty()) {
+                try {
+                    jsonObject.put("location", ville);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (!cat.isEmpty()) {
+                try {
+                    jsonObject.put("categorie", cat);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (!txt_min.isEmpty() && !txt_max.isEmpty()) {
+                try {
+                    JSONObject jo = new JSONObject();
+                    jo.put("min", txt_min);
+                    jo.put("max", txt_max);
+                    jsonObject.put("prix", jo);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            // arguments = "{\"location\": \"" + ville + "\", \"categorie\": \"" + cat + "\", \"prix\": {\"min\": " + txt_min + ", \"max\": " + txt_max + "}}";
+            arguments = jsonObject.toString();
 
             // openDrawer();
             Intent intent = new Intent(this, ActivityAnnounceFilter.class);
@@ -301,6 +329,7 @@ public class MainActivity extends AppCompatActivity
 
         tab_chat.setOnClickListener(v -> {
             if (!user.isEmpty()) {
+                badge_discussions.setVisibility(View.GONE);
                 startActivity(new Intent(MainActivity.this, ActivityDiscussions.class));
             } else {
                 FragmentNotConnected notConnected = FragmentNotConnected.newInstance();
@@ -361,6 +390,7 @@ public class MainActivity extends AppCompatActivity
 
         sharedManager = new MySharedManager(this);
         api = RetrofitClient.getClient().create(API.class);
+        user = sharedManager.getUser();
 
         checkUser();
         jsonParse();
@@ -386,7 +416,7 @@ public class MainActivity extends AppCompatActivity
                     call.enqueue(new Callback<MyResponse>() {
                         @Override
                         public void onResponse(@NonNull Call<MyResponse> call, @NonNull Response<MyResponse> response) {
-                            Log.d(TAG, response.toString());
+                            // Log.d(TAG, response.toString());
                         }
 
                         @Override
@@ -395,8 +425,6 @@ public class MainActivity extends AppCompatActivity
                         }
                     });
                 }
-            } else {
-                Log.d(TAG, "Unsuccessful task");
             }
         });
 
@@ -409,8 +437,7 @@ public class MainActivity extends AppCompatActivity
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        if (response.body().getStatus() == 1) {
-                            Log.d(TAG, "status" + response.body().getStatus());
+                        if (response.body().getStatus()) {
                             user = "";
                             sharedManager.setUsername("");
                             sharedManager.setEmail("");
@@ -517,7 +544,7 @@ public class MainActivity extends AppCompatActivity
         shimmer_view_container.setVisibility(View.VISIBLE);
 
         jsonParse();
-        //ads();
+        // ads();
         if (!user.isEmpty()) {
             checkNewMessage();
         }
@@ -528,7 +555,6 @@ public class MainActivity extends AppCompatActivity
         call.enqueue(new Callback<MyResponse>() {
             @Override
             public void onResponse(@NonNull Call<MyResponse> call, @NonNull Response<MyResponse> response) {
-                // Log.d(TAG, response.toString());
                 if (response.isSuccessful()) {
                     MyResponse myResponse = response.body();
                     if (myResponse != null) {
@@ -538,7 +564,7 @@ public class MainActivity extends AppCompatActivity
                         }
                     }
                 } else {
-                    Log.d(TAG, "something wrong");
+                    Toast.makeText(MainActivity.this, R.string.une_erreur_sest_produite, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -594,7 +620,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onFailure(@NonNull Call<Announce> call, @NonNull Throwable t) {
 
-                //if (page == 1) {
+                // Log.d(TAG, t.toString());
                 if (mAnnonces.size() == 0) {
                     layout_ent_offline.setVisibility(View.VISIBLE);
                 } else {
@@ -650,7 +676,8 @@ public class MainActivity extends AppCompatActivity
     public void onAnnonceClicked(int position) {
 
         Announce.Annonce annonce = mAnnonces.get(position);
-        Intent intent = new Intent(this, ActivityDetailsAnnonce.class);
+        // Intent intent = new Intent(this, ActivityDetailsAnnonce.class);
+        Intent intent = new Intent(this, ActivityDetailsAnnonces.class);
         intent.putExtra("id_ann", annonce.getId_ann());
         intent.putExtra("affiche", annonce.getAffiche());
         startActivity(intent);
@@ -665,7 +692,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Appuyer sur retour pour quitter", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.appuyer_sur_retour_pour_quitter, Toast.LENGTH_SHORT).show();
 
         new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }

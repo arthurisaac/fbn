@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,13 +25,14 @@ import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import bf.fasobizness.bafatech.R;
 import bf.fasobizness.bafatech.activities.ActivityFullScreen;
-import bf.fasobizness.bafatech.activities.ActivityUserProfile;
 import bf.fasobizness.bafatech.activities.user.messaging.ActivityMessage;
 import bf.fasobizness.bafatech.fragments.FragmentNotConnected;
 import bf.fasobizness.bafatech.fragments.FragmentSignaler;
@@ -54,7 +54,7 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
     // private ImagesAdapter imagesAdapter;
 
     private String user;
-    // private TextView txt_titre_annonce;
+    private TextView txt_titre_annonce;
     private TextView txt_text;
     private TextView txt_prix;
     private TextView txt_email;
@@ -69,12 +69,12 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
     private TextView txt_updatedAt;
     private TextView txt_date_pub;
     // private ImageView iv_affiche;
-    private ImageView txt_photo_util, iv_chat;
+    private ImageView txt_photo_util;
     private LinearLayout ann, layout_no_annonce, loading_indicator_ann, layout_ent_offline, layout_busy_system;
     private RelativeLayout see_more_annonce;
-    private String fav;
+    private String fav, token;
     private ImageSlider pager;
-    private ProgressBar progress_bar_discussion;
+    // private ProgressBar progress_bar_discussion;
     private API api;
 
     @Override
@@ -85,16 +85,18 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
         api = RetrofitClient.getClient().create(API.class);
         MySharedManager mySharedManager = new MySharedManager(ActivityDetailsAnnonce.this);
         user = mySharedManager.getUser();
+        token = "Bearer " + mySharedManager.getToken();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.details);
+        toolbar.setTitle("");
+        // toolbar.setTitle(R.string.details);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.left_white);
         toolbar.setNavigationOnClickListener(view -> finish());
 
         txt_photo_util = findViewById(R.id.txt_username_logo_ann);
-        // txt_titre_annonce = findViewById(R.id.txt_titre_annonce);
+        txt_titre_annonce = findViewById(R.id.txt_titre_annonce);
         txt_text = findViewById(R.id.txt_texte_ann);
         txt_prix = findViewById(R.id.txt_prix_annonce);
         txt_email = findViewById(R.id.txt_email_util);
@@ -121,8 +123,8 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
 
         see_more_annonce = findViewById(R.id.see_more_annonce);
         layout_ent_offline.setVisibility(View.GONE);
-        progress_bar_discussion = findViewById(R.id.progress_bar_discussion);
-        iv_chat = findViewById(R.id.iv_chat);
+        // progress_bar_discussion = findViewById(R.id.progress_bar_discussion);
+        // iv_chat = findViewById(R.id.iv_chat);
 
         ann.setVisibility(View.GONE);
         loading_indicator_ann.setVisibility(View.VISIBLE);
@@ -206,25 +208,31 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
             startActivity(intent);
         });*/
 
-        Glide.with(this)
-                .setDefaultRequestOptions(
-                        new RequestOptions()
-                                .placeholder(R.drawable.user)
-                                .error(R.drawable.user)
-                                .centerCrop()
-                                .override(400, 400)
-                )
-                .asBitmap()
-                .load(annonce.getPhoto())
-                .thumbnail(0.1f)
-                .into(txt_photo_util);
+        try {
+            Glide.with(this)
+                    .setDefaultRequestOptions(
+                            new RequestOptions()
+                                    .placeholder(R.drawable.user)
+                                    .error(R.drawable.user)
+                                    .centerCrop()
+                                    .override(400, 400)
+                    )
+                    .asBitmap()
+                    .load(annonce.getPhoto())
+                    .thumbnail(0.1f)
+                    .into(txt_photo_util);
+        } catch (Exception e) {
+            finish();
+            e.printStackTrace();
+        }
+
 
         if (annonce.getTexte() != null) {
             // txt_text.setText(HtmlCompat.fromHtml(annonce.getTexte(), HtmlCompat.FROM_HTML_MODE_LEGACY));
             txt_text.setText(annonce.getTexte());
         }
 
-        // txt_titre_annonce.setText(annonce.getTitre());
+        txt_titre_annonce.setText(annonce.getTitre());
         txt_prix.setText(annonce.getPrix());
         txt_email.setText(annonce.getEmail());
         txt_tel.setText(annonce.getTel());
@@ -270,12 +278,20 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
             txt_categorie.setText(R.string.aucune_categorie_renseignee);
         } else {
             txt_categorie.setOnClickListener(v -> {
-                String arguments = "{\"ville\": \"\", \"categorie\": \"" + annonce.getCategorie() + "\"}";
 
-                Intent intent = new Intent(this, ActivityAnnounceFilter.class);
-                intent.putExtra("filter", "multiple");
-                intent.putExtra("params", arguments);
-                startActivity(intent);
+                //String arguments = "{\"ville\": \"\", \"categorie\": \"" + annonce.getCategorie() + "\"}";
+                try {
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("categorie", annonce.getCategorie());
+                    Intent intent = new Intent(this, ActivityAnnounceFilter.class);
+                    intent.putExtra("filter", "multiple");
+                    intent.putExtra("params", jsonObject.toString());
+                    startActivity(intent);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             });
         }
 
@@ -329,7 +345,7 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
             }
         }
         if (annonce.getPrix().length() == 0) {
-            txt_prix.setText(R.string.prix_non_renseigne);
+            txt_prix.setText(R.string.prix_sur_demande);
         }
         if (annonce.getLocation().length() == 0) {
             txt_location.setVisibility(View.GONE);
@@ -366,10 +382,10 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
                 FragmentNotConnected notConnected = FragmentNotConnected.newInstance();
                 notConnected.show(getSupportFragmentManager(), "");
             } else {
-                send_message.setEnabled(false);
-                send_message.setText(R.string.chargement_en_cours);
-                iv_chat.setVisibility(View.GONE);
-                progress_bar_discussion.setVisibility(View.VISIBLE);
+                // send_message.setEnabled(false);
+                // send_message.setText(R.string.chargement_en_cours);
+                // iv_chat.setVisibility(View.GONE);
+                // progress_bar_discussion.setVisibility(View.VISIBLE);
                 createDiscussion(annonce.getId_per_fk(), id_ann);
             }
         });
@@ -407,21 +423,28 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
     }
 
     private void createDiscussion(String receiver_id, String id_ann) {
-        Log.d(TAG, "receiver_id " + receiver_id);
+
         if (user.isEmpty()) {
             FragmentNotConnected notConnected = FragmentNotConnected.newInstance();
             notConnected.show(getSupportFragmentManager(), "");
         } else {
-            Call<MyResponse> call = api.createDiscussion(receiver_id, user, id_ann);
+
+            Intent intent = new Intent(getApplicationContext(), ActivityMessage.class);
+            intent.putExtra("receiver_id", receiver_id);
+            intent.putExtra("id_ann", id_ann);
+            intent.putExtra("new", "1");
+            startActivity(intent);
+
+            /*Call<MyResponse> call = api.createDiscussion(receiver_id, id_ann, token);
             call.enqueue(new Callback<MyResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<MyResponse> call, @NonNull Response<MyResponse> response) {
-                    Log.d(TAG, response.toString());
+                    //  Log.d(TAG, response.toString());
 
-                    send_message.setEnabled(true);
-                    send_message.setText(R.string.discuter_avec_le_vender);
-                    iv_chat.setVisibility(View.VISIBLE);
-                    progress_bar_discussion.setVisibility(View.GONE);
+                    // send_message.setEnabled(true);
+                    // send_message.setText(R.string.discuter_avec_le_vender);
+                    // iv_chat.setVisibility(View.VISIBLE);
+                    // progress_bar_discussion.setVisibility(View.GONE);
 
                     if (response.isSuccessful()) {
                         int discussion_id;
@@ -443,13 +466,13 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
 
                 @Override
                 public void onFailure(@NonNull Call<MyResponse> call, @NonNull Throwable t) {
-                    send_message.setEnabled(true);
-                    send_message.setText(R.string.discuter_avec_le_vender);
-                    iv_chat.setVisibility(View.VISIBLE);
-                    progress_bar_discussion.setVisibility(View.GONE);
+                    // send_message.setEnabled(true);
+                    // send_message.setText(R.string.discuter_avec_le_vender);
+                    // iv_chat.setVisibility(View.VISIBLE);
+                    // progress_bar_discussion.setVisibility(View.GONE);
                     Toast.makeText(ActivityDetailsAnnonce.this, R.string.pas_d_acces_internet, Toast.LENGTH_SHORT).show();
                 }
-            });
+            });*/
 
             /*
             String url = Constants.HOST_URL + "discussion/create?id_user=" + user + "&id_ann=" + id_ann + "&receiver_id=" + receiver_id;

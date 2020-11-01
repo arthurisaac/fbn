@@ -35,15 +35,15 @@ public class User {
     private String sect_activite;
 
     @SerializedName("message")
-    private String error;
+    private String message;
 
     @SerializedName("type")
     private String type;
 
     @SerializedName("status")
-    private int status;
+    private boolean status;
 
-    public int getStatus() {
+    public boolean getStatus() {
         return status;
     }
 
@@ -51,8 +51,8 @@ public class User {
         return type;
     }
 
-    public String getError() {
-        return error;
+    public String getMessage() {
+        return message;
     }
 
     public String getSect_activite() {

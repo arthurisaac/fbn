@@ -16,11 +16,10 @@ import java.net.URLEncoder;
 import java.util.Objects;
 
 import bf.fasobizness.bafatech.R;
-import bf.fasobizness.bafatech.utils.MySharedManager;
 
 public class ActivityInfos extends AppCompatActivity {
 
-    private static final String TAG = "ActivityInfos";
+    // private static final String TAG = "ActivityInfos";
     // private String user;
     // private ProgressDialog progressDialog;
 
@@ -52,17 +51,6 @@ public class ActivityInfos extends AppCompatActivity {
                         Uri.parse("http://play.google.com/store/apps/details?id=" + getApplication().getPackageName())));
             }
         });
-        // RatingBar ratingBar1 = findViewById(R.id.ratingBar);
-
-        /*MySharedManager sharedManager = new MySharedManager(this);
-        float rate = sharedManager.geRating();
-        if (rate != 0) {
-            ratingBar1.setRating(rate);
-        }
-
-        ratingBar1.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> sharedManager.setRating(rating));*/
-        MySharedManager mySharedManager = new MySharedManager(this);
-        // user = mySharedManager.getUser();
         Button btn_voir_plus = findViewById(R.id.btn_voir_plus);
         btn_voir_plus.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://fasobizness.com/cgu.pdf"));

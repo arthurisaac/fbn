@@ -12,7 +12,6 @@
         android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
@@ -188,7 +187,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:drawableEnd="@drawable/ic_edit_black_24dp"
+                android:drawableEnd="@drawable/ic_edit_black"
                 android:fontFamily="@font/raleway_medium"
                 android:text="@string/modifier_l_annonce"
                 android:textAlignment="textStart"

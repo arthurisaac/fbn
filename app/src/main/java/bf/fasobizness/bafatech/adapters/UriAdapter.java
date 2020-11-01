@@ -6,12 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.List;
 
@@ -64,7 +64,7 @@ public class UriAdapter extends RecyclerView.Adapter<UriAdapter.UriViewHolder> {
 
     class UriViewHolder extends RecyclerView.ViewHolder {
 
-        private final RoundedImageView imageView;
+        private final ImageView imageView;
         private final ImageButton supp;
 
         UriViewHolder(View contentView) {

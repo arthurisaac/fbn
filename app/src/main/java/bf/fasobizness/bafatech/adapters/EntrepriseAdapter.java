@@ -105,13 +105,13 @@ public class EntrepriseAdapter extends RecyclerView.Adapter<EntrepriseAdapter.En
         entrepriseHolder.btn_share_ent.setOnClickListener(v -> {
             Intent sharingIntent = new Intent(Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
-            String shareBodyText = desc + ".. Téléchargez ou parcourez l'application Faso Biz Nèss pour en savoir plus. Pour android: http://bit.ly/AndroidFBN. Pour Iphone: http://bit.ly/IphoneFBN";
+            String shareBodyText = desc + R.string.telecharger_et_partager_l_application;
             sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Decouvre l'entreprise " + nom);
             sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBodyText);
             mContext.startActivity(Intent.createChooser(sharingIntent, "Partager avec"));
         });
 
-        if (entreprise.getAimer().equals("1")) {
+        if (entreprise.getAimer() == 1) {
             entrepriseHolder.like.setBackgroundResource(R.drawable.ic_like_red);
         } else {
             entrepriseHolder.like.setBackgroundResource(R.drawable.ic_like_gray);
@@ -120,14 +120,14 @@ public class EntrepriseAdapter extends RecyclerView.Adapter<EntrepriseAdapter.En
         entrepriseHolder.like.setOnClickListener(v -> {
             if (!id_pers_fk.isEmpty()) {
 
-                if (entreprise.getAimer().equals("1")) {
+                if (entreprise.getAimer() == 1) {
                     jaime(entreprise.getId());
                     entrepriseHolder.like.setBackgroundResource(R.drawable.ic_like_gray);
-                    entreprise.setAimer("0");
+                    entreprise.setAimer(0);
                 } else {
                     jaime(entreprise.getId());
                     entrepriseHolder.like.setBackgroundResource(R.drawable.ic_like_red);
-                    entreprise.setAimer("1");
+                    entreprise.setAimer(1);
                 }
             } else {
                 FragmentManager fragmentManager = ((AppCompatActivity) mContext).getSupportFragmentManager();

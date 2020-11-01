@@ -92,76 +92,17 @@ public class ActivityEntreprisesUne extends AppCompatActivity
                     mEntrepriseAdapter.notifyDataSetChanged();
                 } else {
                     Toast.makeText(ActivityEntreprisesUne.this, R.string.une_erreur_sest_produite, Toast.LENGTH_SHORT).show();
+                    layout_ent_offline.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<Entreprise> call, @NonNull Throwable t) {
                 shimmer_view_container.setVisibility(View.GONE);
+                layout_ent_offline.setVisibility(View.VISIBLE);
                 Toast.makeText(ActivityEntreprisesUne.this, R.string.pas_d_acces_internet, Toast.LENGTH_SHORT).show();
             }
         });
-
-        /*String url = Constants.HOST_URL + "entreprise/all?user="+user;
-        Log.d(TAG, url);
-        StringRequest request = new StringRequest(Request.Method.GET, url,
-                response -> {
-            Log.d(TAG, response);
-                    shimmer_view_container.setVisibility(View.GONE);
-                    try {
-                        JSONObject jo = new JSONObject(response);
-                        JSONArray jsonArray = jo.getJSONArray("data");
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject data = jsonArray.getJSONObject(i);
-
-                            String nom = data.getString("nom");
-                            String domaine = data.getString("domaine");
-                            String affiche = data.getString("affiche");
-                            String desc = data.getString("desc");
-                            String date_pub = data.getString("date_pub");
-                            String nb_like = data.getString("nbaimes");
-                            String nb_comments = data.getString("nbcomments");
-                            String vue = data.getString("vue");
-                            String id_ent = data.getString("id");
-                            String aimer = data.getString("aimer");
-                            String id_aime = data.getString("id_aime");
-
-                            Entreprise entreprise = new Entreprise();
-
-                            entreprise.setNom(nom);
-                            entreprise.setDomaine(domaine);
-                            entreprise.setAffiche(affiche);
-                            entreprise.setDesc(desc);
-                            entreprise.setDate_pub(date_pub);
-                            entreprise.setNbLike(nb_like);
-                            entreprise.setNbVue(vue);
-                            entreprise.setNbComment(nb_comments);
-                            entreprise.setId(id_ent);
-                            entreprise.setAimer(aimer);
-                            entreprise.setId_aime(id_aime);
-
-                            mEntreprises.add(entreprise);
-                        }
-                        mEntrepriseAdapter.notifyDataSetChanged();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.v(TAG, e.toString());
-                    }
-                }, error -> {
-            error.printStackTrace() ;
-            shimmer_view_container.setVisibility(View.GONE);
-            layout_ent_offline.setVisibility(View.VISIBLE);
-            Toast.makeText(this, R.string.pas_d_acces_internet, Toast.LENGTH_SHORT).show();
-        });*/
-        /*{
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("id_pers_fk=", user);
-                return params;
-            }
-        };
-        mRequestQueue.add(request);*/
     }
 
     @Override

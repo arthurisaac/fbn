@@ -1,13 +1,19 @@
 package bf.fasobizness.bafatech.interfaces;
 
 
+import java.util.List;
+
 import bf.fasobizness.bafatech.models.Advertising;
 import bf.fasobizness.bafatech.models.Announce;
 import bf.fasobizness.bafatech.models.Discussion;
 import bf.fasobizness.bafatech.models.Entreprise;
 import bf.fasobizness.bafatech.models.Message;
 import bf.fasobizness.bafatech.models.MyResponse;
+import bf.fasobizness.bafatech.models.Recruit;
 import bf.fasobizness.bafatech.models.User;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
@@ -15,9 +21,11 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface API {
@@ -33,12 +41,25 @@ public interface API {
     Call<User> getUser(@Path("id") String id, @Header("Authorization") String auth);
 
     @FormUrlEncoded
+    @POST("v1/users")
+    Call<User> createUser(
+            @Field("email") String email,
+            @Field("tel") String tel,
+            @Field("nom") String nom,
+            @Field("prenom") String prenom,
+            @Field("nom_pers") String nom_pers,
+            @Field("sect_activite") String sect_activite,
+            @Field("mdp") String mdp,
+            @Field("type") String type
+    );
+
+    @FormUrlEncoded
     @Headers({
             "Content-Type: application/x-www-form-urlencoded",
             "X-Http-Method-Override: PUT"
     })
     @POST("v1/users")
-    Call<MyResponse> updateFCM(@Field("token") String token, @Header("Authorization") String auth);
+    Call<MyResponse> updateFCM(@Field("fcm") String token, @Header("Authorization") String auth);
 
     @PATCH("v1/users/{id}")
     Call<User> updateToken(@Path("id") String id, @Header("Authorization") String auth);
@@ -160,7 +181,6 @@ public interface API {
      * Ads
      */
 
-
     @GET("v1/ads")
     Call<Advertising> getAds();
 
@@ -182,8 +202,8 @@ public interface API {
     @POST("v1/messages")
     Call<MyResponse> createDiscussion(
             @Field("receiver_id") String receiver_id,
-            @Field("user") String user,
-            @Field("id_ann") String id_ann
+            @Field("id_ann") String id_ann,
+            @Header("Authorization") String auth
     );
 
 
@@ -194,26 +214,35 @@ public interface API {
     @PATCH("v1/messages")
     Call<MyResponse> getUnread(@Header("Authorization") String auth);
 
-    @FormUrlEncoded
+    /*@FormUrlEncoded
     @Headers({
             "Content-Type: application/x-www-form-urlencoded",
             "X-Http-Method-Override: GET"
-    })
-    @POST("v1/messages/{id}")
+    })*/
+    @GET("v1/messages/{id}")
     Call<Message> getMessages(
             @Path("id") String id,
-            @Field("id_ann") String id_ann,
-            @Field("receiver") String receiver,
+            // @Field("id_ann") String id_ann,
+            // @Field("receiver") String receiver,
+            @Header("Authorization") String auth);
+
+    @Multipart
+    @POST("v1/messages")
+    Call<ResponseBody> createMessagesWithPictures(
+            @Part("message") RequestBody message,
+            @Part("type") RequestBody type,
+            @Part("discussion_id") RequestBody discussion_id,
+            @Part("size") RequestBody size,
+            @Part List<MultipartBody.Part> files,
             @Header("Authorization") String auth);
 
     @FormUrlEncoded
     @POST("v1/messages")
-    Call<Message> createMessages(
-            @Field("user_id") String user_id,
-            @Field("receiver_id") String receiver_id,
+    Call<ResponseBody> createMessagesWithoutPictures(
             @Field("message") String message,
             @Field("type") String type,
             @Field("discussion_id") String discussion_id,
+            @Field("size") int size,
             @Header("Authorization") String auth);
 
     @FormUrlEncoded
@@ -229,6 +258,15 @@ public interface API {
     /*
      * Recruits
      */
+    @GET("v1/recruits")
+    Call<Recruit> getRecruits();
+
+    @FormUrlEncoded
+    @POST("v1/recruits/search")
+    Call<Recruit> searchRecruits(
+            @Field("query") String query
+    );
+
     @PUT("v1/recruits/{id}")
     Call<Integer> markAsReadRecruit(
             @Path("id") String id

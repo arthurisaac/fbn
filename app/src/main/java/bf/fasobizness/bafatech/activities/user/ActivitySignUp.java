@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -44,9 +45,15 @@ import java.util.Objects;
 
 import bf.fasobizness.bafatech.MainActivity;
 import bf.fasobizness.bafatech.R;
+import bf.fasobizness.bafatech.helper.RetrofitClient;
+import bf.fasobizness.bafatech.interfaces.API;
+import bf.fasobizness.bafatech.models.User;
 import bf.fasobizness.bafatech.utils.Constants;
 import bf.fasobizness.bafatech.utils.MySharedManager;
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ActivitySignUp extends AppCompatActivity {
     private static final String TAG = "ActivitySignUp";
@@ -59,6 +66,8 @@ public class ActivitySignUp extends AppCompatActivity {
     private RequestQueue requestQueue;
     private LinearLayout linear_sign_up_base;
     private String type;
+    private Button btn_sign_up;
+    private API api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +97,7 @@ public class ActivitySignUp extends AppCompatActivity {
         mdp = findViewById(R.id.password);
         confirm = findViewById(R.id.passwordConfirm);
 
-        Button btn_sign_up = findViewById(R.id.btn_sign_up);
+        btn_sign_up = findViewById(R.id.btn_sign_up);
         sharedManager = new MySharedManager(this);
 
         requestQueue = Volley.newRequestQueue(this);
@@ -128,6 +137,8 @@ public class ActivitySignUp extends AppCompatActivity {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://fasobizness.com/cgu.pdf"));
             startActivity(intent);
         });
+
+        api = RetrofitClient.getClient().create(API.class);
     }
 
     private void requestMultiplePermissions() {
@@ -216,78 +227,97 @@ public class ActivitySignUp extends AppCompatActivity {
 
     private void signup() {
 
-        String url = Constants.HOST_URL + "v1/users";
-        StringRequest request = new StringRequest(Request.Method.POST, url, response -> {
-            Log.v(TAG, response);
-            try {
-                JSONObject jsonObject = new JSONObject(response);
-                boolean status = jsonObject.getBoolean("status");
-                if (status) {
+        String tx_email = Objects.requireNonNull(email.getEditText().getText().toString());
+        String tx_nom_pers = Objects.requireNonNull(username.getEditText().getText().toString());
+        String tx_tel = Objects.requireNonNull(telephone.getEditText().getText().toString());
+        String tx_nom = Objects.requireNonNull(nom.getEditText().getText().toString());
+        String tx_prenom = Objects.requireNonNull(prenom.getEditText().getText().toString());
+        String tx_sect_activity = Objects.requireNonNull(sect_activite.getEditText().getText().toString());
+        String tx_mdp = Objects.requireNonNull(mdp.getEditText().getText().toString());
 
-                    String auth = jsonObject.getString("authorization");
-                    JWT jwt = new JWT(auth);
-                    sharedManager.setUsername(jwt.getClaim("username").asString());
-                    sharedManager.setUser(jwt.getClaim("sub").asString());
-                    sharedManager.setPhoto(jwt.getClaim("photo").asString());
-                    sharedManager.setEmail(jwt.getClaim("email").asString());
-                    sharedManager.setToken(auth);
+        btn_sign_up.setEnabled(false);
+        btn_sign_up.setText(R.string.enregistrement_en_cours);
 
-                    if (bitmap != null) {
-                        addPhoto(sharedManager.getUser());
-                    } else {
-                        Intent intent = new Intent(this, MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
+        Call<User> call = api.createUser(
+                tx_email,
+                tx_tel,
+                tx_nom,
+                tx_prenom,
+                tx_nom_pers,
+                tx_sect_activity,
+                tx_mdp,
+                type
+        );
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
+                btn_sign_up.setEnabled(true);
+                btn_sign_up.setText(R.string.enregistrer);
+
+                if (response.isSuccessful()) {
+                    User user = response.body();
+
+                    if (user != null) {
+                        if (user.getMessage() != null) {
+                            if (user.getMessage().equals("email")) {
+                                email.setError(getString(R.string.cet_email_existe_deja));
+                            }
+                            if (user.getMessage().equals("tel")) {
+                                telephone.setError(getString(R.string.ce_numero_de_telephone_existe));
+                            }
+                            if (user.getMessage().equals("username")) {
+                                username.setError(getString(R.string.ce_nom_d_utilisateur_existe_deja));
+                            }
+                            if (user.getMessage().equals("nom")) {
+                                nom.setError(getString(R.string.ce_nom_existe_deja));
+                            }
+                            if (user.getMessage().equals("user")) {
+                                Toast.makeText(ActivitySignUp.this, R.string.votre_compte_a_ete_supprime, Toast.LENGTH_SHORT).show();
+                            }
+
+                        } else {
+                            String auth = user.getAuthorization();
+                            JWT jwt = new JWT(auth);
+                            sharedManager.setUsername(jwt.getClaim("username").asString());
+                            sharedManager.setUser(jwt.getClaim("sub").asString());
+                            sharedManager.setPhoto(jwt.getClaim("photo").asString());
+                            sharedManager.setEmail(jwt.getClaim("email").asString());
+                            sharedManager.setToken(auth);
+
+                            if (bitmap != null) {
+                                addPhoto(sharedManager.getUser());
+                            } else {
+                                Intent intent = new Intent(ActivitySignUp.this, MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }
+                        }
                     }
-
                 } else {
-                    String error = jsonObject.getString("error");
-                    if (error.equals("email")) {
-                        email.setError(getString(R.string.cet_email_existe_deja));
-                    }
-                    if (error.equals("username")) {
-                        username.setError(getString(R.string.ce_nom_d_utilisateur_existe_deja));
-                    }
-                    if (error.equals("nom")) {
-                        nom.setError(getString(R.string.ce_nom_existe_deja));
-                    }
-                    if (error.equals("tel")) {
-                        nom.setError(getString(R.string.ce_numero_de_telephone_existe));
-                    }
+                    Snackbar.make(linear_sign_up_base, response.message(), Snackbar.LENGTH_SHORT).show();
+                    Log.d(TAG, response.errorBody().contentType().toString());
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
-        }, error -> Snackbar.make(linear_sign_up_base, R.string.pas_d_acces_internet, Snackbar.LENGTH_SHORT).show()) {
-
-            @Override
-            public String getBodyContentType() {
-                return "application/x-www-form-urlencoded; charset=UTF-8";
             }
 
             @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("email", Objects.requireNonNull(email.getEditText()).getText().toString().trim());
-                params.put("nom_pers", Objects.requireNonNull(username.getEditText()).getText().toString().trim());
-                params.put("tel", Objects.requireNonNull(telephone.getEditText()).getText().toString().trim());
-                params.put("nom", Objects.requireNonNull(nom.getEditText()).getText().toString().trim());
-                params.put("prenom", Objects.requireNonNull(prenom.getEditText()).getText().toString().trim());
-                params.put("sect_activite", Objects.requireNonNull(sect_activite.getEditText()).getText().toString().trim());
-                params.put("mdp", Objects.requireNonNull(mdp.getEditText()).getText().toString().trim());
-                params.put("type", type);
-
-                return params;
+            public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
+                Toast.makeText(ActivitySignUp.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                btn_sign_up.setEnabled(true);
+                btn_sign_up.setText(getString(R.string.enregistrer));
             }
-        };
-        requestQueue.add(request);
+        });
 
     }
 
     private void addPhoto(String user) {
-        String url = Constants.HOST_URL + "v1/users/avatar/" + user;
+        btn_sign_up.setEnabled(false);
+        btn_sign_up.setText(R.string.enregistrement_en_cours);
+
+        String url = Constants.HOST_URL + "v1/users/avatar/";
         StringRequest request = new StringRequest(Request.Method.POST, url, response -> {
+            btn_sign_up.setEnabled(true);
+            btn_sign_up.setText(getString(R.string.enregistrer));
             if (response.contains("photo")) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
@@ -303,7 +333,14 @@ public class ActivitySignUp extends AppCompatActivity {
                 }
 
             }
-        }, error -> Toast.makeText(this, R.string.pas_d_acces_internet, Toast.LENGTH_SHORT).show()) {
+        }, error -> {
+            Toast.makeText(this, R.string.pas_d_acces_internet, Toast.LENGTH_SHORT).show();
+            btn_sign_up.setEnabled(true);
+            btn_sign_up.setText(getString(R.string.enregistrer));
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }) {
 
             @Override
             public String getBodyContentType() {
@@ -313,6 +350,7 @@ public class ActivitySignUp extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
+                params.put("user", user);
                 if (bitmap != null) {
                     String file = getStringImage(bitmap);
                     params.put("file", file);
@@ -365,7 +403,7 @@ public class ActivitySignUp extends AppCompatActivity {
         String txt_prenom = Objects.requireNonNull(prenom.getEditText()).getText().toString().trim();
 
         if (txt_prenom.isEmpty()) {
-            prenom.setError(getString(R.string.nom_d_utlisateur_requis));
+            prenom.setError(getString(R.string.prenom_requis));
             return false;
         } else {
             prenom.setError(null);
@@ -415,6 +453,9 @@ public class ActivitySignUp extends AppCompatActivity {
 
         if (passwd.isEmpty()) {
             mdp.setError(getString(R.string.mot_de_passe_requis));
+            return false;
+        } else if (passwd.length() < 6) {
+            mdp.setError(getString(R.string.minimum_6_caracteres));
             return false;
         } else if (conf.isEmpty()) {
             confirm.setError(getString(R.string.mot_de_passe_requis));
