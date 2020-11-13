@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity
     private ImageSlider imageSlider;
     private ArrayList<Advertising.Ads> images;
     private ArrayList<SlideModel> imageList;
-    //private ArrayList<String> imageList;
+    // private ArrayList<String> imageList;
     // private ImagesAdapter imagesAdapter;
     private API api;
     private MySharedManager sharedManager;
@@ -506,9 +506,9 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.navFiltrer:
+            /*case R.id.navFiltrer:
                 openDrawer();
-                break;
+                break;*/
             case R.id.nav_favori:
                 if (user != null) {
                     if (user.length() > 0) {
@@ -521,9 +521,9 @@ public class MainActivity extends AppCompatActivity
                     }
                 }
                 break;
-            case R.id.nav_ann_search:
+            /*case R.id.nav_ann_search:
                 startActivity(new Intent(this, ActivitySearchAnnonce.class));
-                break;
+                break;*/
             case R.id.navActualiser:
                 refresh();
                 break;

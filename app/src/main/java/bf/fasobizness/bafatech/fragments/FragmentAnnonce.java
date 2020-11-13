@@ -1,22 +1,24 @@
-package bf.fasobizness.bafatech.activities.annonce;
+package bf.fasobizness.bafatech.fragments;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+
 import android.provider.Telephony;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -29,13 +31,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import bf.fasobizness.bafatech.R;
 import bf.fasobizness.bafatech.activities.ActivityFullScreen;
+import bf.fasobizness.bafatech.activities.annonce.ActivityAnnounceFilter;
+import bf.fasobizness.bafatech.activities.annonce.ActivityDetailsAnnonce;
+import bf.fasobizness.bafatech.activities.annonce.ActivityUserProfile;
 import bf.fasobizness.bafatech.activities.user.messaging.ActivityMessage;
-import bf.fasobizness.bafatech.fragments.FragmentNotConnected;
-import bf.fasobizness.bafatech.fragments.FragmentSignaler;
 import bf.fasobizness.bafatech.helper.RetrofitClient;
 import bf.fasobizness.bafatech.interfaces.API;
 import bf.fasobizness.bafatech.models.Announce;
@@ -45,13 +47,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ActivityDetailsAnnonce extends AppCompatActivity {
-    private static final String TAG = "ActivityDetailsAnnonce";
+public class FragmentAnnonce extends Fragment {
+    private static final String TAG = "FragmentAnnonce";
+
+    private static final String ARG = "id_ann";
+
     private FloatingActionButton ajouterFavori;
-    // private ArrayList<String> imagesList;
     private ArrayList<String> images;
     private ArrayList<SlideModel> imageList;
-    // private ImagesAdapter imagesAdapter;
 
     private String user;
     private TextView txt_titre_annonce;
@@ -65,63 +68,83 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
     private TextView txt_nom;
     private TextView txt_categorie;
     private Button send_message;
-    private Button btn_share;
+    private Button btn_share, btn_signaler;
     private TextView txt_updatedAt;
     private TextView txt_date_pub;
     // private ImageView iv_affiche;
     private ImageView txt_photo_util;
-    private LinearLayout ann, layout_no_annonce, loading_indicator_ann, layout_ent_offline, layout_busy_system;
     private RelativeLayout see_more_annonce;
-    private String fav, token;
+    private LinearLayout ann, layout_no_annonce, loading_indicator_ann,  layout_busy_system;
+    // layout_ent_offline
+    private String fav, token, id_ann;
     private ImageSlider pager;
-    // private ProgressBar progress_bar_discussion;
     private API api;
 
+
+    public FragmentAnnonce() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param id_ann Parameter 1.
+     * @return A new instance of fragment FragmentAnnonce.
+     */
+    public static FragmentAnnonce newInstance(String id_ann) {
+        FragmentAnnonce fragment = new FragmentAnnonce();
+        Bundle args = new Bundle();
+        args.putString(ARG, id_ann);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details_annonce);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
         api = RetrofitClient.getClient().create(API.class);
-        MySharedManager mySharedManager = new MySharedManager(ActivityDetailsAnnonce.this);
+        MySharedManager mySharedManager = new MySharedManager(getContext());
         user = mySharedManager.getUser();
         token = "Bearer " + mySharedManager.getToken();
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("");
-        // toolbar.setTitle(R.string.details);
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationIcon(R.drawable.left_white);
-        toolbar.setNavigationOnClickListener(view -> finish());
+        ViewGroup rootView = (ViewGroup) inflater
+                .inflate(R.layout.fragment_annonce, container,
+                        false);
+        txt_photo_util = rootView.findViewById(R.id.txt_username_logo_ann);
+        txt_titre_annonce = rootView.findViewById(R.id.txt_titre_annonce);
+        txt_text = rootView.findViewById(R.id.txt_texte_ann);
+        txt_prix = rootView.findViewById(R.id.txt_prix_annonce);
+        txt_email = rootView.findViewById(R.id.txt_email_util);
+        txt_tel1 = rootView.findViewById(R.id.txt_tel1_annonce);
+        txt_tel2 = rootView.findViewById(R.id.txt_tel2_annonce);
+        txt_tel = rootView.findViewById(R.id.txt_tel_annonce);
+        txt_location = rootView.findViewById(R.id.txt_location_annonce);
+        txt_nom = rootView.findViewById(R.id.txt_username_ann);
+        txt_categorie = rootView.findViewById(R.id.txt_categorie_annonce);
+        send_message = rootView.findViewById(R.id.send_direct_message);
+        btn_share = rootView.findViewById(R.id.btn_share);
+        ajouterFavori = rootView.findViewById(R.id.favorite);
+        txt_updatedAt = rootView.findViewById(R.id.txt_date_modification);
+        txt_date_pub = rootView.findViewById(R.id.txt_date_pub);
+        pager = rootView.findViewById(R.id.flipper_affiche_annonce);
 
-        txt_photo_util = findViewById(R.id.txt_username_logo_ann);
-        txt_titre_annonce = findViewById(R.id.txt_titre_annonce);
-        txt_text = findViewById(R.id.txt_texte_ann);
-        txt_prix = findViewById(R.id.txt_prix_annonce);
-        txt_email = findViewById(R.id.txt_email_util);
-        txt_tel1 = findViewById(R.id.txt_tel1_annonce);
-        txt_tel2 = findViewById(R.id.txt_tel2_annonce);
-        txt_tel = findViewById(R.id.txt_tel_annonce);
-        txt_location = findViewById(R.id.txt_location_annonce);
-        txt_nom = findViewById(R.id.txt_username_ann);
-        txt_categorie = findViewById(R.id.txt_categorie_annonce);
-        send_message = findViewById(R.id.send_direct_message);
-        btn_share = findViewById(R.id.btn_share);
-        ajouterFavori = findViewById(R.id.favorite);
-        txt_updatedAt = findViewById(R.id.txt_date_modification);
-        txt_date_pub = findViewById(R.id.txt_date_pub);
-        pager = findViewById(R.id.flipper_affiche_annonce);
+        loading_indicator_ann = rootView.findViewById(R.id.loading_indicator_ann);
+        // layout_ent_offline = rootView.findViewById(R.id.layout_ent_offline);
+        layout_no_annonce = rootView.findViewById(R.id.layout_no_annonce);
+        ann = rootView.findViewById(R.id.ann);
+        layout_busy_system = rootView.findViewById(R.id.layout_busy_system);
+        Button btn_refresh = rootView.findViewById(R.id.btn_refresh);
+        btn_signaler = rootView.findViewById(R.id.signaler_annonce);
 
-        loading_indicator_ann = findViewById(R.id.loading_indicator_ann);
-        layout_ent_offline = findViewById(R.id.layout_ent_offline);
-        layout_no_annonce = findViewById(R.id.layout_no_annonce);
-        ann = findViewById(R.id.ann);
-        layout_busy_system = findViewById(R.id.layout_busy_system);
-        Button btn_refresh = findViewById(R.id.btn_refresh);
-
-        see_more_annonce = findViewById(R.id.see_more_annonce);
-        layout_ent_offline.setVisibility(View.GONE);
+        see_more_annonce = rootView.findViewById(R.id.see_more_annonce);
+        // layout_ent_offline.setVisibility(View.GONE);
 
         ann.setVisibility(View.GONE);
         loading_indicator_ann.setVisibility(View.VISIBLE);
@@ -131,18 +154,16 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
         images = new ArrayList<>();
         imageList = new ArrayList<>();
 
-        Intent extras = getIntent();
-        if (extras.getStringExtra("id_ann") != null) {
-            getAnnounce(extras.getStringExtra("id_ann"));
-            btn_refresh.setOnClickListener(v -> getAnnounce(extras.getStringExtra("id_ann")));
-        } else {
-            finish();
+        if (getArguments() != null) {
+            id_ann = getArguments().getString(ARG);
+            getAnnounce(id_ann);
         }
 
+        return rootView;
     }
 
     private void getAnnounce(String id_ann) {
-        layout_ent_offline.setVisibility(View.GONE);
+        // layout_ent_offline.setVisibility(View.GONE);
         loading_indicator_ann.setVisibility(View.VISIBLE);
 
         Call<Announce.Annonce> call = api.getAnnounce(id_ann, user);
@@ -156,7 +177,7 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
                     ann.setVisibility(View.VISIBLE);
                     Announce.Annonce announce = response.body();
                     if (announce == null) {
-                        layout_ent_offline.setVisibility(View.GONE);
+                        // layout_ent_offline.setVisibility(View.GONE);
                         ann.setVisibility(View.GONE);
                         layout_no_annonce.setVisibility(View.VISIBLE);
                     } else {
@@ -170,37 +191,19 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<Announce.Annonce> call, @NonNull Throwable t) {
 
-                layout_ent_offline.setVisibility(View.VISIBLE);
+                // layout_ent_offline.setVisibility(View.VISIBLE);
                 ann.setVisibility(View.GONE);
                 layout_no_annonce.setVisibility(View.GONE);
                 loading_indicator_ann.setVisibility(View.GONE);
 
                 Log.v(TAG, t.toString());
-                Toast.makeText(ActivityDetailsAnnonce.this, getString(R.string.pas_d_acces_internet), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.pas_d_acces_internet), Toast.LENGTH_SHORT).show();
 
             }
         });
     }
 
     private void populateData(final Announce.Annonce annonce) {
-
-        /*Glide.with(this)
-                .setDefaultRequestOptions(
-                        new RequestOptions()
-                                .placeholder(R.color.colorPrimary)
-                                .error(R.color.colorPrimaryDark))
-                .asBitmap()
-                .load(annonce.getAffiche())
-                .thumbnail(0.1f)
-                .into(iv_affiche);
-
-        iv_affiche.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ActivityFullScreen.class);
-            intent.putStringArrayListExtra("images", images);
-            intent.putExtra("position", 1);
-            startActivity(intent);
-        });*/
-
         try {
             Glide.with(this)
                     .setDefaultRequestOptions(
@@ -215,7 +218,6 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
                     .thumbnail(0.1f)
                     .into(txt_photo_util);
         } catch (Exception e) {
-            finish();
             e.printStackTrace();
         }
 
@@ -237,18 +239,17 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
         String str_share = this.getString(R.string.partager_annonce, annonce.getShare());
         btn_share.setText(str_share);
 
-        Button btn_signaler = findViewById(R.id.signaler_annonce);
         btn_signaler.setOnClickListener(v -> {
             FragmentSignaler fragmentSignaler = FragmentSignaler.newInstance();
             Bundle bundle = new Bundle();
             bundle.putString("element", "annonce");
             bundle.putString("id_element", annonce.getId_ann());
             fragmentSignaler.setArguments(bundle);
-            fragmentSignaler.show(getSupportFragmentManager(), "");
+            fragmentSignaler.show(getFragmentManager(), "");
         });
 
         see_more_annonce.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ActivityUserProfile.class);
+            Intent intent = new Intent(getContext(), ActivityUserProfile.class);
             intent.putExtra("id", annonce.getId_per_fk());
             startActivity(intent);
         });
@@ -276,7 +277,7 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("categorie", annonce.getCategorie());
-                    Intent intent = new Intent(this, ActivityAnnounceFilter.class);
+                    Intent intent = new Intent(getContext(), ActivityAnnounceFilter.class);
                     intent.putExtra("filter", "multiple");
                     intent.putExtra("params", jsonObject.toString());
                     startActivity(intent);
@@ -364,7 +365,7 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
         ajouterFavori.setOnClickListener(v -> {
             if (user.isEmpty()) {
                 FragmentNotConnected notConnected = FragmentNotConnected.newInstance();
-                notConnected.show(getSupportFragmentManager(), "");
+                notConnected.show(getFragmentManager(), "");
             } else {
                 addFavorite(id_ann);
             }
@@ -373,7 +374,7 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
         send_message.setOnClickListener(v -> {
             if (user.isEmpty()) {
                 FragmentNotConnected notConnected = FragmentNotConnected.newInstance();
-                notConnected.show(getSupportFragmentManager(), "");
+                notConnected.show(getFragmentManager(), "");
             } else {
                 // send_message.setEnabled(false);
                 // send_message.setText(R.string.chargement_en_cours);
@@ -384,11 +385,8 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
         });
 
         try {
-            // JSONArray jsonArray = new JSONArray(annonce.getIllustrations());
             List<Announce.Annonce.Illustration> arrayList = annonce.illustrations;
             for (Announce.Annonce.Illustration data : arrayList) {
-                // imagesList.add(data.getNom());
-                // Log.d(TAG, data.toString());
                 imageList.add(new SlideModel(data.getNom()));
                 images.add(data.getNom());
             }
@@ -397,17 +395,11 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
             }
             pager.setImageList(imageList, true);
             pager.setItemClickListener(i -> {
-                Intent intent = new Intent(this, ActivityFullScreen.class);
+                Intent intent = new Intent(getContext(), ActivityFullScreen.class);
                 intent.putStringArrayListExtra("images", images);
                 intent.putExtra("position", i);
                 startActivity(intent);
             });
-
-
-            /*
-            CircleIndicator indicator = findViewById(R.id.indicator);
-            indicator.setViewPager(pager);
-            */
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -419,83 +411,14 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
 
         if (user.isEmpty()) {
             FragmentNotConnected notConnected = FragmentNotConnected.newInstance();
-            notConnected.show(getSupportFragmentManager(), "");
+            notConnected.show(getFragmentManager(), "");
         } else {
 
-            Intent intent = new Intent(getApplicationContext(), ActivityMessage.class);
+            Intent intent = new Intent(getContext(), ActivityMessage.class);
             intent.putExtra("receiver_id", receiver_id);
             intent.putExtra("id_ann", id_ann);
             intent.putExtra("new", "1");
             startActivity(intent);
-
-            /*Call<MyResponse> call = api.createDiscussion(receiver_id, id_ann, token);
-            call.enqueue(new Callback<MyResponse>() {
-                @Override
-                public void onResponse(@NonNull Call<MyResponse> call, @NonNull Response<MyResponse> response) {
-                    //  Log.d(TAG, response.toString());
-
-                    // send_message.setEnabled(true);
-                    // send_message.setText(R.string.discuter_avec_le_vender);
-                    // iv_chat.setVisibility(View.VISIBLE);
-                    // progress_bar_discussion.setVisibility(View.GONE);
-
-                    if (response.isSuccessful()) {
-                        int discussion_id;
-                        if (response.body() != null) {
-                            discussion_id = response.body().getId();
-
-                            Intent intent = new Intent(getApplicationContext(), ActivityMessage.class);
-                            intent.putExtra("discussion_id", String.valueOf(discussion_id));
-                            intent.putExtra("receiver_id", receiver_id);
-                            intent.putExtra("id_ann", id_ann);
-                            intent.putExtra("new", "1");
-                            startActivity(intent);
-                        }
-                    } else {
-                        Toast.makeText(ActivityDetailsAnnonce.this, R.string.le_serveur_est_occupe, Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-
-                @Override
-                public void onFailure(@NonNull Call<MyResponse> call, @NonNull Throwable t) {
-                    // send_message.setEnabled(true);
-                    // send_message.setText(R.string.discuter_avec_le_vender);
-                    // iv_chat.setVisibility(View.VISIBLE);
-                    // progress_bar_discussion.setVisibility(View.GONE);
-                    Toast.makeText(ActivityDetailsAnnonce.this, R.string.pas_d_acces_internet, Toast.LENGTH_SHORT).show();
-                }
-            });*/
-
-            /*
-            String url = Constants.HOST_URL + "discussion/create?id_user=" + user + "&id_ann=" + id_ann + "&receiver_id=" + receiver_id;
-            StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
-                send_message.setEnabled(true);
-                send_message.setText(R.string.discuter_avec_le_vender);
-                iv_chat.setVisibility(View.VISIBLE);
-                progress_bar_discussion.setVisibility(View.GONE);
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    String discussion_id = jsonObject.getString("id");
-                    Intent intent = new Intent(getApplicationContext(), ActivityMessage.class);
-                    intent.putExtra("discussion_id", discussion_id);
-                    intent.putExtra("receiver_id", receiver_id);
-                    intent.putExtra("id_ann", id_ann);
-                    startActivity(intent);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Toast.makeText(this, R.string.le_serveur_est_occupe, Toast.LENGTH_SHORT).show();
-                }
-            }, error -> {
-                send_message.setEnabled(true);
-                send_message.setText(R.string.discuter_avec_le_vender);
-                iv_chat.setVisibility(View.VISIBLE);
-                progress_bar_discussion.setVisibility(View.GONE);
-                Toast.makeText(this, R.string.pas_d_acces_internet, Toast.LENGTH_SHORT).show();
-                // Log.v(TAG, error.toString());
-            });
-            requestQueue.add(request);
-            */
         }
     }
 
@@ -503,7 +426,7 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
         try {
 
             final CharSequence[] items = {"Composer numéro", "Envoyer SMS"};
-            AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle(getString(R.string.choisir_action));
             builder.setItems(items, (dialog, i) -> {
                 if (items[i].equals("Composer numéro")) {
@@ -526,7 +449,7 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
     }
 
     private void sendSMS() {
-        String defaultSmsPackageName = Telephony.Sms.getDefaultSmsPackage(this); // Need to change the build to API 19
+        String defaultSmsPackageName = Telephony.Sms.getDefaultSmsPackage(getContext()); // Need to change the build to API 19
 
         Intent sendIntent = new Intent(Intent.ACTION_SEND);
         sendIntent.setType("text/plain");
@@ -561,23 +484,9 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<MyResponse> call, @NonNull Throwable t) {
                 Log.d(TAG, t.toString());
-                Toast.makeText(ActivityDetailsAnnonce.this, R.string.pas_d_acces_internet, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.pas_d_acces_internet, Toast.LENGTH_SHORT).show();
             }
         });
-        /*
-        String url = Constants.HOST_URL + "annonce/share";
-        StringRequest request = new StringRequest(Request.Method.POST, url,
-                response -> Log.v(TAG, "Shared response "+response), error -> Log.v(TAG, error.toString())) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("id", id_ann);
-
-                return params;
-            }
-        };
-        requestQueue.add(request);
-         */
     }
 
     private void addFavorite(String id_ann) {
@@ -610,7 +519,7 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<MyResponse> call, @NonNull Throwable t) {
                 Log.d(TAG, t.toString());
-                Toast.makeText(ActivityDetailsAnnonce.this, R.string.pas_d_acces_internet, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.pas_d_acces_internet, Toast.LENGTH_SHORT).show();
             }
         });
         /*

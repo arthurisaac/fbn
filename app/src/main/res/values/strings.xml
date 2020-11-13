@@ -244,4 +244,7 @@
     <string name="message">Message</string>
     <string name="whatsapp">WhatsApp</string>
     <string name="prix_non_renseigne">Prix non renseigné</string>
+    <string name="filtrer">Filtrer</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

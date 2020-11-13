@@ -14,10 +14,6 @@ public class ActivitySplash extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        // ATTENTION: This was auto-generated to handle app links.
-        /*Intent appLinkIntent = getIntent();
-        String appLinkAction = appLinkIntent.getAction();
-        Uri appLinkData = appLinkIntent.getData();*/
 
         ImageView logo = findViewById(R.id.logo);
 
@@ -31,8 +27,6 @@ public class ActivitySplash extends AppCompatActivity {
         ObjectAnimator flip = ObjectAnimator.ofFloat(logo, "rotationY", 100f, 0f);
         flip.setDuration(1000);
         flip.start();
-
-        // requestMultiplePermissions();
     }
 
     /*private void requestMultiplePermissions() {

@@ -8,12 +8,12 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />-->
 
-    <item
+    <!--<item
         android:id="@+id/nav_ann_search"
         android:icon="@drawable/ic_search_white"
         android:orderInCategory="105"
         android:title="@string/rechercher"
-        app:showAsAction="always" />
+        app:showAsAction="always" />-->
 
     <item
         android:id="@+id/nav_favori"
@@ -23,13 +23,13 @@
         app:showAsAction="always" />
 
 
-    <item
+    <!--<item
         android:id="@+id/navFiltrer"
         android:icon="@drawable/ic_filtre_white"
         android:orderInCategory="101"
         android:title="@string/trier"
         app:showAsAction="always"
-        tools:ignore="AlwaysShowAction" />
+        tools:ignore="AlwaysShowAction" />-->
 
     <item
         android:id="@+id/navActualiser"
