@@ -2,6 +2,8 @@ package bf.fasobizness.bafatech.activities.entreprise;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -111,5 +113,20 @@ public class ActivityEntreprisesUne extends AppCompatActivity
         Intent intent = new Intent(this, ActivityDetailsEntreprise.class);
         intent.putExtra("id_ent", entreprise.getId());
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_enterprise, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_menu_search) {
+            startActivity(new Intent(ActivityEntreprisesUne.this, ActivitySearchEnterprise.class));
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

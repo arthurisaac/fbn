@@ -2,6 +2,7 @@ package bf.fasobizness.bafatech.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,6 +97,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
             messageHolder.imageView.setVisibility(View.GONE);
             messageHolder.message.setText(messages.getMessage());
             messageHolder.timestamp.setText(getTimeStamp(messages.getCreated_at()));
+
+            if (messages.getIsread_receiver().equals("1")) {
+                messageHolder.readView.setText("lu");
+            } else {
+                messageHolder.readView.setText("envoyé");
+            }
         }
     }
 
@@ -120,7 +127,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
     }
 
     class MessageHolder extends RecyclerView.ViewHolder {
-        final TextView message, timestamp;
+        final TextView message, timestamp, readView;
         private final ImageView imageView;
 
         MessageHolder(@NonNull View itemView) {
@@ -128,6 +135,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
             message = itemView.findViewById(R.id.message);
             timestamp = itemView.findViewById(R.id.timestamp);
             imageView = itemView.findViewById(R.id.image);
+            readView = itemView.findViewById(R.id.read);
 
             imageView.setOnClickListener(v -> {
                 if (onMessageListener != null) {

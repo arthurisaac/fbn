@@ -50,6 +50,7 @@ import bf.fasobizness.bafatech.activities.ActivitySuggestion;
 import bf.fasobizness.bafatech.activities.annonce.ActivityAnnonceCategory;
 import bf.fasobizness.bafatech.activities.annonce.ActivityAnnoncesPublished;
 import bf.fasobizness.bafatech.activities.annonce.ActivityAnnounceFilter;
+import bf.fasobizness.bafatech.activities.annonce.ActivityDetailsAnnonce;
 import bf.fasobizness.bafatech.activities.annonce.ActivityDetailsAnnonces;
 import bf.fasobizness.bafatech.activities.annonce.ActivityNouvelleAnnonce;
 import bf.fasobizness.bafatech.activities.annonce.ActivityOffreOr;
@@ -85,7 +86,10 @@ public class MainActivity extends AppCompatActivity
     private TextView badge_discussions;
     private String user;
     private int page = 1;
-    private LinearLayout layout_ent_offline, layout_busy_system, loading_indicator, layout_no_annonce;
+    private LinearLayout layout_ent_offline;
+    private LinearLayout layout_busy_system;
+    private LinearLayout loading_indicator;
+    private LinearLayout layout_no_annonce;
     private String filtre = "id";
     private String arguments = " ";
 
@@ -153,6 +157,7 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        Button btn_filtrer = findViewById(R.id.btn_filtrer);
         NavigationView navigationView = findViewById(R.id.nav_view);
         NavigationView navigationView2 = findViewById(R.id.nav_view2);
         Button btn_valider = navigationView2.findViewById(R.id.btn_valider);
@@ -214,6 +219,7 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
 
         });
+        btn_filtrer.setOnClickListener(v -> openDrawer() );
 
         navigationView.setNavigationItemSelectedListener(this);
         View hv = navigationView.getHeaderView(0);
@@ -387,6 +393,9 @@ public class MainActivity extends AppCompatActivity
 
         shimmer_view_container = findViewById(R.id.shimmer_view_container);
         shimmer_view_container.setVisibility(View.VISIBLE);
+
+        LinearLayout search_layout = findViewById(R.id.search_layout);
+        search_layout.setOnClickListener(v -> startActivity(new Intent(this, ActivitySearchAnnonce.class)));
 
         sharedManager = new MySharedManager(this);
         api = RetrofitClient.getClient().create(API.class);
@@ -564,7 +573,7 @@ public class MainActivity extends AppCompatActivity
                         }
                     }
                 } else {
-                    Toast.makeText(MainActivity.this, R.string.une_erreur_sest_produite, Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, response.toString());
                 }
             }
 
@@ -591,7 +600,7 @@ public class MainActivity extends AppCompatActivity
         layout_busy_system.setVisibility(View.GONE);
         layout_no_annonce.setVisibility(View.GONE);
 
-        Call<Announce> call = api.getAnnounces(String.valueOf(page));
+        Call<Announce> call = api.getAnnounces(String.valueOf(page), user);
         call.enqueue(new Callback<Announce>() {
             @Override
             public void onResponse(@NonNull Call<Announce> call, @NonNull Response<Announce> response) {
@@ -623,8 +632,6 @@ public class MainActivity extends AppCompatActivity
                 // Log.d(TAG, t.toString());
                 if (mAnnonces.size() == 0) {
                     layout_ent_offline.setVisibility(View.VISIBLE);
-                } else {
-                    Toast.makeText(MainActivity.this, R.string.une_erreur_sest_produite, Toast.LENGTH_SHORT).show();
                 }
                 mSwipeRefreshLayout.setRefreshing(false);
                 shimmer_view_container.setVisibility(View.GONE);
@@ -676,8 +683,8 @@ public class MainActivity extends AppCompatActivity
     public void onAnnonceClicked(int position) {
 
         Announce.Annonce annonce = mAnnonces.get(position);
-        // Intent intent = new Intent(this, ActivityDetailsAnnonce.class);
-        Intent intent = new Intent(this, ActivityDetailsAnnonces.class);
+        Intent intent = new Intent(this, ActivityDetailsAnnonce.class);
+        // Intent intent = new Intent(this, ActivityDetailsAnnonces.class);
         intent.putExtra("id_ann", annonce.getId_ann());
         intent.putExtra("affiche", annonce.getAffiche());
         startActivity(intent);

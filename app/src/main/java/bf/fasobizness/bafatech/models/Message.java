@@ -44,6 +44,7 @@ public class Message {
         private String sender;
         private String type;
         private String is_deleted;
+        private String isread_receiver;
 
         public String getMessage_id() {
             return message_id;
@@ -75,6 +76,10 @@ public class Message {
 
         public String getIs_deleted() {
             return is_deleted;
+        }
+
+        public String getIsread_receiver() {
+            return isread_receiver;
         }
     }
 

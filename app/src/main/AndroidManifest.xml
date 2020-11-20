@@ -18,6 +18,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="q">
         <activity
+            android:name=".activities.entreprise.ActivitySearchEnterprise"
+            android:theme="@style/AppTheme.Main"/>
+        <activity
             android:name=".ActivityBoutique"
             android:theme="@style/AppTheme.Main" />
         <activity

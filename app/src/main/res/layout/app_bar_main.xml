@@ -21,6 +21,7 @@
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <LinearLayout
+                android:id="@+id/search_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -33,7 +34,7 @@
                     android:padding="3dp"
                     android:layout_gravity="center_vertical"/>
 
-                <EditText
+                <TextView
                     android:id="@+id/edit_rechercher"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
@@ -42,6 +43,7 @@
                     android:layout_weight="1"
                     android:background="@color/colorPrimaryUltraLight"
                     android:text="@string/rechercher"
+                    android:gravity="center_vertical"
                     android:textColor="#777676"/>
 
                 <ImageView
@@ -51,6 +53,7 @@
                     android:src="@drawable/ic_vertical"/>
 
                 <Button
+                    android:id="@+id/btn_filtrer"
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="70dp"
                     android:layout_height="30dp"

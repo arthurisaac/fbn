@@ -1,6 +1,7 @@
 package bf.fasobizness.bafatech.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +58,7 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.Annonc
 
         annonceHolder.TexteView.setText(annonce.getTitre().toUpperCase());
         if (annonce.getPrix().isEmpty() || annonce.getPrix() == null || annonce.getPrix().equals("0")) {
-            annonceHolder.PrixView.setText(R.string.prix_non_renseigne);
+            annonceHolder.PrixView.setText(R.string.prix_sur_demande);
         } else {
             String prix = annonce.getPrix() + " F CFA";
             annonceHolder.PrixView.setText(prix);
@@ -91,6 +92,13 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.Annonc
             annonceHolder.vipView.setVisibility(View.GONE);
         }
 
+        if (annonce.getFavori() != null && annonce.getFavori().equals("1")) {
+            annonceHolder.favoriteView.setImageResource(R.drawable.ic_star_yellow);
+        } else {
+            annonceHolder.favoriteView.setImageResource(R.drawable.ic_star_white);
+        }
+
+
         ViewCompat.setTransitionName(annonceHolder.AfficheView, annonce.getId_ann());
 
         annonceHolder.itemView.setOnClickListener(view -> onAnnonceListener.onAnnonceClicked(annonceHolder.getAdapterPosition()));
@@ -121,6 +129,7 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.Annonc
         final TextView PrixView;
         // final TextView btnVueView;
         final ImageView vipView;
+        private final ImageView favoriteView;
         final RoundedImageView AfficheView;
 
         AnnonceHolder(@NonNull View itemView) {
@@ -131,6 +140,7 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.Annonc
             // btnVueView = itemView.findViewById(R.id.txt_nb_view_ann);
             AfficheView = itemView.findViewById(R.id.txt_affiche_ann);
             vipView = itemView.findViewById(R.id.vip);
+            favoriteView = itemView.findViewById(R.id.favorite);
         }
     }
 

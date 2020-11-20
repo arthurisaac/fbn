@@ -1,6 +1,8 @@
 package bf.fasobizness.bafatech.activities;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
@@ -20,8 +22,12 @@ import androidx.core.text.HtmlCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.models.SlideModel;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import bf.fasobizness.bafatech.R;
@@ -37,10 +43,12 @@ public class ActivityDetailsPub extends AppCompatActivity {
 
     private static final String TAG = "ActivityDetailsPub";
     // private static final String TAG = "ActivityDetailsPub";
-    private TextView description, vue, partage;
+    private TextView description, vue, partage, tv_appel, tv_whatsapp, tv_facebook;
     private LinearLayout ad_layout, loading_indicator_ad, layout_ent_offline, layout_busy_system;
     private API api;
-
+    private ArrayList<SlideModel> imageList;
+    private ArrayList<String> images;
+    private ImageSlider pager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +57,8 @@ public class ActivityDetailsPub extends AppCompatActivity {
 
         api = RetrofitClient.getClient().create(API.class);
 
-
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(getString(R.string.details));
+        toolbar.setTitle("Publicité");
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.left_white);
@@ -63,12 +70,19 @@ public class ActivityDetailsPub extends AppCompatActivity {
         partage = findViewById(R.id.txt_share);
 
         ArrayList<String> imagesList = new ArrayList<>();
+        imageList = new ArrayList<>();
+        images = new ArrayList<>();
 
         ad_layout = findViewById(R.id.ad_layout);
         loading_indicator_ad = findViewById(R.id.loading_indicator_ad);
         layout_busy_system = findViewById(R.id.layout_busy_system);
         layout_ent_offline = findViewById(R.id.layout_ent_offline);
         Button btn_refresh = findViewById(R.id.btn_refresh);
+        pager = findViewById(R.id.flipper_affiche_annonce);
+
+        tv_appel = findViewById(R.id.tv_appel);
+        tv_facebook = findViewById(R.id.tv_facebook);
+        tv_whatsapp = findViewById(R.id.tv_whatsapp);
 
         Intent extras = getIntent();
         if (extras.getStringExtra("id") != null) {
@@ -166,6 +180,50 @@ public class ActivityDetailsPub extends AppCompatActivity {
             partage.setText(getString(R.string._partages, ad.getShared()));
         }
 
+        if (ad.getAppel() != null) {
+            tv_appel.setText(ad.getAppel());
+            tv_appel.setVisibility(View.VISIBLE);
+        }
+        if (ad.getFacebook() != null) {
+            tv_facebook.setVisibility(View.VISIBLE);
+            tv_facebook.setText(ad.getFacebook());
+            tv_facebook.setOnClickListener( v -> {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(ad.getFacebook()));
+                startActivity(i);
+            });
+        }
+        if (ad.getWhatsapp() != null) {
+            String link = "https://wa.me/" + ad.getWhatsapp() + "?text=Bonjour,%20j’%20vu%20votre%20affiche%20sur%20Faso%20Biz%20Nèss%20et%20je%20voudrais%20avoir%20plus%20d’informations";
+            tv_whatsapp.setVisibility(View.VISIBLE);
+            tv_whatsapp.setText(ad.getWhatsapp());
+            tv_whatsapp.setOnClickListener( v -> {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(link));
+                startActivity(i);
+            });
+            /*tv_whatsapp.setOnClickListener(v -> {
+                String message = "Bonjour, j’ai vu votre affiche sur Faso Biz Nèss et je voudrais avoir plus d’informations..";
+                try {
+                    PackageManager packageManager = getPackageManager();
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+
+                    try {
+                        String url = "https://api.whatsapp.com/send?phone=" + ad.getWhatsapp() + "&text=" + URLEncoder.encode(message, "UTF-8");
+                        i.setPackage("com.whatsapp");
+                        i.setData(Uri.parse(url));
+                        if (i.resolveActivity(packageManager) != null) {
+                            startActivity(i);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });*/
+        }
+
         btn_share.setOnClickListener(v -> {
             Spanned d = HtmlCompat.fromHtml(desc, HtmlCompat.FROM_HTML_MODE_COMPACT);
 
@@ -176,6 +234,22 @@ public class ActivityDetailsPub extends AppCompatActivity {
             sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBodyText);
             startActivity(Intent.createChooser(sharingIntent, getString(R.string.partager_avec)));
             share_ad(ad.getId());
+        });
+
+        List<Advertising.Ads.Affiche> afficheList = ad.getAffiches();
+        for (Advertising.Ads.Affiche affiche : afficheList) {
+            imageList.add(new SlideModel(affiche.getNom()));
+            images.add(affiche.getNom());
+        }
+        if (imageList.size() == 0) {
+            pager.setVisibility(View.GONE);
+        }
+        pager.setImageList(imageList, true);
+        pager.setItemClickListener(i -> {
+            Intent intent = new Intent(this, ActivityFullScreen.class);
+            intent.putStringArrayListExtra("images", images);
+            intent.putExtra("position", i);
+            startActivity(intent);
         });
     }
 

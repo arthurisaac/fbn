@@ -17,6 +17,13 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppTheme.TransparentTheme">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
+
     <style name="NavigationDrawerStyle">
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">14sp</item>

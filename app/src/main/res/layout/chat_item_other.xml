@@ -39,5 +39,13 @@
         android:paddingEnd="10dp"
         android:textSize="12sp" />
 
+    <TextView
+        android:id="@+id/read"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="96dp"
+        android:contentDescription="@string/aucun_message"
+        android:visibility="gone" />
+
 
 </LinearLayout>

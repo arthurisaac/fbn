@@ -74,6 +74,8 @@ public class Announce {
         private String favori;
         @SerializedName("id_fav")
         private String id_fav;
+        @SerializedName("whatsapp")
+        private String whatsapp;
 
         public String getUpdatedAt() {
             return updatedAt;
@@ -153,6 +155,10 @@ public class Announce {
 
         public String getVue() {
             return vue;
+        }
+
+        public String getWhatsapp() {
+            return whatsapp;
         }
 
         public class Illustration implements Serializable {

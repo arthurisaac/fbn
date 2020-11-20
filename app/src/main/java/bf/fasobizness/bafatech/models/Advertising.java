@@ -2,6 +2,7 @@ package bf.fasobizness.bafatech.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +25,20 @@ public class Advertising {
         @SerializedName("vue")
         private String vue;
 
+        @SerializedName("appel")
+        private String appel;
+
+        @SerializedName("whatsapp")
+        private String whatsapp;
+
+        @SerializedName("facebook")
+        private String facebook;
+
         @SerializedName("shared")
         private String shared;
+
+        @SerializedName("affiches")
+        public final List<Ads.Affiche> affiches = new ArrayList<>();
 
         public String getId() {
             return id;
@@ -57,6 +70,33 @@ public class Advertising {
 
         public String getShared() {
             return shared;
+        }
+
+        public String getAppel() {
+            return appel;
+        }
+
+        public String getWhatsapp() {
+            return whatsapp;
+        }
+
+        public String getFacebook() {
+            return facebook;
+        }
+
+        public List<Affiche> getAffiches() {
+            return affiches;
+        }
+
+        public class Affiche implements Serializable {
+
+            @SerializedName("nom")
+            private String nom;
+
+            public String getNom() {
+                return nom;
+            }
+
         }
     }
 }

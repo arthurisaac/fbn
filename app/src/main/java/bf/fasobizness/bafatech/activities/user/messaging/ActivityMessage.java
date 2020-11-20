@@ -119,6 +119,7 @@ public class ActivityMessage extends AppCompatActivity
                         }
 
                     } else {
+                        Log.d(TAG, response.toString());
                         layout_busy_system.setVisibility(View.VISIBLE);
                     }
                 }
@@ -226,6 +227,7 @@ public class ActivityMessage extends AppCompatActivity
         layout_busy_system.setVisibility(View.GONE);
         no_message.setVisibility(View.GONE);
         layout_ent_offline.setVisibility(View.GONE);
+        Log.d(TAG, token);
 
         Call<Message> call = api.getMessages(discussion_id, token);
         call.enqueue(new Callback<Message>() {

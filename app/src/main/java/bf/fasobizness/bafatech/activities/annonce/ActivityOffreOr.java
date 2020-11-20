@@ -2,6 +2,7 @@ package bf.fasobizness.bafatech.activities.annonce;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -33,6 +34,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ActivityOffreOr extends AppCompatActivity implements OnAnnonceListener {
+    private static final String TAG = "ActivityOffreOr";
     private LinearLayout layout_ent_offline, layout_busy_system, layout_no_annonce;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ShimmerFrameLayout shimmer_view_container;
@@ -158,6 +160,7 @@ public class ActivityOffreOr extends AppCompatActivity implements OnAnnonceListe
                 mSwipeRefreshLayout.setRefreshing(false);
                 layout_ent_offline.setVisibility(View.VISIBLE);
                 shimmer_view_container.setVisibility(View.GONE);
+                Log.d(TAG, t.getMessage());
 
             }
         });

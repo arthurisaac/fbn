@@ -83,14 +83,16 @@ public interface API {
     /*
      * Announces
      */
-
     @FormUrlEncoded
     @Headers({
             "Content-Type: application/x-www-form-urlencoded",
             "X-Http-Method-Override: GET"
     })
     @POST("v1/announces")
-    Call<Announce> getAnnounces(@Field("page") String page);
+    Call<Announce> getAnnounces(
+            @Field("page") String page,
+            @Field("user") String user
+    );
 
     // Get One Announce
     @FormUrlEncoded
@@ -284,6 +286,17 @@ public interface API {
     @POST("v1/enterprises")
     Call<Entreprise> getEnterprises(
             @Field("user") String user
+    );
+
+    @FormUrlEncoded
+    @Headers({
+            "Content-Type: application/x-www-form-urlencoded",
+            "X-Http-Method-Override: GET"
+    })
+    @POST("v1/enterprises/search ")
+    Call<Entreprise> searchEnterprises(
+            @Field("user") String user,
+            @Field("query") String query
     );
 
     @GET("v1/enterprises/{id}")

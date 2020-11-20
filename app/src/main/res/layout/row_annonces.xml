@@ -67,6 +67,7 @@
                         android:textSize="14sp" />
 
                     <ImageView
+                        android:id="@+id/favorite"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_alignParentEnd="true"
