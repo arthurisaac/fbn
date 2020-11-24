@@ -213,7 +213,7 @@ public class ActivityMessage extends AppCompatActivity
         Intent intent = getIntent();
         if (intent.getStringExtra("discussion_id") != null) {
             discussion_id = intent.getStringExtra("discussion_id");
-            fetchMessages();
+            // fetchMessages();
             handler.post(fetchNewMessages);
         } else {
             finish();

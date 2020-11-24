@@ -125,12 +125,12 @@ public class MainActivity extends AppCompatActivity
 
             api = RetrofitClient.getClient().create(API.class);
             checkUser();
-            /*
+
             for (String key : getIntent().getExtras().keySet()) {
                 Object value = getIntent().getExtras().get(key);
                 Log.d(TAG, "Key = " + key + "value = " + value);
             }
-            */
+
         }
     }
 
@@ -684,7 +684,6 @@ public class MainActivity extends AppCompatActivity
 
         Announce.Annonce annonce = mAnnonces.get(position);
         Intent intent = new Intent(this, ActivityDetailsAnnonce.class);
-        // Intent intent = new Intent(this, ActivityDetailsAnnonces.class);
         intent.putExtra("id_ann", annonce.getId_ann());
         intent.putExtra("affiche", annonce.getAffiche());
         startActivity(intent);

@@ -8,7 +8,7 @@ android {
         applicationId "bf.fasobizness.bafatech"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 165
+        versionCode 168
         versionName "2.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

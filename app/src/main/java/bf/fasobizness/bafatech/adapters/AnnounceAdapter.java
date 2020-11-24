@@ -63,7 +63,6 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.Annonc
             String prix = annonce.getPrix() + " F CFA";
             annonceHolder.PrixView.setText(prix);
         }
-        // annonceHolder.btnVueView.setText(annonce.getVue());
         annonceHolder.AfficheView.setContentDescription(annonce.getTitre());
 
         try {
@@ -99,7 +98,7 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.Annonc
         }
 
 
-        ViewCompat.setTransitionName(annonceHolder.AfficheView, annonce.getId_ann());
+        // ViewCompat.setTransitionName(annonceHolder.AfficheView, annonce.getId_ann());
 
         annonceHolder.itemView.setOnClickListener(view -> onAnnonceListener.onAnnonceClicked(annonceHolder.getAdapterPosition()));
 

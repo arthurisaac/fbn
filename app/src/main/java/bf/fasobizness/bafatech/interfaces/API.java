@@ -182,7 +182,6 @@ public interface API {
     /*
      * Ads
      */
-
     @GET("v1/ads")
     Call<Advertising> getAds();
 

@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 
@@ -24,6 +25,7 @@ import java.util.Objects;
 
 import bf.fasobizness.bafatech.ActivityBoutique;
 import bf.fasobizness.bafatech.R;
+import bf.fasobizness.bafatech.activities.ActivityPromouvoirAnnonces;
 import bf.fasobizness.bafatech.activities.annonce.ActivityAnnonceCategory;
 import bf.fasobizness.bafatech.activities.annonce.ActivityOffreOr;
 import bf.fasobizness.bafatech.activities.entreprise.ActivityEntreprisesUne;
@@ -46,6 +48,7 @@ public class ActivityRecrutements extends AppCompatActivity implements OnItemLis
     private RecrutementAdapter mRecrutementAdapter;
     // private RequestQueue requestQueue;
     private ShimmerFrameLayout mShimmerViewContainer;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private LinearLayout offline_layout;
     // private MaterialSearchView searchView;
 
@@ -55,7 +58,7 @@ public class ActivityRecrutements extends AppCompatActivity implements OnItemLis
         setContentView(R.layout.activity_recrutements);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Recrutements");
+        toolbar.setTitle("Espace emplois");
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.left_white);
@@ -63,6 +66,9 @@ public class ActivityRecrutements extends AppCompatActivity implements OnItemLis
 
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
         mShimmerViewContainer.setVisibility(View.VISIBLE);
+
+        mSwipeRefreshLayout = findViewById(R.id.swipeContainer);
+        mSwipeRefreshLayout.setOnRefreshListener(this::refresh);
 
         MySharedManager sharedManager = new MySharedManager(this);
         String user = sharedManager.getUser();
@@ -102,6 +108,15 @@ public class ActivityRecrutements extends AppCompatActivity implements OnItemLis
 
     }
 
+    private void refresh() {
+        mShimmerViewContainer.setVisibility(View.VISIBLE);
+        mRecrutementAdapter.clearAll();
+        mRecrutements.clear();
+        mRecrutementAdapter.notifyDataSetChanged();
+
+        jsonParse();
+    }
+
     private void jsonParse() {
         offline_layout.setVisibility(View.GONE);
         mShimmerViewContainer.setVisibility(View.VISIBLE);
@@ -111,6 +126,7 @@ public class ActivityRecrutements extends AppCompatActivity implements OnItemLis
             @Override
             public void onResponse(@NonNull Call<Recruit> call, @NonNull Response<Recruit> response) {
                 mShimmerViewContainer.setVisibility(View.GONE);
+                mSwipeRefreshLayout.setRefreshing(false);
                 Log.d(TAG, response.toString());
                 Recruit recruit = response.body();
                 List<Recruit.Recrutement> recrutements = null;
@@ -126,6 +142,7 @@ public class ActivityRecrutements extends AppCompatActivity implements OnItemLis
             @Override
             public void onFailure(@NonNull Call<Recruit> call, @NonNull Throwable t) {
                 mShimmerViewContainer.setVisibility(View.GONE);
+                mSwipeRefreshLayout.setRefreshing(false);
                 offline_layout.setVisibility(View.VISIBLE);
                 Log.d(TAG, t.toString());
             }
@@ -195,10 +212,17 @@ public class ActivityRecrutements extends AppCompatActivity implements OnItemLis
 
     @Override
     public void onItemClicked(int position) {
-        Recruit.Recrutement recrutement = mRecrutements.get(position);
-        Intent intent = new Intent(getApplicationContext(), ActivityDetailsRecrutement.class);
-        intent.putExtra("recrutement", recrutement);
-        startActivity(intent);
+        MySharedManager sharedManager = new MySharedManager(ActivityRecrutements.this);
+            if (!sharedManager.getUser().isEmpty()) {
+                Recruit.Recrutement recrutement = mRecrutements.get(position);
+                Intent intent = new Intent(getApplicationContext(), ActivityDetailsRecrutement.class);
+                intent.putExtra("recrutement", recrutement);
+                startActivity(intent);
+            } else {
+                FragmentNotConnected notConnected = FragmentNotConnected.newInstance();
+                notConnected.show(getSupportFragmentManager(), "");
+                // startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            }
     }
 
     @Override

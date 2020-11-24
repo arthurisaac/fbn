@@ -144,8 +144,8 @@
     <string name="publications_x">Publications (%1$s)</string>
     <string name="postuler">Postuler</string>
     <string name="publi_le">Publiée le %1$s</string>
-    <string name="date_de_depot">Date de dépôt :</string>
-    <string name="heure_de_depot">Heure de dépôt :</string>
+    <string name="date_de_depot">Date limite de dépôt :</string>
+    <string name="heure_de_depot">Heure limite de dépôt :</string>
     <string name="resultats">Resultats (%1$s)</string>
     <string name="recherche_en_cours">Recherche en cours</string>
     <string name="que_recherchez_vous">Que recherchez-vous?</string>
@@ -247,4 +247,6 @@
     <string name="filtrer">Filtrer</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="espace_emplois">Espace emplois</string>
+    <string name="rechercher_dans_recrutements">Rechercher dans recrutements…</string>
 </resources>

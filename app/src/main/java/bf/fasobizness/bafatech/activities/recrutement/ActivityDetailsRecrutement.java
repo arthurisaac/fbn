@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +43,7 @@ public class ActivityDetailsRecrutement extends AppCompatActivity implements OnI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_recrutement);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.details);
@@ -83,7 +85,7 @@ public class ActivityDetailsRecrutement extends AppCompatActivity implements OnI
                 btn_share.setOnClickListener(v -> {
                     Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                     sharingIntent.setType("text/plain");
-                    String shareBodyText = "Ne manquez plus aucune offre d'emploi avec l'application Faso Biz Nèss. " + recrutement.getDesc() + "... Téléchargez ou parcourez l'application Faso Biz Nèss pour en savoir plus. Pour android: http://bit.ly/AndroidFBN. Pour Iphone: http://bit.ly/IphoneFBN";
+                    String shareBodyText = "Je partage cette offre d’emploi pour " + recrutement.getNom_r() + ". Tous les détails sont sur l’application Faso Biz Nèss, à télécharger sur Playstore, http://bit.ly/AndroidFBN.";
                     sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Offre d'emploi " + recrutement.getNom_r());
                     sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBodyText);
                     startActivity(Intent.createChooser(sharingIntent, "Partager avec"));

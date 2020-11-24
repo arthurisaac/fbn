@@ -44,12 +44,13 @@ public class RecrutementAdapter extends RecyclerView.Adapter<RecrutementAdapter.
         final Recruit.Recrutement recrutement = mRecrutements.get(i);
 
         String titre = recrutement.getNom_r();
-        String date_pub = recrutement.getDate_pub();
+        String date_pub = this.mContext.getString(R.string.publie_le, recrutement.getDate_pub());
         // String desc = recrutement.getDesc();
         String domaine = recrutement.getDomaine();
         String vue = recrutement.getVue();
 
         recrutementHolder.nom_entV.setText(titre);
+
         recrutementHolder.dateV.setText(date_pub);
         // recrutementHolder.descriptionV.setText(desc);
         recrutementHolder.domaineV.setText(domaine);
@@ -66,6 +67,10 @@ public class RecrutementAdapter extends RecyclerView.Adapter<RecrutementAdapter.
     @Override
     public int getItemCount() {
         return mRecrutements.size();
+    }
+
+    public void clearAll() {
+        mRecrutements.clear();
     }
 
     class RecrutementHolder extends RecyclerView.ViewHolder {
