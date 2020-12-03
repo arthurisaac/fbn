@@ -51,8 +51,7 @@ import bf.fasobizness.bafatech.activities.annonce.ActivityAnnonceCategory;
 import bf.fasobizness.bafatech.activities.annonce.ActivityAnnoncesPublished;
 import bf.fasobizness.bafatech.activities.annonce.ActivityAnnounceFilter;
 import bf.fasobizness.bafatech.activities.annonce.ActivityDetailsAnnonce;
-import bf.fasobizness.bafatech.activities.annonce.ActivityDetailsAnnonces;
-import bf.fasobizness.bafatech.activities.annonce.ActivityNouvelleAnnonce;
+import bf.fasobizness.bafatech.activities.annonce.ActivityNewAnnounce;
 import bf.fasobizness.bafatech.activities.annonce.ActivityOffreOr;
 import bf.fasobizness.bafatech.activities.annonce.ActivitySearchAnnonce;
 import bf.fasobizness.bafatech.activities.entreprise.ActivityEntreprisesUne;
@@ -147,7 +146,8 @@ public class MainActivity extends AppCompatActivity
                 FragmentNotConnected notConnected = FragmentNotConnected.newInstance();
                 notConnected.show(getSupportFragmentManager(), "");
             } else {
-                startActivity(new Intent(MainActivity.this, ActivityNouvelleAnnonce.class));
+                // startActivity(new Intent(MainActivity.this, ActivityNouvelleAnnonce.class));
+                startActivity(new Intent(MainActivity.this, ActivityNewAnnounce.class));
             }
         });
 

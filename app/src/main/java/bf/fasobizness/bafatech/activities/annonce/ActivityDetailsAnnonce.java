@@ -393,13 +393,21 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
 
         if (annonce.getWhatsapp() != null) {
             send_whatsapp_message.setOnClickListener( v -> {
-                String link = "https://wa.me/" + annonce.getWhatsapp() + "?text=Bonjour,%20j’%20vu%20votre%20affiche%20sur%20Faso%20Biz%20Nèss%20et%20je%20voudrais%20avoir%20plus%20d’informations";
+                String numero = annonce.getWhatsapp();
+                if (!annonce.getWhatsapp().contains("226")) {
+                    numero = "+226" + annonce.getWhatsapp();
+                }
+                String link = "https://wa.me/" + numero + "?text=Bonjour,%20j’%20vu%20votre%20affiche%20sur%20Faso%20Biz%20Nèss%20et%20je%20voudrais%20avoir%20plus%20d’informations";
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(link));
                 startActivity(i);
             });
         } else {
-            String link = "https://wa.me/" + annonce.getTel() + "?text=Bonjour,%20j’%20vu%20votre%20affiche%20sur%20Faso%20Biz%20Nèss%20et%20je%20voudrais%20avoir%20plus%20d’informations";
+            String numero = annonce.getTel();
+            if (!annonce.getTel().contains("226")) {
+                numero = "+226" + annonce.getTel();
+            }
+            String link = "https://wa.me/" + numero + "?text=Bonjour,%20j’%20vu%20votre%20affiche%20sur%20Faso%20Biz%20Nèss%20et%20je%20voudrais%20avoir%20plus%20d’informations";
             send_whatsapp_message.setOnClickListener( v -> {
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(link));

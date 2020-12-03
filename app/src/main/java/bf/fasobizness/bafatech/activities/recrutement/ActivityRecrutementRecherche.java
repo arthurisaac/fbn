@@ -3,6 +3,7 @@ package bf.fasobizness.bafatech.activities.recrutement;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -29,6 +30,7 @@ import bf.fasobizness.bafatech.helper.RetrofitClient;
 import bf.fasobizness.bafatech.interfaces.API;
 import bf.fasobizness.bafatech.interfaces.OnItemListener;
 import bf.fasobizness.bafatech.models.Recruit;
+import bf.fasobizness.bafatech.utils.DatabaseManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,6 +45,7 @@ public class ActivityRecrutementRecherche extends AppCompatActivity
     // private RequestQueue requestQueue;
     private TextView resultats;
     private String query;
+    private DatabaseManager databaseManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,9 +95,19 @@ public class ActivityRecrutementRecherche extends AppCompatActivity
         Button btn_refresh = findViewById(R.id.btn_refresh);
         btn_refresh.setOnClickListener(v -> jsonParse());
 
+        databaseManager = new DatabaseManager(this);
+        List<Recruit.Recrutement> recrutementList = databaseManager.getRecruits();
+        mRecrutements.addAll(recrutementList);
+        mRecrutementAdapter.notifyDataSetChanged();
+
     }
 
     private void jsonParse() {
+        mRecrutementAdapter.getFilter().filter(query);
+        Log.d("Filtering", "Recherche " + query);
+    }
+
+    /*private void jsonParse() {
         mRecrutements.clear();
         mRecrutementAdapter.notifyDataSetChanged();
         layout_busy_system.setVisibility(View.GONE);
@@ -134,90 +147,6 @@ public class ActivityRecrutementRecherche extends AppCompatActivity
                 layout_ent_offline.setVisibility(View.VISIBLE);
             }
         });
-    }
-
-    /*private void jsonParse() {
-        mRecrutements.clear();
-        mRecrutementAdapter.notifyDataSetChanged();
-        layout_busy_system.setVisibility(View.GONE);
-        layout_ent_offline.setVisibility(View.GONE);
-        mShimmerViewContainer.setVisibility(View.VISIBLE);
-        mRecrutements.clear();
-        mRecrutementAdapter.notifyDataSetChanged();
-
-        String url = Constants.HOST_URL + "v1/recruits/search";
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, null, response -> {
-            mShimmerViewContainer.setVisibility(View.GONE);
-            // Log.d(TAG, response.toString());
-            try {
-                JSONArray jsonArray = response.getJSONArray("data");
-                if (mRecrutements.size() == 0) {
-                    resultats.setText(R.string.aucun_resultat);
-                }
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject data = jsonArray.getJSONObject(i);
-                    JSONArray affiches = data.getJSONArray("affiches");
-
-                    String nom_r = data.getString("nom_r");
-                    String desc = data.getString("desc");
-                    String domaine = data.getString("domaine");
-                    String date_pub = data.getString("date_pub");
-                    String description = data.getString("description");
-                    String date_fin = data.getString("date_fin");
-                    String heure_fin = data.getString("heure_fin");
-                    String nom_ent = data.getString("nom_ent");
-                    String vue = data.getString("vue");
-                    String id_rec = data.getString("id_recr");
-                    String lien = data.getString("lien");
-
-                    Recrutement recrutement = new Recrutement();
-                    recrutement.setNom_r(nom_r);
-                    recrutement.setDesc(desc);
-                    recrutement.setDomaine(domaine);
-                    recrutement.setDate_pub(date_pub);
-                    recrutement.setDescription(description);
-                    recrutement.setAffiches(affiches.toString());
-                    recrutement.setDate_fin(date_fin);
-                    recrutement.setHeure_fin(heure_fin);
-                    recrutement.setNom_ent(nom_ent);
-                    recrutement.setVue(vue);
-                    recrutement.setId_recr(id_rec);
-                    recrutement.setLien(lien);
-
-                    mRecrutements.add(recrutement);
-                }
-                mRecrutementAdapter.notifyDataSetChanged();
-                resultats.setVisibility(View.VISIBLE);
-                String reslt = getString(R.string.resultats, mRecrutements.size() + "");
-                resultats.setText(reslt);
-                if (mRecrutements.size() == 0) {
-                    resultats.setText(R.string.aucun_resultat);
-                }
-
-            } catch (Exception e) {
-                layout_busy_system.setVisibility(View.VISIBLE);
-                e.printStackTrace();
-                Toast.makeText(getApplicationContext(), R.string.pas_d_acces_internet, Toast.LENGTH_SHORT).show();
-            }
-        }, error -> {
-            Log.d(TAG, error.toString());
-            layout_ent_offline.setVisibility(View.VISIBLE);
-            resultats.setVisibility(View.GONE);
-            mShimmerViewContainer.setVisibility(View.GONE);
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("query", query);
-                return params;
-            }
-        };
-        request.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 10,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES * 3,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT * 1)
-        );
-        requestQueue.add(request);
     }*/
 
     @Override

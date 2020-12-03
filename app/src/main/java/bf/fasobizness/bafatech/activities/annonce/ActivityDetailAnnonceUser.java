@@ -247,7 +247,7 @@ public class ActivityDetailAnnonceUser extends AppCompatActivity implements OnIm
 
         btn_edit_photo.setOnClickListener(v -> {
             try {
-                Intent intent = new Intent(this, ActivityAnnonceEditPhotos.class);
+                Intent intent = new Intent(this, ActivityAnnounceEditImages.class);
                 intent.putExtra("annonce", annonce);
                 startActivity(intent);
             } catch (Exception e) {

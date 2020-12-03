@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,15 +18,18 @@ import bf.fasobizness.bafatech.R;
 import bf.fasobizness.bafatech.interfaces.OnItemListener;
 import bf.fasobizness.bafatech.models.Recruit;
 
-public class RecrutementAdapter extends RecyclerView.Adapter<RecrutementAdapter.RecrutementHolder> {
+public class RecrutementAdapter extends RecyclerView.Adapter<RecrutementAdapter.RecrutementHolder>
+ implements Filterable {
 
     private final Context mContext;
     private final ArrayList<Recruit.Recrutement> mRecrutements;
+    private ArrayList<Recruit.Recrutement> mRecrutementsFiltre;
     private OnItemListener onItemListener;
 
     public RecrutementAdapter(Context context, ArrayList<Recruit.Recrutement> recrutements) {
         this.mContext = context;
         this.mRecrutements = recrutements;
+        this.mRecrutementsFiltre = recrutements;
     }
 
     public void setOnItemListener(OnItemListener onItemListener) {
@@ -41,7 +46,7 @@ public class RecrutementAdapter extends RecyclerView.Adapter<RecrutementAdapter.
     @Override
     public void onBindViewHolder(@NonNull final RecrutementHolder recrutementHolder, int i) {
 
-        final Recruit.Recrutement recrutement = mRecrutements.get(i);
+        final Recruit.Recrutement recrutement = mRecrutementsFiltre.get(i);
 
         String titre = recrutement.getNom_r();
         String date_pub = this.mContext.getString(R.string.publie_le, recrutement.getDate_pub());
@@ -66,14 +71,45 @@ public class RecrutementAdapter extends RecyclerView.Adapter<RecrutementAdapter.
 
     @Override
     public int getItemCount() {
-        return mRecrutements.size();
+        return mRecrutementsFiltre.size();
     }
 
     public void clearAll() {
         mRecrutements.clear();
+        mRecrutementsFiltre.clear();
     }
 
-    class RecrutementHolder extends RecyclerView.ViewHolder {
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String query = constraint.toString();
+                if (query.isEmpty()) {
+                    mRecrutementsFiltre = mRecrutements;
+                } else {
+                    ArrayList<Recruit.Recrutement> recrutements = new ArrayList<>();
+                    for (Recruit.Recrutement recrutement: mRecrutements) {
+                        if (recrutement.getNom_r().toLowerCase().contains(query)){
+                            recrutements.add(recrutement);
+                        }
+                    }
+                    mRecrutementsFiltre = recrutements;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = mRecrutementsFiltre;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                mRecrutementsFiltre = (ArrayList<Recruit.Recrutement>) results.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+
+    static class RecrutementHolder extends RecyclerView.ViewHolder {
 
         private final TextView nom_entV;
         private final TextView domaineV;

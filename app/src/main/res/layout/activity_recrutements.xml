@@ -19,6 +19,7 @@
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <FrameLayout
+                android:id="@+id/toolbar_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -27,6 +28,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+                <com.claudiodegio.msv.MaterialSearchView
+                    android:id="@+id/search_view"
+                    android:elevation="5dip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </com.claudiodegio.msv.MaterialSearchView>
 
                 <!--<com.miguelcatalan.materialsearchview.MaterialSearchView
                     android:id="@+id/ed_query"
@@ -45,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="vertical"
-            android:visibility="visible"
+            android:visibility="gone"
             app:shimmer_duration="1000">
 
             <LinearLayout
@@ -259,13 +267,13 @@
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="50dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview_recrutements"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp" />
+                android:layout_height="wrap_content" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -275,7 +283,7 @@
         layout="@layout/layout_offline"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"

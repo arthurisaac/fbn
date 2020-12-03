@@ -3,7 +3,6 @@ package bf.fasobizness.bafatech.activities.annonce;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,10 +31,6 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.zhihu.matisse.Matisse;
-import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.engine.impl.GlideEngine;
-import com.zhihu.matisse.filter.Filter;
-import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -45,7 +40,6 @@ import java.util.Objects;
 import bf.fasobizness.bafatech.R;
 import bf.fasobizness.bafatech.activities.user.LoginActivity;
 import bf.fasobizness.bafatech.adapters.UriAdapter;
-import bf.fasobizness.bafatech.helper.GifSizeFilter;
 import bf.fasobizness.bafatech.helper.ProgressRequestBody;
 import bf.fasobizness.bafatech.helper.RetrofitClient;
 import bf.fasobizness.bafatech.interfaces.API;
@@ -192,7 +186,7 @@ public class ActivityNouvelleAnnonce extends AppCompatActivity implements OnItem
     }
 
     private void showChooser() {
-        Matisse.from(ActivityNouvelleAnnonce.this)
+        /*Matisse.from(ActivityNouvelleAnnonce.this)
                 .choose(MimeType.ofImage(), false)
                 .theme(R.style.Matisse_Dracula)
                 .countable(true)
@@ -210,7 +204,8 @@ public class ActivityNouvelleAnnonce extends AppCompatActivity implements OnItem
                 .originalEnable(false)
                 .maxOriginalSize(10)
                 .autoHideToolbarOnSingleTap(true)
-                .forResult(REQUEST_CODE);
+                .forResult(REQUEST_CODE);*/
+
     }
 
     private void requestMultiplePermissions() {

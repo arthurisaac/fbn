@@ -53,7 +53,8 @@ public class ActivityAnnoncesPublished extends AppCompatActivity implements OnAn
         toolbar.setNavigationOnClickListener(view -> finish());
 
         Button btn_add_post = findViewById(R.id.btn_add_post);
-        btn_add_post.setOnClickListener(v -> startActivity(new Intent(this, ActivityNouvelleAnnonce.class)));
+        // btn_add_post.setOnClickListener(v -> startActivity(new Intent(this, ActivityNouvelleAnnonce.class)));
+        btn_add_post.setOnClickListener(v -> startActivity(new Intent(this, ActivityNewAnnounce.class)));
 
         mAnnonces = new ArrayList<>();
 

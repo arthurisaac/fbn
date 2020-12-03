@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.claudiodegio.msv.MaterialSearchView;
+import com.claudiodegio.msv.OnSearchViewListener;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.ArrayList;
@@ -25,7 +26,6 @@ import java.util.Objects;
 
 import bf.fasobizness.bafatech.ActivityBoutique;
 import bf.fasobizness.bafatech.R;
-import bf.fasobizness.bafatech.activities.ActivityPromouvoirAnnonces;
 import bf.fasobizness.bafatech.activities.annonce.ActivityAnnonceCategory;
 import bf.fasobizness.bafatech.activities.annonce.ActivityOffreOr;
 import bf.fasobizness.bafatech.activities.entreprise.ActivityEntreprisesUne;
@@ -36,12 +36,13 @@ import bf.fasobizness.bafatech.helper.RetrofitClient;
 import bf.fasobizness.bafatech.interfaces.API;
 import bf.fasobizness.bafatech.interfaces.OnItemListener;
 import bf.fasobizness.bafatech.models.Recruit;
+import bf.fasobizness.bafatech.utils.DatabaseManager;
 import bf.fasobizness.bafatech.utils.MySharedManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ActivityRecrutements extends AppCompatActivity implements OnItemListener {
+public class ActivityRecrutements extends AppCompatActivity implements OnItemListener, OnSearchViewListener {
 
     private static final String TAG = "ActivityRecrutements";
     private ArrayList<Recruit.Recrutement> mRecrutements;
@@ -49,8 +50,9 @@ public class ActivityRecrutements extends AppCompatActivity implements OnItemLis
     // private RequestQueue requestQueue;
     private ShimmerFrameLayout mShimmerViewContainer;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private LinearLayout offline_layout;
-    // private MaterialSearchView searchView;
+    // private LinearLayout offline_layout;
+    private DatabaseManager databaseManager;
+    private MaterialSearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +67,6 @@ public class ActivityRecrutements extends AppCompatActivity implements OnItemLis
         toolbar.setNavigationOnClickListener(view -> finish());
 
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
-        mShimmerViewContainer.setVisibility(View.VISIBLE);
 
         mSwipeRefreshLayout = findViewById(R.id.swipeContainer);
         mSwipeRefreshLayout.setOnRefreshListener(this::refresh);
@@ -73,12 +74,12 @@ public class ActivityRecrutements extends AppCompatActivity implements OnItemLis
         MySharedManager sharedManager = new MySharedManager(this);
         String user = sharedManager.getUser();
 
-        offline_layout = findViewById(R.id.layout_ent_offline);
+        // offline_layout = findViewById(R.id.layout_ent_offline);
+        searchView = findViewById(R.id.search_view);
         Button refresh = findViewById(R.id.btn_refresh);
-        refresh.setOnClickListener(v -> jsonParse());
+        refresh.setOnClickListener(v -> getRecruits());
 
         mRecrutements = new ArrayList<>();
-        // requestQueue = Volley.newRequestQueue(this);
         RecyclerView mRecyclerView = findViewById(R.id.recyclerview_recrutements);
         mRecrutementAdapter = new RecrutementAdapter(this, mRecrutements);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -104,20 +105,30 @@ public class ActivityRecrutements extends AppCompatActivity implements OnItemLis
             }
         });
 
-        jsonParse();
-
+        databaseManager = new DatabaseManager(this);
+        getRecruits();
+        searchView.setOnSearchViewListener(this);
     }
 
     private void refresh() {
+        mShimmerViewContainer.setVisibility(View.VISIBLE);
+        mShimmerViewContainer.stopShimmer();
+        mRecrutementAdapter.clearAll();
+        mRecrutements.clear();
+        mRecrutementAdapter.notifyDataSetChanged();
+
+        getRecruits();
+    }
+    /*private void refresh() {
         mShimmerViewContainer.setVisibility(View.VISIBLE);
         mRecrutementAdapter.clearAll();
         mRecrutements.clear();
         mRecrutementAdapter.notifyDataSetChanged();
 
         jsonParse();
-    }
+    }*/
 
-    private void jsonParse() {
+    /*private void jsonParse() {
         offline_layout.setVisibility(View.GONE);
         mShimmerViewContainer.setVisibility(View.VISIBLE);
         API api = RetrofitClient.getClient().create(API.class);
@@ -135,6 +146,29 @@ public class ActivityRecrutements extends AppCompatActivity implements OnItemLis
                 }
                 if (recrutements != null) {
                     mRecrutements.addAll(recrutements);
+
+                    for (Recruit.Recrutement recrutement: recrutements) {
+                        databaseManager.insertRecrutement(
+                                recrutement.getNom_ent(),
+                                recrutement.getDomaine(),
+                                recrutement.getDescription(),
+                                recrutement.getDesc(),
+                                recrutement.getDate_pub(),
+                                recrutement.getDate_fin(),
+                                recrutement.getHeure_fin(),
+                                recrutement.getNom_r(),
+                                recrutement.getVue(),
+                                recrutement.getLien(),
+                                recrutement.getShare()
+                        );
+
+                        for (Recruit.Recrutement.Affiche affiche: recrutement.affiches)
+                        databaseManager.insertRecruitAttachment(
+                                affiche.getNom(),
+                                affiche.getThumbnail()
+                        );
+                    }
+                    databaseManager.close();
                 }
                 mRecrutementAdapter.notifyDataSetChanged();
             }
@@ -148,67 +182,72 @@ public class ActivityRecrutements extends AppCompatActivity implements OnItemLis
             }
         });
 
-    }
+    }*/
 
-    /*private void jsonParse() {
-        offline_layout.setVisibility(View.GONE);
-        String url = Constants.HOST_URL + "v1/recruits";
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, response -> {
-            try {
+    private void getRecruits(){
+        List<Recruit.Recrutement> recrutementList = databaseManager.getRecruits();
+        mRecrutements.addAll(recrutementList);
+        mRecrutementAdapter.notifyDataSetChanged();
+        if (mRecrutements.size() == 0) {
+            mShimmerViewContainer.setVisibility(View.VISIBLE);
+        }
+
+        API api = RetrofitClient.getClient().create(API.class);
+        Call<Recruit> call = api.getRecruits();
+        call.enqueue(new Callback<Recruit>() {
+            @Override
+            public void onResponse(@NonNull Call<Recruit> call, @NonNull Response<Recruit> response) {
                 mShimmerViewContainer.setVisibility(View.GONE);
+                mShimmerViewContainer.stopShimmer();
+                mSwipeRefreshLayout.setRefreshing(false);
+                Log.d(TAG, response.toString());
+                Recruit recruit = response.body();
 
-                JSONArray jsonArray = response.getJSONArray("data");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject data = jsonArray.getJSONObject(i);
-                    JSONArray affiches = data.getJSONArray("affiches");
+                List<Recruit.Recrutement> recrutements = null;
+                if (recruit != null) {
+                    recrutements = recruit.recrutements;
+                }
+                if (recrutements != null) {
+                    mRecrutementAdapter.clearAll();
+                    mRecrutements.addAll(recrutements);
+                    databaseManager.truncateRecruits();
+                    for (Recruit.Recrutement recrutement: recrutements) {
+                        databaseManager.insertRecrutement(
+                                recrutement.getId_recr(),
+                                recrutement.getNom_ent(),
+                                recrutement.getDomaine(),
+                                recrutement.getDescription(),
+                                recrutement.getDesc(),
+                                recrutement.getDate_pub(),
+                                recrutement.getDate_fin(),
+                                recrutement.getHeure_fin(),
+                                recrutement.getNom_r(),
+                                recrutement.getVue(),
+                                recrutement.getLien(),
+                                recrutement.getShare()
+                        );
 
-                    String nom_r = data.getString("nom_r");
-                    String desc = data.getString("desc");
-                    String domaine = data.getString("domaine");
-                    String date_pub = data.getString("date_pub");
-                    String description = data.getString("description");
-                    String date_fin = data.getString("date_fin");
-                    String heure_fin = data.getString("heure_fin");
-                    String nom_ent = data.getString("nom_ent");
-                    String vue = data.getString("vue");
-                    String id_rec = data.getString("id_recr");
-                    String lien = data.getString("lien");
-
-                    Recrutement recrutement = new Recrutement();
-                    recrutement.setNom_r(nom_r);
-                    recrutement.setDesc(desc);
-                    recrutement.setDomaine(domaine);
-                    recrutement.setDate_pub(date_pub);
-                    recrutement.setDescription(description);
-                    recrutement.setAffiches(affiches.toString());
-                    recrutement.setDate_fin(date_fin);
-                    recrutement.setHeure_fin(heure_fin);
-                    recrutement.setNom_ent(nom_ent);
-                    recrutement.setVue(vue);
-                    recrutement.setId_recr(id_rec);
-                    recrutement.setLien(lien);
-
-                    mRecrutements.add(recrutement);
+                        for (Recruit.Recrutement.Affiche affiche: recrutement.affiches)
+                            databaseManager.insertRecruitAttachment(
+                                    affiche.getNom(),
+                                    affiche.getThumbnail(),
+                                    recrutement.getId_recr()
+                            );
+                    }
+                    databaseManager.close();
                 }
                 mRecrutementAdapter.notifyDataSetChanged();
-
-            } catch (Exception e) {
-                mShimmerViewContainer.setVisibility(View.GONE);
-                e.printStackTrace();
-                Toast.makeText(ActivityRecrutements.this, R.string.pas_d_acces_internet, Toast.LENGTH_SHORT).show();
             }
-        }, error -> {
-            mShimmerViewContainer.setVisibility(View.GONE);
-            Log.d(TAG, error.toString());
-            offline_layout.setVisibility(View.VISIBLE);
+
+            @Override
+            public void onFailure(@NonNull Call<Recruit> call, @NonNull Throwable t) {
+                Log.d(TAG, t.toString());
+                mShimmerViewContainer.setVisibility(View.GONE);
+                mShimmerViewContainer.stopShimmer();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
         });
-        request.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 10,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES * 3,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT * 1)
-        );
-        requestQueue.add(request);
-    }*/
+    }
 
     @Override
     public void onItemClicked(int position) {
@@ -228,6 +267,9 @@ public class ActivityRecrutements extends AppCompatActivity implements OnItemLis
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_recherche, menu);
+
+        MenuItem item = menu.findItem(R.id.nav_recherche);
+        searchView.setMenuItem(item);
         return true;
     }
 
@@ -235,8 +277,38 @@ public class ActivityRecrutements extends AppCompatActivity implements OnItemLis
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.nav_recherche) {
-            startActivity(new Intent(this, ActivityRecrutementRecherche.class));
+            // startActivity(new Intent(this, ActivityRecrutementRecherche.class));
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (searchView.isOpen()) {
+            searchView.closeSearch();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onSearchViewShown() {
+
+    }
+
+    @Override
+    public void onSearchViewClosed() {
+
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        mRecrutementAdapter.getFilter().filter(s);
+        return false;
+    }
+
+    @Override
+    public void onQueryTextChange(String s) {
+        mRecrutementAdapter.getFilter().filter(s);
     }
 }
