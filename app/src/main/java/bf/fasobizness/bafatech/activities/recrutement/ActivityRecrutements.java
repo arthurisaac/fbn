@@ -16,15 +16,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.claudiodegio.msv.MaterialSearchView;
-import com.claudiodegio.msv.OnSearchViewListener;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import bf.fasobizness.bafatech.ActivityBoutique;
+import bf.fasobizness.bafatech.activities.ActivityBoutique;
 import bf.fasobizness.bafatech.R;
 import bf.fasobizness.bafatech.activities.annonce.ActivityAnnonceCategory;
 import bf.fasobizness.bafatech.activities.annonce.ActivityOffreOr;
@@ -42,7 +40,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ActivityRecrutements extends AppCompatActivity implements OnItemListener, OnSearchViewListener {
+public class ActivityRecrutements extends AppCompatActivity implements OnItemListener {
 
     private static final String TAG = "ActivityRecrutements";
     private ArrayList<Recruit.Recrutement> mRecrutements;
@@ -52,7 +50,7 @@ public class ActivityRecrutements extends AppCompatActivity implements OnItemLis
     private SwipeRefreshLayout mSwipeRefreshLayout;
     // private LinearLayout offline_layout;
     private DatabaseManager databaseManager;
-    private MaterialSearchView searchView;
+    // private MaterialSearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +73,7 @@ public class ActivityRecrutements extends AppCompatActivity implements OnItemLis
         String user = sharedManager.getUser();
 
         // offline_layout = findViewById(R.id.layout_ent_offline);
-        searchView = findViewById(R.id.search_view);
+        // searchView = findViewById(R.id.search_view);
         Button refresh = findViewById(R.id.btn_refresh);
         refresh.setOnClickListener(v -> getRecruits());
 
@@ -107,7 +105,7 @@ public class ActivityRecrutements extends AppCompatActivity implements OnItemLis
 
         databaseManager = new DatabaseManager(this);
         getRecruits();
-        searchView.setOnSearchViewListener(this);
+        // searchView.setOnSearchViewListener(this);
     }
 
     private void refresh() {
@@ -266,10 +264,7 @@ public class ActivityRecrutements extends AppCompatActivity implements OnItemLis
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_recherche, menu);
-
-        MenuItem item = menu.findItem(R.id.nav_recherche);
-        searchView.setMenuItem(item);
+        getMenuInflater().inflate(R.menu.menu_recruit, menu);
         return true;
     }
 
@@ -277,38 +272,8 @@ public class ActivityRecrutements extends AppCompatActivity implements OnItemLis
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.nav_recherche) {
-            // startActivity(new Intent(this, ActivityRecrutementRecherche.class));
+            startActivity(new Intent(this, ActivityRecrutementRecherche.class));
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (searchView.isOpen()) {
-            searchView.closeSearch();
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public void onSearchViewShown() {
-
-    }
-
-    @Override
-    public void onSearchViewClosed() {
-
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String s) {
-        mRecrutementAdapter.getFilter().filter(s);
-        return false;
-    }
-
-    @Override
-    public void onQueryTextChange(String s) {
-        mRecrutementAdapter.getFilter().filter(s);
     }
 }

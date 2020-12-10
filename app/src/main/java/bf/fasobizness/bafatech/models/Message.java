@@ -1,9 +1,12 @@
 package bf.fasobizness.bafatech.models;
 
 import com.google.gson.annotations.SerializedName;
+import com.stfalcon.chatkit.commons.models.MessageContentType;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import bf.fasobizness.bafatech.interfaces.IMessage;
 
 
 public class Message {
@@ -12,7 +15,7 @@ public class Message {
     public final List<Messages> messages = new ArrayList<>();
 
     @SerializedName("user")
-    public final User user = new User();
+    public User user;
 
     @SerializedName("titre")
     private String titre;
@@ -22,6 +25,9 @@ public class Message {
 
     @SerializedName("affiche")
     private String affiche;
+
+    @SerializedName("annonce")
+    private boolean annonce;
 
     public String getTitre() {
         return titre;
@@ -35,18 +41,48 @@ public class Message {
         return affiche;
     }
 
-    public class Messages {
+    public boolean isAnnonce() {
+        return annonce;
+    }
+
+    public void setAnnonce(boolean annonce) {
+        this.annonce = annonce;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setTitre(String titre) {
+        this.titre = titre;
+    }
+
+    public void setId_ann(String id_ann) {
+        this.id_ann = id_ann;
+    }
+
+    public void setAffiche(String affiche) {
+        this.affiche = affiche;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public static class Messages
+            implements IMessage {
         private String message_id;
         private String message;
         private String created_at;
+        private String etat;
         private String discussion_id;
+        private String isread;
         private String bellow;
         private String sender;
         private String type;
         private String is_deleted;
-        private String isread_receiver;
 
-        public String getMessage_id() {
+        /*public String getMessage_id() {
             return message_id;
         }
 
@@ -62,25 +98,127 @@ public class Message {
             return discussion_id;
         }
 
-        public String getBellow() {
-            return bellow;
-        }
-
         public String getSender() {
             return sender;
         }
 
         public String getType() {
             return type;
+        }*/
+
+        public String getBellow() {
+            return bellow;
         }
 
         public String getIs_deleted() {
             return is_deleted;
         }
 
-        public String getIsread_receiver() {
-            return isread_receiver;
+        public String getEtat() {
+            return etat;
         }
+
+        public String getDiscussion_id() {
+            return discussion_id;
+        }
+
+        public String getIsread() {
+            return isread;
+        }
+
+        public void setIsread(String isread) {
+            this.isread = isread;
+        }
+
+        @Override
+        public String getMessage_id() {
+            return message_id;
+        }
+
+        @Override
+        public String getMessage() {
+            return message;
+        }
+
+        @Override
+        public String getCreated_at() {
+            return created_at;
+        }
+
+        @Override
+        public String getSender() {
+            return sender;
+        }
+
+        @Override
+        public String getType() {
+            return type;
+        }
+
+        public void setMessage_id(String message_id) {
+            this.message_id = message_id;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+
+        public void setCreated_at(String created_at) {
+            this.created_at = created_at;
+        }
+
+        public void setDiscussion_id(String discussion_id) {
+            this.discussion_id = discussion_id;
+        }
+
+        public void setBellow(String bellow) {
+            this.bellow = bellow;
+        }
+
+        public void setSender(String sender) {
+            this.sender = sender;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public void setEtat(String etat) {
+            this.etat = etat;
+        }
+
+        public void setIs_deleted(String is_deleted) {
+            this.is_deleted = is_deleted;
+        }
+
+        public static class Image {
+
+            private String url;
+
+            public Image(String url) {
+                this.url = url;
+            }
+        }
+
+        public static class Voice {
+
+            private String url;
+            private int duration;
+
+            public Voice(String url, int duration) {
+                this.url = url;
+                this.duration = duration;
+            }
+
+            public String getUrl() {
+                return url;
+            }
+
+            public int getDuration() {
+                return duration;
+            }
+        }
+
     }
 
 }

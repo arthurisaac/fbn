@@ -70,6 +70,15 @@ public class MySharedManager {
         mEditor.apply();
     }
 
+    public String getServerUrl() {
+        return mPreferences.getString("server_url", "");
+    }
+
+    public void setServerUrl(String server_url) {
+        mEditor.putString("server_url", server_url);
+        mEditor.apply();
+    }
+
     /*
     Announces
      */

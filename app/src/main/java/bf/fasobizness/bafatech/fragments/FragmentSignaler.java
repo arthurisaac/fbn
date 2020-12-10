@@ -73,7 +73,7 @@ public class FragmentSignaler extends AppCompatDialogFragment {
         progressDialog.show();
 
         String txt_raison = Objects.requireNonNull(raison.getEditText()).getText().toString();
-        String url = Constants.HOST_URL + "v1/reports";
+        String url = Constants.HOST.api_server_url() + "v1/reports";
         StringRequest request = new StringRequest(Request.Method.POST, url, response -> {
 
             progressDialog.dismiss();

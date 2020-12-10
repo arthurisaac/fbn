@@ -209,7 +209,7 @@ public class ActivityNouvelleAnnonce extends AppCompatActivity implements OnItem
     }
 
     private void requestMultiplePermissions() {
-        Dexter.withActivity(this)
+        Dexter.withContext(this)
                 .withPermissions(
                         Manifest.permission.CAMERA,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -314,7 +314,7 @@ public class ActivityNouvelleAnnonce extends AppCompatActivity implements OnItem
                     btn_publish_offer.setEnabled(true);
                     btn_publish_offer.setText(R.string.ressayer);
                     overbox.setVisibility(View.GONE);
-                    Toast.makeText(ActivityNouvelleAnnonce.this, "Pas d'acces internet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActivityNouvelleAnnonce.this, "Veuillez réessayer svp", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -345,7 +345,6 @@ public class ActivityNouvelleAnnonce extends AppCompatActivity implements OnItem
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 rl_upload_picture.setVisibility(View.GONE);
                 overbox.setVisibility(View.GONE);
-                Toast.makeText(ActivityNouvelleAnnonce.this, R.string.pas_d_acces_internet, Toast.LENGTH_SHORT).show();
                 btn_publish_offer.setEnabled(true);
                 btn_publish_offer.setText(R.string.ressayer);
                 Log.v(TAG, t.toString());

@@ -14,7 +14,7 @@ public class Announce {
     @SerializedName("user")
     public final User user = new User();
 
-    public class Annonce implements Serializable {
+    public static class Annonce implements Serializable {
 
         @SerializedName("illustrations")
         public final List<Illustration> illustrations = new ArrayList<>();

@@ -29,12 +29,12 @@
                     android:layout_height="?attr/actionBarSize"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-                <com.claudiodegio.msv.MaterialSearchView
+                <!--<com.claudiodegio.msv.MaterialSearchView
                     android:id="@+id/search_view"
                     android:elevation="5dip"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                </com.claudiodegio.msv.MaterialSearchView>
+                </com.claudiodegio.msv.MaterialSearchView>-->
 
                 <!--<com.miguelcatalan.materialsearchview.MaterialSearchView
                     android:id="@+id/ed_query"
@@ -346,10 +346,10 @@
                     android:id="@+id/tab_chat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableTop="@drawable/chat_bubble"
                     android:text="@string/discussions"
                     android:textAlignment="center"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    app:drawableTopCompat="@drawable/chat_bubble" />
 
             </RelativeLayout>
 
@@ -358,21 +358,21 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/ic_category"
                 android:text="@string/categories"
                 android:textAlignment="center"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                app:drawableTopCompat="@drawable/ic_category" />
 
             <TextView
                 android:id="@+id/tab_offre_en_or"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/megaphone_or"
                 android:text="@string/offres_en_or"
                 android:textAlignment="center"
                 android:textSize="12sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:drawableTopCompat="@drawable/megaphone_or" />
 
             <RelativeLayout
                 android:layout_width="0dp"
@@ -393,10 +393,10 @@
                     android:id="@+id/tab_entrepise"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableTop="@drawable/ic_enterprise"
                     android:text="@string/entreprises"
                     android:textAlignment="center"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    app:drawableTopCompat="@drawable/ic_enterprise" />
 
             </RelativeLayout>
 
@@ -406,10 +406,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/shopping_bag"
                 android:text="@string/boutiques"
                 android:textAlignment="center"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                app:drawableTopCompat="@drawable/shopping_bag" />
 
         </LinearLayout>
 

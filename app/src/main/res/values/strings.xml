@@ -87,9 +87,9 @@
     <string name="se_deconnecter">Se déconnecter</string>
     <string name="changer_mot_de_passe">Changer de mot de passe</string>
     <string name="enregistrer">Enregistrer</string>
-    <string name="secteur_d_activite">Secteur d\'activité</string>
-    <string name="numero_de_telephone">Numero de téléphone</string>
-    <string name="prenom">Prénom</string>
+    <string name="secteur_d_activite">Secteur(s) d\'activité(s)</string>
+    <string name="numero_de_telephone">Numero de téléphone / WhatsApp</string>
+    <string name="prenom">Prénom (s)</string>
     <string name="nom">Nom</string>
     <string name="nom_d_utlisateur">Nom d\'utilisateur</string>
     <string name="entrer_un_nom_d_utilisateur_plus_long">Entrer un nom d\'utilisateur plus long</string>
@@ -107,8 +107,8 @@
     <string name="affiche_publicitaire">affiche publicitaire</string>
     <string name="details">Détails</string>
     <string name="nouvelle_annonce">Nouvelle annonce</string>
-    <string name="titre_de_l_annonce">Titre de l\'annonce</string>
-    <string name="description_de_l_annonce">Description de l\'annonce</string>
+    <string name="titre_de_l_annonce">Titre de l\'annonce *</string>
+    <string name="description_de_l_annonce">Description de l\'annonce *</string>
     <string name="publier">Publier</string>
     <string name="publier_annonce">Publier annonce</string>
     <string name="no_de_tel_requis">Numéro de téléphone requis</string>
@@ -119,7 +119,7 @@
     <string name="titre_annonce_requis">Titre de l\'annonce requis</string>
     <string name="publication_en_cours">Publication en cours …</string>
     <string name="error_gif">x or y bound size should be at least %1$dpx and file size should be no more than %2$sM</string>
-    <string name="ajouter_photo">Ajouter photo</string>
+    <string name="ajouter_photo">Ajouter photo *</string>
     <string name="fermer">Fermer</string>
     <string name="fcfa">FCFA</string>
     <string name="image_jointe">image jointe</string>
@@ -160,6 +160,7 @@
     <string name="modifier_les_photos">Modifier les photos</string>
     <string name="aucune_photo">aucune photo</string>
     <string name="annonce_supprimee_avec_succes">L\'annonce a été suprimée avec succès</string>
+    <string name="annonces_supprimees_avec_succes">Les annonces ont été suprimées avec succès</string>
     <string name="confirmation_suppression_annonce">Confirmer la suppression définitive de l\'annonce</string>
     <string name="vous_etes_sur_le_point_de_vous_deconnecter">Vous êtes sur le point de vous déconnecter. Continuer?</string>
     <string name="mot_de_passe_modifie_avec_succes">Mot de passe modifié avec succès</string>
@@ -173,7 +174,7 @@
     <string name="choisir_la_source">Choisir la source</string>
     <string name="numero_de_telephone_requis">Numéro de téléphone requis</string>
     <string name="cet_email_existe_deja">cet email exist déjà</string>
-    <string name="ce_nom_d_utilisateur_existe_deja">Cet nom d\'utilisateur existe deja</string>
+    <string name="ce_nom_d_utilisateur_existe_deja">Ce nom d\'utilisateur existe deja</string>
     <string name="ce_nom_existe_deja">Ce nom existe déjà</string>
     <string name="les_mots_de_passe_ne_se_correspondent_pas">Les mots de passes ne se correspondent pas</string>
     <string name="votre_compte_a_ete_supprime">Votre compte a été supprimé</string>
@@ -249,4 +250,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="espace_emplois">Espace emplois</string>
     <string name="rechercher_dans_recrutements">Rechercher dans recrutements…</string>
+    <string name="supprimer">Supprimer</string>
+    <string name="hors_ligne">Hors ligne</string>
 </resources>

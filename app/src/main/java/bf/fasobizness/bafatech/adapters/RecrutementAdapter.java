@@ -90,7 +90,10 @@ public class RecrutementAdapter extends RecyclerView.Adapter<RecrutementAdapter.
                 } else {
                     ArrayList<Recruit.Recrutement> recrutements = new ArrayList<>();
                     for (Recruit.Recrutement recrutement: mRecrutements) {
-                        if (recrutement.getNom_r().toLowerCase().contains(query)){
+                        if (recrutement.getNom_r().toLowerCase().contains(query) ||
+                                recrutement.getDomaine().toLowerCase().contains(query) ||
+                                recrutement.getDescription().toLowerCase().contains(query)
+                        ){
                             recrutements.add(recrutement);
                         }
                     }

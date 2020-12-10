@@ -89,7 +89,7 @@ public class ActivityForgetPasswd extends AppCompatActivity {
     private void verifyEmail() {
         progressBar.setVisibility(View.VISIBLE);
         final String e = Objects.requireNonNull(email.getEditText()).getText().toString();
-        String url = Constants.HOST_URL + "v1/users/reset-password";
+        String url = Constants.HOST.api_server_url() + "v1/users/reset-password";
         StringRequest request = new StringRequest(Request.Method.POST, url, response -> {
             progressBar.setVisibility(View.GONE);
             try {

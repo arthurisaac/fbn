@@ -237,13 +237,18 @@ public class ActivityDetailsPub extends AppCompatActivity {
         });
 
         List<Advertising.Ads.Affiche> afficheList = ad.getAffiches();
-        for (Advertising.Ads.Affiche affiche : afficheList) {
-            imageList.add(new SlideModel(affiche.getNom()));
-            images.add(affiche.getNom());
+        try {
+            for (Advertising.Ads.Affiche affiche : afficheList) {
+                imageList.add(new SlideModel(affiche.getNom()));
+                images.add(affiche.getNom());
+            }
+            if (imageList.size() == 0) {
+                pager.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        if (imageList.size() == 0) {
-            pager.setVisibility(View.GONE);
-        }
+
         pager.setImageList(imageList, true);
         pager.setItemClickListener(i -> {
             Intent intent = new Intent(this, ActivityFullScreen.class);

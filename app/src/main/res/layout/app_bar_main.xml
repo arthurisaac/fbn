@@ -77,7 +77,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="?actionBarSize"
         android:orientation="vertical"
-        shimmer:shimmer_duration="1200">
+        shimmer:shimmer_duration="1200"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"

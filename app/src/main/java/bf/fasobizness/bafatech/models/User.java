@@ -1,14 +1,20 @@
 package bf.fasobizness.bafatech.models;
 
 import com.google.gson.annotations.SerializedName;
+import com.stfalcon.chatkit.commons.models.IUser;
 
-public class User {
+public class User implements IUser {
+
+    // private int id;
+    private String name;
+    private String avatar;
+    private boolean online;
 
     @SerializedName("nom")
     private String nom;
 
     @SerializedName("id")
-    private int id;
+    private String id;
 
     @SerializedName("prenom")
     private String prenom;
@@ -87,4 +93,31 @@ public class User {
         return photo;
     }
 
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public boolean isOnline() {
+        return online;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }

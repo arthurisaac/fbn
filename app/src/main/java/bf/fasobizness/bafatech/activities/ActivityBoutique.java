@@ -1,4 +1,4 @@
-package bf.fasobizness.bafatech;
+package bf.fasobizness.bafatech.activities;
 
 import android.os.Bundle;
 
@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import java.util.Objects;
+
+import bf.fasobizness.bafatech.R;
 
 public class ActivityBoutique extends AppCompatActivity {
 

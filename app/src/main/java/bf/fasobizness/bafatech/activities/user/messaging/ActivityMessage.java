@@ -362,6 +362,7 @@ public class ActivityMessage extends AppCompatActivity
                         str_type,
                         discussion_id,
                         0,
+                        null,
                         "Bearer " + sharedManager.getToken()
                 );
             } else {

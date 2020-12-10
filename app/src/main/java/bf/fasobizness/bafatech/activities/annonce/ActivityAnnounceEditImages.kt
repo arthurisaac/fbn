@@ -33,7 +33,6 @@ import bf.fasobizness.bafatech.utils.FileCompressingUtil
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.DexterError
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.nguyenhoanglam.imagepicker.model.Config
@@ -56,7 +55,7 @@ class ActivityAnnounceEditImages : AppCompatActivity(), OnItemListener, UploadCa
     private var illustration: ArrayList<Illustration> = ArrayList()
     private var pictures: ArrayList<Uri> = ArrayList()
 
-    private var id_annonce = ""
+    private var idAnnonce = ""
     private lateinit var adapter: IllustrationEditAdapter
     private lateinit var no_picture: LinearLayout
     private lateinit var progressDoalog: ProgressDialog
@@ -109,7 +108,7 @@ class ActivityAnnounceEditImages : AppCompatActivity(), OnItemListener, UploadCa
         arrayList = annonce.illustrations
         illustration.addAll(arrayList)
         adapter.notifyDataSetChanged()
-        id_annonce = annonce.id_ann
+        idAnnonce = annonce.id_ann
         countPictures()
 
     }
@@ -125,9 +124,9 @@ class ActivityAnnounceEditImages : AppCompatActivity(), OnItemListener, UploadCa
     private fun getAllPictures() {
         images.clear()
         adapter.notifyDataSetChanged()
-        if (id_annonce.isNotEmpty()) {
+        if (idAnnonce.isNotEmpty()) {
             val illustrationInterface = RetrofitClient.getClient().create(IllustrationInterface::class.java)
-            val call = illustrationInterface.getIllustrations(id_annonce)
+            val call = illustrationInterface.getIllustrations(idAnnonce)
             call.enqueue(object : Callback<Annonce?> {
                 override fun onResponse(call: Call<Annonce?>, response: Response<Annonce?>) {
                     if (response.isSuccessful) {
@@ -174,7 +173,7 @@ class ActivityAnnounceEditImages : AppCompatActivity(), OnItemListener, UploadCa
         for (i in images.indices) {
             parts.add(prepareFilePart("image$i", images[i]))
         }
-        val id_ann = createPart(id_annonce)
+        val id_ann = createPart(idAnnonce)
         val size = createPart(parts.size.toString() + "")
         val call = illustrationInterface.uploadPhotos(id_ann, size, parts)
         call.enqueue(object : Callback<ResponseBody?> {
@@ -246,7 +245,7 @@ class ActivityAnnounceEditImages : AppCompatActivity(), OnItemListener, UploadCa
                     override fun onPermissionRationaleShouldBeShown(permissions: List<PermissionRequest>, token: PermissionToken) {
                         token.continuePermissionRequest()
                     }
-                }).withErrorListener { error: DexterError? -> Toast.makeText(applicationContext, "Some Error! ", Toast.LENGTH_SHORT).show() }
+                }).withErrorListener { Toast.makeText(applicationContext, "Some Error! ", Toast.LENGTH_SHORT).show() }
                 .onSameThread()
                 .check()
     }

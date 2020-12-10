@@ -11,6 +11,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -21,6 +22,7 @@ import java.util.Random;
 
 import bf.fasobizness.bafatech.R;
 import bf.fasobizness.bafatech.activities.user.messaging.ActivityMessage;
+import bf.fasobizness.bafatech.activities.user.messaging.DefaultMessagesActivity;
 import bf.fasobizness.bafatech.interfaces.API;
 import bf.fasobizness.bafatech.models.MyResponse;
 import bf.fasobizness.bafatech.utils.MySharedManager;
@@ -30,6 +32,13 @@ import retrofit2.Response;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "MyFirebaseMessaging";
+    private LocalBroadcastManager broadcaster;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        broadcaster = LocalBroadcastManager.getInstance(this);
+    }
 
     public MyFirebaseMessagingService() {
     }
@@ -43,6 +52,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String title = Objects.requireNonNull(remoteMessage.getNotification()).getTitle();
             String body = Objects.requireNonNull(remoteMessage.getNotification()).getBody();
             showNotification(title, body, remoteMessage.getData());
+            Intent intent = new Intent("MyData");
+            intent.putExtra("body", remoteMessage.getNotification().getBody());
+            intent.putExtra("msg", remoteMessage.getData().get("msg"));
+            broadcaster.sendBroadcast(intent);
         }
 
         if (remoteMessage.getNotification() != null) {
@@ -53,7 +66,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onNewToken(@NonNull String token) {
-        Log.d(TAG, "Refreshed token: " + token);
+        // Log.d(TAG, "Refreshed token: " + token);
         sendRegistrationToServer(token);
     }
 
@@ -103,8 +116,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentText(body);
 
         if (data.get("discussion_id") != null) {
-            Intent i = new Intent(this, ActivityMessage.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            Intent i = new Intent(this, DefaultMessagesActivity.class);
+            // i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             i.putExtra("discussion_id", data.get("discussion_id"));
             i.putExtra("receiver_id", data.get("receiver_id"));
             PendingIntent contentIntent = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);

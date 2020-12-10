@@ -36,6 +36,7 @@ import java.util.Objects;
 import bf.fasobizness.bafatech.R;
 import bf.fasobizness.bafatech.activities.ActivityFullScreen;
 import bf.fasobizness.bafatech.activities.user.messaging.ActivityMessage;
+import bf.fasobizness.bafatech.activities.user.messaging.DefaultMessagesActivity;
 import bf.fasobizness.bafatech.fragments.FragmentNotConnected;
 import bf.fasobizness.bafatech.fragments.FragmentSignaler;
 import bf.fasobizness.bafatech.helper.RetrofitClient;
@@ -72,6 +73,7 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
     private TextView txt_date_pub;
     // private ImageView iv_affiche;
     private ImageView txt_photo_util;
+    private TextView txt_vue;
     private LinearLayout ann, layout_no_annonce, loading_indicator_ann, layout_ent_offline, layout_busy_system;
     private RelativeLayout see_more_annonce;
     private String fav;
@@ -110,6 +112,7 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
         txt_tel = findViewById(R.id.txt_tel_annonce);
         txt_location = findViewById(R.id.txt_location_annonce);
         txt_nom = findViewById(R.id.txt_username_ann);
+        txt_vue = findViewById(R.id.txt_vue);
         txt_categorie = findViewById(R.id.txt_categorie_annonce);
         send_message = findViewById(R.id.send_direct_message);
         btn_share = findViewById(R.id.btn_share);
@@ -274,6 +277,9 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
         String dt_str = getString(R.string.publie_le, annonce.getDate_pub());
         txt_date_pub.setText(dt_str);
 
+        String _txt_vue = getString(R.string._vues, annonce.getVue());
+        txt_vue.setText(_txt_vue);
+
         if (annonce.getCategorie() == null || annonce.getCategorie().isEmpty()) {
             txt_categorie.setText(R.string.aucune_categorie_renseignee);
         } else {
@@ -336,7 +342,7 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
             }
 
         }
-        if (annonce.getEmail().length() == 0) {
+        /*if (annonce.getEmail().length() == 0) {
             txt_email.setVisibility(View.GONE);
         } else {
             try {
@@ -344,7 +350,7 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+        }*/
         if (annonce.getPrix().length() == 0) {
             txt_prix.setText(R.string.prix_sur_demande);
         }
@@ -476,7 +482,7 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
                         if (response.body() != null) {
                             discussion_id = response.body().getId();
 
-                            Intent intent = new Intent(getApplicationContext(), ActivityMessage.class);
+                            Intent intent = new Intent(getApplicationContext(), DefaultMessagesActivity.class);
                             intent.putExtra("discussion_id", String.valueOf(discussion_id));
                             intent.putExtra("receiver_id", receiver_id);
                             intent.putExtra("id_ann", id_ann);

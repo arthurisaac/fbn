@@ -50,6 +50,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <com.zhpan.bannerview.BannerViewPager
+            android:id="@+id/banner_view"
+            android:layout_width="match_parent"
+            android:layout_margin="10dp"
+            android:layout_height="160dp"
+            android:visibility="gone"/>
+
         <com.denzcoskun.imageslider.ImageSlider
             android:id="@+id/flipper"
             android:layout_width="match_parent"

@@ -151,9 +151,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:drawableStart="@drawable/ic_email"
                     android:drawablePadding="10dp"
-                    android:textColor="@color/colorPrimaryDark" />
+                    android:visibility="gone"
+                    android:textColor="@color/colorPrimaryDark"
+                    app:drawableStartCompat="@drawable/ic_email" />
 
                 <TextView
                     android:id="@+id/txt_tel_annonce"
@@ -162,8 +163,8 @@
                     android:layout_marginBottom="10dp"
                     android:autoLink="phone"
                     android:drawablePadding="10dp"
-                    android:drawableStart="@drawable/ic_phone"
-                    android:textColor="@color/colorPrimaryDark" />
+                    android:textColor="@color/colorPrimaryDark"
+                    app:drawableStartCompat="@drawable/ic_phone" />
 
                 <TextView
                     android:id="@+id/txt_tel1_annonce"
@@ -172,8 +173,8 @@
                     android:layout_marginBottom="10dp"
                     android:autoLink="phone"
                     android:drawablePadding="10dp"
-                    android:drawableStart="@drawable/ic_phone"
-                    android:textColor="@color/colorPrimaryDark" />
+                    android:textColor="@color/colorPrimaryDark"
+                    app:drawableStartCompat="@drawable/ic_phone" />
 
                 <TextView
                     android:id="@+id/txt_tel2_annonce"
@@ -182,24 +183,24 @@
                     android:layout_marginBottom="10dp"
                     android:autoLink="phone"
                     android:drawablePadding="10dp"
-                    android:drawableStart="@drawable/ic_phone"
-                    android:textColor="@color/colorPrimaryDark" />
+                    android:textColor="@color/colorPrimaryDark"
+                    app:drawableStartCompat="@drawable/ic_phone" />
 
                 <TextView
                     android:id="@+id/txt_location_annonce"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:drawableStart="@drawable/ic_location_on_black"
-                    android:drawablePadding="10dp" />
+                    android:drawablePadding="10dp"
+                    app:drawableStartCompat="@drawable/ic_location_on_black" />
 
                 <TextView
                     android:id="@+id/txt_categorie_annonce"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:drawableStart="@drawable/ic_category"
-                    android:drawablePadding="10dp" />
+                    android:drawablePadding="10dp"
+                    app:drawableStartCompat="@drawable/ic_category" />
 
             </LinearLayout>
 
@@ -235,6 +236,7 @@
                     android:background="@color/colorPrimaryDark" />
 
                 <TextView
+                    android:id="@+id/txt_vue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6sp"

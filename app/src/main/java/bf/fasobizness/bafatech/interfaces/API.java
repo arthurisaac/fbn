@@ -80,6 +80,17 @@ public interface API {
             @Path("id") String id,
             @Header("Authorization") String auth);
 
+
+    @Multipart
+    @POST("v1/users/avatar")
+    Call<ResponseBody> uploadPhotos(
+            @Part("user") RequestBody user,
+            @Part List<MultipartBody.Part> files
+    );
+
+    @DELETE("v1/users/avatar/{id}")
+    Call<ResponseBody> removePhoto(@Path("id") String id);
+
     /*
      * Announces
      */
@@ -244,6 +255,7 @@ public interface API {
             @Field("type") String type,
             @Field("discussion_id") String discussion_id,
             @Field("size") int size,
+            @Field("created_at") String created_at,
             @Header("Authorization") String auth);
 
     @FormUrlEncoded

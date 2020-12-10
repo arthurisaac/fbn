@@ -97,12 +97,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
             messageHolder.imageView.setVisibility(View.GONE);
             messageHolder.message.setText(messages.getMessage());
             messageHolder.timestamp.setText(getTimeStamp(messages.getCreated_at()));
-
-            if (messages.getIsread_receiver().equals("1")) {
-                messageHolder.readView.setText("lu");
-            } else {
-                messageHolder.readView.setText("envoyé");
-            }
         }
     }
 

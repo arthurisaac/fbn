@@ -13,7 +13,7 @@ android {
         applicationId "bf.fasobizness.bafatech"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 169
+        versionCode 171
         versionName "2.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -35,8 +35,8 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'androidx.navigation:navigation-fragment:2.3.1'
-    implementation 'androidx.navigation:navigation-ui:2.3.1'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.2'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.2'
     implementation 'com.google.firebase:firebase-messaging:21.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     testImplementation 'junit:junit:4.13.1'
@@ -53,11 +53,15 @@ dependencies {
     implementation 'com.zhihu.android:matisse:0.5.3-beta3'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.airbnb.android:lottie:3.0.7'
+    implementation 'com.airbnb.android:lottie:3.4.1'
     implementation 'com.github.shts:StoriesProgressView:3.0.0'
     implementation 'com.github.florent37:expansionpanel:1.2.2'
     implementation 'com.github.denzcoskun:ImageSlideshow:0.0.6'
     implementation 'com.auth0.android:jwtdecode:1.4.0'
     implementation 'com.github.nguyenhoanglam:ImagePicker:1.4.3'
-    implementation 'com.github.claudiodegio:MsvSearch:1.0.0'
+    implementation 'com.github.zhpanvip:BannerViewPager:3.2.0'
+    implementation 'com.github.stfalcon:chatkit:0.3.3'
+
+    implementation 'com.google.firebase:firebase-config-ktx:20.0.2'
+    implementation 'com.google.firebase:firebase-analytics-ktx:18.0.0'
 }

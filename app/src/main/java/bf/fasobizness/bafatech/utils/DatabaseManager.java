@@ -5,10 +5,19 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import bf.fasobizness.bafatech.models.Message;
 import bf.fasobizness.bafatech.models.Recruit;
+import bf.fasobizness.bafatech.models.User;
 
 public class DatabaseManager extends SQLiteOpenHelper {
 
@@ -45,14 +54,46 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 + ")";
         db.execSQL(query_recruit_attachment);
 
+        String query_messages = "CREATE TABLE messages ("
+                + " message_id integer PRIMARY KEY autoincrement,"
+                + " message text,"
+                + " created_at varchar(255),"
+                + " etat integer,"
+                + " discussion_id integer,"
+                + " isread integer,"
+                + " type varchar(255),"
+                + " is_deleted integer,"
+                + " sender integer,"
+                + " annonce integer,"
+                + " titre varchar(255),"
+                + " affiche varchar(255),"
+                + " id_ann interger,"
+                + " user varchar(255)"
+                + ")";
+        db.execSQL(query_messages);
+
+        String query_message = "CREATE TABLE message ("
+                + " discussion_id integer PRIMARY KEY autoincrement,"
+                + " user text,"
+                + " id_ann integer,"
+                + " annonce integer,"
+                + " titre varchar(255),"
+                + " affiche varchar(255)"
+                + ")";
+        db.execSQL(query_message);
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         String query_recrutement = "DROP TABLE recrutements";
         String query_recrutement_attachment = "DROP TABLE recrutements";
+        String query_messages = "DROP TABLE messages";
+        String query_discussions = "DROP TABLE discussion";
         db.execSQL(query_recrutement);
         db.execSQL(query_recrutement_attachment);
+        db.execSQL(query_discussions);
+        db.execSQL(query_messages);
 
         this.onCreate(db);
     }
@@ -86,6 +127,35 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 + "(\"" + nom + "\", \"" + thumbnail + "\", '" + id_rec_fk + "' )";
         this.getWritableDatabase().execSQL(query);
     }
+
+    public void insertMessages(
+            String message_id,
+            String message,
+            String created_at,
+            String etat,
+            String discussion_id,
+            String type,
+            String sender
+    ) {
+        String query = "INSERT INTO messages (message_id, message, created_at, etat, discussion_id, type, sender) VALUES "
+                + "(\"" + message_id + "\", \"" + message + "\", '" + created_at + "', '" + etat + "', '" + discussion_id + "', '" + type + "', '" + sender + "' )";
+        this.getWritableDatabase().execSQL(query);
+    }
+
+    public void insertMessage(
+            String discussion_id,
+            String user,
+            String id_ann,
+            int annonce,
+            String titre,
+            String affiche
+    ) {
+        String query = "INSERT INTO message (discussion_id, user, id_ann, annonce, titre, affiche) VALUES "
+                + "(\"" + discussion_id + "\", '" + user + "'" +
+                ", '" + id_ann + "', " + annonce + ", \"" + titre + "\", \"" + affiche + "\" )";
+        this.getWritableDatabase().execSQL(query);
+    }
+
 
     public List<Recruit.Recrutement> getRecruits() {
         List<Recruit.Recrutement> recrutements = new ArrayList<>();
@@ -133,10 +203,103 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return affiches;
     }
 
+    public List<Message.Messages> getMessages(String discussion_id) {
+        List<Message.Messages> messages = new ArrayList<>();
+        String query = "SELECT * FROM messages WHERE discussion_id = ?";
+        Cursor cursor = this.getReadableDatabase().rawQuery(query, new String[]{discussion_id});
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Message.Messages message = new Message.Messages();
+            message.setMessage_id(cursor.getString(0));
+            message.setMessage(cursor.getString(1));
+            message.setCreated_at(cursor.getString(2));
+            message.setEtat(cursor.getString(3));
+            message.setDiscussion_id(cursor.getString(4));
+            message.setIsread(cursor.getString(5));
+            message.setType(cursor.getString(6));
+            message.setIs_deleted(cursor.getString(7));
+            message.setSender(cursor.getString(8));
+
+            messages.add(message);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return messages;
+    }
+
+    public List<Message.Messages> getPendingMessages() {
+        List<Message.Messages> messages = new ArrayList<>();
+        String query = "SELECT * FROM messages WHERE etat = 1";
+        Cursor cursor = this.getReadableDatabase().rawQuery(query, new String[]{"1"});
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Message.Messages message = new Message.Messages();
+            message.setMessage_id(cursor.getString(0));
+            message.setMessage(cursor.getString(1));
+            message.setCreated_at(cursor.getString(2));
+            message.setEtat(cursor.getString(3));
+            message.setDiscussion_id(cursor.getString(4));
+            message.setIsread(cursor.getString(5));
+            message.setType(cursor.getString(6));
+            message.setIs_deleted(cursor.getString(7));
+            message.setSender(cursor.getString(8));
+
+            messages.add(message);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return messages;
+    }
+
+    public void setSentMessages(String message_id) {
+        List<Message.Messages> messages = new ArrayList<>();
+        String query = "UPDATE messages SET etat = '2' WHERE message_id = '"+message_id+"' ";
+        this.getWritableDatabase().execSQL(query);
+    }
+
+    public Message getMessage(String discussion_id) {
+        String query = "SELECT * FROM message WHERE discussion_id = ?";
+        Cursor cursor = this.getReadableDatabase().rawQuery(query, new String[]{discussion_id});
+        cursor.moveToFirst();
+        Message message = new Message();
+        while (!cursor.isAfterLast()) {
+            String user = cursor.getString(1);
+            User user1 = new User();
+            try {
+                JSONObject object = new JSONObject(user);
+                user1.setUsername(object.getString("username"));
+                user1.setPhoto(object.getString("photo"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            message.setUser(user1);
+            message.setId_ann(cursor.getString(2));
+            boolean isAnnonce = false;
+            if (cursor.getInt(3) == 1) isAnnonce = true;
+            message.setAnnonce(isAnnonce);
+            message.setTitre(cursor.getString(4));
+            message.setAffiche(cursor.getString(5));
+
+            cursor.close();
+            cursor.moveToNext();
+        }
+        return message;
+    }
+
     public void truncateRecruits() {
         String query = "DELETE FROM recrutements";
         String query_attachment = "DELETE FROM affiche_rec";
         this.getWritableDatabase().execSQL(query);
         this.getWritableDatabase().execSQL(query_attachment);
+    }
+
+    public void truncateMessages() {
+        String query = "DELETE FROM messages";
+        this.getWritableDatabase().execSQL(query);
+    }
+
+    public void truncateMessage() {
+        String query = "DELETE FROM message";
+        this.getWritableDatabase().execSQL(query);
     }
 }

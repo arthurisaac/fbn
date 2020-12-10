@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import bf.fasobizness.bafatech.activities.ActivityBoutique;
 import bf.fasobizness.bafatech.activities.ActivityDetailsPub;
 import bf.fasobizness.bafatech.activities.ActivityInfos;
 import bf.fasobizness.bafatech.activities.ActivityPromouvoirAnnonces;
@@ -61,12 +62,14 @@ import bf.fasobizness.bafatech.activities.user.ActivityProfile;
 import bf.fasobizness.bafatech.activities.user.LoginActivity;
 import bf.fasobizness.bafatech.activities.user.messaging.ActivityDiscussions;
 import bf.fasobizness.bafatech.activities.user.messaging.ActivityMessage;
+import bf.fasobizness.bafatech.activities.user.messaging.DefaultMessagesActivity;
 import bf.fasobizness.bafatech.adapters.AnnounceAdapter;
 import bf.fasobizness.bafatech.fragments.FragmentNotConnected;
 import bf.fasobizness.bafatech.helper.RetrofitClient;
 import bf.fasobizness.bafatech.interfaces.API;
 import bf.fasobizness.bafatech.interfaces.OnAnnonceListener;
 import bf.fasobizness.bafatech.interfaces.OnImageListener;
+import bf.fasobizness.bafatech.interfaces.OnLongItemListener;
 import bf.fasobizness.bafatech.models.Advertising;
 import bf.fasobizness.bafatech.models.Announce;
 import bf.fasobizness.bafatech.models.MyResponse;
@@ -78,7 +81,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        OnAnnonceListener, OnImageListener {
+        OnAnnonceListener, OnImageListener, OnLongItemListener {
 
     private final String TAG = "MainActivity";
     private DrawerLayout drawer;
@@ -115,7 +118,7 @@ public class MainActivity extends AppCompatActivity
             if (getIntent().getStringExtra("discussion_id") != null) {
                 String receiver_id = getIntent().getStringExtra("receiver_id");
                 String discussion_id = getIntent().getStringExtra("discussion_id");
-                Intent intent = new Intent(this, ActivityMessage.class);
+                Intent intent = new Intent(this, DefaultMessagesActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.putExtra("discussion_id", discussion_id);
                 intent.putExtra("receiver_id", receiver_id);
@@ -355,6 +358,7 @@ public class MainActivity extends AppCompatActivity
         mAnnonceAdapter = new AnnounceAdapter(MainActivity.this, mAnnonces);
         mRecyclerView.setAdapter(mAnnonceAdapter);
         mAnnonceAdapter.setOnItemListener(this);
+        mAnnonceAdapter.setOnLongItemListener(this);
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -643,7 +647,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void ads() {
-
         Call<Advertising> call = api.getAds();
         call.enqueue(new Callback<Advertising>() {
             @Override
@@ -681,13 +684,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onAnnonceClicked(int position) {
-
         Announce.Annonce annonce = mAnnonces.get(position);
         Intent intent = new Intent(this, ActivityDetailsAnnonce.class);
         intent.putExtra("id_ann", annonce.getId_ann());
         intent.putExtra("affiche", annonce.getAffiche());
         startActivity(intent);
-
     }
 
     @Override
@@ -712,5 +713,10 @@ public class MainActivity extends AppCompatActivity
         intent.putExtra("lien", advertising1.getLien());
         intent.putExtra("description", advertising1.getDescription());
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onLongItemClicked(int position) {
+        return false;
     }
 }

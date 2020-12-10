@@ -136,7 +136,7 @@ public class FragmentPasswordUpdate extends AppCompatDialogFragment {
         btn_update.setEnabled(false);
         btn_update.setText(R.string.chargement_en_cours);
 
-        String url = Constants.HOST_URL + "v1/users/password/update";
+        String url = Constants.HOST.api_server_url() + "v1/users/password/update";
         StringRequest request = new StringRequest(Request.Method.POST, url,
                 response -> {
                     btn_update.setText(R.string.mettre_a_jour);

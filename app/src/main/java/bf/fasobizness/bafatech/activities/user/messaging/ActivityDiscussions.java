@@ -14,6 +14,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -25,6 +27,8 @@ import bf.fasobizness.bafatech.helper.RetrofitClient;
 import bf.fasobizness.bafatech.interfaces.API;
 import bf.fasobizness.bafatech.interfaces.OnItemListener;
 import bf.fasobizness.bafatech.models.Discussion;
+import bf.fasobizness.bafatech.models.Message;
+import bf.fasobizness.bafatech.utils.DatabaseManager;
 import bf.fasobizness.bafatech.utils.MySharedManager;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,6 +44,7 @@ public class ActivityDiscussions extends AppCompatActivity
     private LinearLayout layout_ent_offline;
     private LinearLayout loading_indicator;
     private API api;
+    private DatabaseManager databaseManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +84,7 @@ public class ActivityDiscussions extends AppCompatActivity
         MySharedManager sharedManager = new MySharedManager(ActivityDiscussions.this);
         String user = sharedManager.getUser();
         token = "Bearer " + sharedManager.getToken();
+        databaseManager = new DatabaseManager(this);
 
         if (user.isEmpty()) {
             startActivity(new Intent(ActivityDiscussions.this, LoginActivity.class));
@@ -107,6 +113,43 @@ public class ActivityDiscussions extends AppCompatActivity
                     }
                     if (discussion != null) {
                         mDiscussion.addAll(discussions);
+                        databaseManager.truncateMessages();
+                        databaseManager.truncateMessage();
+
+                        for (Discussion.Discussions discuss : discussions) {
+                            List<Message.Messages> messages = discuss.getMessages();
+                            /*
+                             * Ajout des messages dans la bd
+                             */
+                            for (Message.Messages messages1: messages) {
+                                databaseManager.insertMessages(
+                                        messages1.getMessage_id(),
+                                        messages1.getMessage(),
+                                        messages1.getCreated_at(),
+                                        messages1.getEtat(),
+                                        messages1.getDiscussion_id(),
+                                        messages1.getType(),
+                                        messages1.getSender()
+                                );
+                            }
+
+                            /*
+                             * Ajout des informations suplementaire des messages
+                             */
+                            Gson gson = new Gson();
+                            String json = gson.toJson(discuss.getUser());
+                            int isAnnonce = 0;
+                            if (discuss.isAnnonce()) isAnnonce = 1;
+
+                            databaseManager.insertMessage(
+                                    discuss.getDiscussion_id(),
+                                    json,
+                                    discuss.getId_ann(),
+                                    isAnnonce,
+                                    discuss.getTitre(),
+                                    discuss.getAffiche()
+                            );
+                        }
                     }
 
                     if (mDiscussion.size() == 0) no_message.setVisibility(View.VISIBLE);
@@ -127,56 +170,6 @@ public class ActivityDiscussions extends AppCompatActivity
 
             }
         });
-
-        /*StringRequest request = new StringRequest(Request.Method.POST, url,
-                response -> {
-                    loading_indicator.setVisibility(View.GONE);
-                    //Log.v(TAG, response);
-                    try {
-                        JSONObject jsonObject = new JSONObject(response);
-                        JSONArray jsonArray = jsonObject.getJSONArray("data");
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject data = jsonArray.getJSONObject(i);
-                            Discussion discussion = new Discussion();
-                            discussion.setTitre(data.getString("titre"));
-                            discussion.setMessage(data.getString("message"));
-                            discussion.setDiscussion_id(data.getString("discussion_id"));
-                            discussion.setReceiver_id(data.getString("receiver_id"));
-                            discussion.setNom(data.getString("nom"));
-                            discussion.setId_ann(data.getString("id_ann"));
-                            discussion.setId_user( data.getString("id_user"));
-                            discussion.setReceiver_id( data.getString("receiver_id"));
-                            discussion.setCount( data.getInt("read"));
-                            discussion.setTimestamp(data.getString("created_at"));
-                            mDiscussion.add(discussion);
-                        }
-                        if (mDiscussion.size() == 0) no_message.setVisibility(View.VISIBLE);
-
-                        discussionAdapter.notifyDataSetChanged();
-                        discussionAdapter.setOnItemListener(ActivityDiscussions.this);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        layout_busy_system.setVisibility(View.VISIBLE);
-                    }
-                }, error -> {
-            Log.v(TAG, error.toString());
-            layout_ent_offline.setVisibility(View.VISIBLE);
-            no_message.setVisibility(View.GONE);
-            loading_indicator.setVisibility(View.GONE);
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("id", id);
-                return params;
-            }
-        };
-        request.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 40,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES * 4,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT * 2)
-        );
-        requestQueue.add(request);*/
     }
 
     @Override
@@ -190,7 +183,8 @@ public class ActivityDiscussions extends AppCompatActivity
         mDiscussion.add(index, discussion);
         discussionAdapter.notifyDataSetChanged();
 
-        Intent intent = new Intent(ActivityDiscussions.this, ActivityMessage.class);
+        // Intent intent = new Intent(ActivityDiscussions.this, ActivityMessage.class);
+        Intent intent = new Intent(ActivityDiscussions.this, DefaultMessagesActivity.class);
         //String receiver = null;
         /*if (discussion.getReceiver_id().equals(user)) {
             receiver = discussion.getId_user();

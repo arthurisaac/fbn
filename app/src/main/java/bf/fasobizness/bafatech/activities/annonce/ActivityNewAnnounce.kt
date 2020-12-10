@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -16,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import bf.fasobizness.bafatech.R
 import bf.fasobizness.bafatech.activities.user.LoginActivity
-import bf.fasobizness.bafatech.adapters.UriAdapter
+import bf.fasobizness.bafatech.adapters.AnnoncePhotosAdapter
 import bf.fasobizness.bafatech.helper.ProgressRequestBody
 import bf.fasobizness.bafatech.helper.RetrofitClient
 import bf.fasobizness.bafatech.interfaces.API
@@ -47,32 +46,32 @@ import java.util.*
 
 class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks {
     private var tag = "ActivtyAnnonce"
-    private var images: ArrayList<Image>? = null
-    private var pictures: ArrayList<Uri>? = null
+    private var images: ArrayList<Image> = ArrayList()
+    // private var pictures: ArrayList<Uri>? = null
 
-    private lateinit var til_titre_annonce: TextInputLayout
-    private lateinit var til_desc_annonce: TextInputLayout
-    private lateinit var til_tel_annonce: TextInputLayout
-    private lateinit var til_tel1_annonce: TextInputLayout
-    private lateinit var til_tel2_annonce: TextInputLayout
-    private lateinit var sp_categorie: Spinner
-    private lateinit var sp_ville: Spinner
+    private lateinit var tilTitreAnnonce: TextInputLayout
+    private lateinit var tilDescAnnonce: TextInputLayout
+    private lateinit var tilTelAnnonce: TextInputLayout
+    private lateinit var tilTel1Annonce: TextInputLayout
+    private lateinit var tilTel2Annonce: TextInputLayout
+    private lateinit var spCategorie: Spinner
+    private lateinit var spVille: Spinner
 
-    private lateinit var ed_prix: TextInputLayout
-    private lateinit var tv_ville_error: TextView
-    private lateinit var tv_categorie_error: TextView
-    private lateinit var tv_error_no_image: TextView
+    private lateinit var edPrix: TextInputLayout
+    private lateinit var tvVilleError: TextView
+    private lateinit var tvCategorieError: TextView
+    private lateinit var tvErrorNoImage: TextView
     private lateinit var pourcent: TextView
-    private lateinit var btn_publish_offer: Button
+    private lateinit var btnPublishOffer: Button
     private var user: String? = null
     private lateinit var overbox: RelativeLayout
     private lateinit var rlUploadPicture: RelativeLayout
-    private var mAdapter: UriAdapter? = null
-    private var id_annonce_fk = 0
+    private lateinit var mAdapter: AnnoncePhotosAdapter
+    private var idAnnonceFk = 0
 
     private lateinit var progressBar: ProgressBar
-    private lateinit var linear_uploading: LinearLayout
-    private lateinit var linear_succes: LinearLayout
+    private lateinit var linearUploading: LinearLayout
+    private lateinit var linearSucces: LinearLayout
     private var api: API? = null
     private lateinit var sharedManager: MySharedManager
 
@@ -99,26 +98,26 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
          */
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         pourcent = findViewById(R.id.pourcent)
-        ed_prix = findViewById(R.id.ed_prix_annonce)
-        val btn_close_overbox = findViewById<Button>(R.id.btn_close_overbox)
-        til_titre_annonce = findViewById(R.id.til_titre_annonce)
-        til_desc_annonce = findViewById(R.id.til_description_annonce)
-        til_tel_annonce = findViewById(R.id.til_tel_annonce)
-        til_tel1_annonce = findViewById(R.id.til_tel1_annonce)
-        til_tel2_annonce = findViewById(R.id.til_tel2_annonce)
-        sp_categorie = findViewById(R.id.sp_categorie_annonce)
-        sp_ville = findViewById(R.id.sp_ville_annonce)
+        edPrix = findViewById(R.id.ed_prix_annonce)
+        val btnCloseOverbox = findViewById<Button>(R.id.btn_close_overbox)
+        tilTitreAnnonce = findViewById(R.id.til_titre_annonce)
+        tilDescAnnonce = findViewById(R.id.til_description_annonce)
+        tilTelAnnonce = findViewById(R.id.til_tel_annonce)
+        tilTel1Annonce = findViewById(R.id.til_tel1_annonce)
+        tilTel2Annonce = findViewById(R.id.til_tel2_annonce)
+        spCategorie = findViewById(R.id.sp_categorie_annonce)
+        spVille = findViewById(R.id.sp_ville_annonce)
         overbox = findViewById(R.id.overbox)
         rlUploadPicture = findViewById(R.id.rl_upload_picture)
 
 
-        tv_ville_error = findViewById(R.id.tv_error_ville)
-        tv_categorie_error = findViewById(R.id.tv_error_catégorie)
-        tv_error_no_image = findViewById(R.id.tv_error_no_image)
+        tvVilleError = findViewById(R.id.tv_error_ville)
+        tvCategorieError = findViewById(R.id.tv_error_catégorie)
+        tvErrorNoImage = findViewById(R.id.tv_error_no_image)
         progressBar = findViewById(R.id.progress_bar)
-        linear_uploading = findViewById(R.id.linear_uploading)
-        linear_succes = findViewById(R.id.linear_succes)
-        btn_publish_offer = findViewById(R.id.btn_publish)
+        linearUploading = findViewById(R.id.linear_uploading)
+        linearSucces = findViewById(R.id.linear_succes)
+        btnPublishOffer = findViewById(R.id.btn_publish)
 
 
         /*
@@ -127,8 +126,6 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
         api = RetrofitClient.getClient().create(API::class.java)
         sharedManager = MySharedManager(this)
 
-        images = ArrayList()
-        pictures = ArrayList()
         toolbar.title = getString(R.string.nouvelle_annonce)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -138,51 +135,52 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
         overbox.visibility = View.GONE
         rlUploadPicture.visibility = View.GONE
 
-        sp_ville.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, resources.getStringArray(R.array.villes))
-        sp_categorie.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, resources.getStringArray(R.array.categories))
+        spVille.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, resources.getStringArray(R.array.villes))
+        spCategorie.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, resources.getStringArray(R.array.categories))
 
-        btn_publish_offer.setOnClickListener {
+        btnPublishOffer.setOnClickListener {
             if (!checkTitreInput() or !checkDescInput() or !checkTelInput() or !checkVilleInput() or !checkCatInput() or !checkImage()) {
                 return@setOnClickListener
             }
             publierAnnonce()
         }
-        btn_close_overbox.setOnClickListener { finish() }
+        btnCloseOverbox.setOnClickListener { finish() }
 
+        mAdapter = AnnoncePhotosAdapter(this, images)
         val recyclerView = findViewById<RecyclerView>(R.id.file_list)
         recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
-        recyclerView.adapter = UriAdapter(this, pictures).also { mAdapter = it }
+        recyclerView.adapter = mAdapter
         recyclerView.setHasFixedSize(true)
-        mAdapter?.setOnItemListener(this)
+        mAdapter.setOnItemListener(this)
 
         user = sharedManager.user
 
         if (sharedManager.tel.isNotEmpty()) {
-            til_tel_annonce.editText?.setText(sharedManager.tel)
+            tilTelAnnonce.editText?.setText(sharedManager.tel)
         }
         if (sharedManager.tel1.isNotEmpty()) {
-            til_tel1_annonce.editText?.setText(sharedManager.tel1)
+            tilTel1Annonce.editText?.setText(sharedManager.tel1)
         }
         if (sharedManager.tel2.isNotEmpty()) {
-            til_tel2_annonce.editText?.setText(sharedManager.tel2)
+            tilTel2Annonce.editText?.setText(sharedManager.tel2)
         }
         if (sharedManager.ville.isNotEmpty()) {
-            for (i in 0 until sp_ville.adapter.count) {
-                if (sp_ville.adapter.getItem(i).toString().contains(sharedManager.ville)) {
-                    sp_ville.setSelection(i)
+            for (i in 0 until spVille.adapter.count) {
+                if (spVille.adapter.getItem(i).toString().contains(sharedManager.ville)) {
+                    spVille.setSelection(i)
                 }
             }
         }
         if (sharedManager.categorie.isNotEmpty()) {
-            for (i in 0 until sp_categorie.adapter.count) {
-                if (sp_categorie.adapter.getItem(i).toString().contains(sharedManager.categorie)) {
-                    sp_categorie.setSelection(i)
+            for (i in 0 until spCategorie.adapter.count) {
+                if (spCategorie.adapter.getItem(i).toString().contains(sharedManager.categorie)) {
+                    spCategorie.setSelection(i)
                 }
             }
         }
 
         val btnAddPicturesAnnounce = findViewById<Button>(R.id.btn_add_pictures_annonce)
-        btnAddPicturesAnnounce.setOnClickListener { v: View? -> requestMultiplePermissions() }
+        btnAddPicturesAnnounce.setOnClickListener { requestMultiplePermissions() }
     }
 
     private fun requestMultiplePermissions() {
@@ -210,9 +208,9 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
     private fun showChooser() {
         ImagePicker.with(this)
                 .setFolderMode(true)
-                .setFolderTitle("Album")
+                .setFolderTitle("Photos")
                 .setRootDirectoryName(Config.ROOT_DIR_DCIM)
-                .setDirectoryName("Image Picker")
+                .setDirectoryName("Faso Biz Ness")
                 .setMultipleMode(true)
                 .setShowNumberIndicator(true)
                 .setMaxSize(10)
@@ -224,9 +222,12 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (ImagePicker.shouldHandleResult(requestCode, resultCode, data, 100)) {
-            images = ImagePicker.getImages(data)
-            val photos = ImagePicker.getImages(data)
-            for (photo in photos) {
+            // images = ImagePicker.getImages(data)
+            images.clear()
+            images.addAll(ImagePicker.getImages(data))
+            mAdapter.notifyDataSetChanged()
+            /*val photos = ImagePicker.getImages(data)
+            for (photon photos) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     // path
                     pictures!!.add(photo.uri)
@@ -235,24 +236,24 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
                     Log.d(tag, photo.path)
                 }
 
-            }
+            }*/
         }
-        super.onActivityResult(requestCode, resultCode, data)   // This line is REQUIRED in fragment mode
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun checkTitreInput(): Boolean {
-        val titreInput = til_titre_annonce.editText!!.text.toString().trim { it <= ' ' }
+        val titreInput = tilTitreAnnonce.editText!!.text.toString().trim { it <= ' ' }
         return when {
             titreInput.isEmpty() -> {
-                til_titre_annonce.error = getString(R.string.titre_annonce_requis)
+                tilTitreAnnonce.error = getString(R.string.titre_annonce_requis)
                 false
             }
             titreInput.length > 35 -> {
-                til_titre_annonce.error = getString(R.string.titre_annonce_trop_long)
+                tilTitreAnnonce.error = getString(R.string.titre_annonce_trop_long)
                 false
             }
             else -> {
-                til_titre_annonce.error = null
+                tilTitreAnnonce.error = null
                 true
             }
         }
@@ -260,18 +261,18 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
 
     private fun checkDescInput(): Boolean {
         try {
-            val descInput = til_desc_annonce.editText!!.text.toString().trim { it <= ' ' }
+            val descInput = tilDescAnnonce.editText!!.text.toString().trim { it <= ' ' }
             return when {
                 descInput.isEmpty() -> {
-                    til_desc_annonce.error = getString(R.string.description_annonce_requis)
+                    tilDescAnnonce.error = getString(R.string.description_annonce_requis)
                     false
                 }
                 descInput.length > 600 -> {
-                    til_desc_annonce.error = getString(R.string.description_de_lannonce_trop_longue)
+                    tilDescAnnonce.error = getString(R.string.description_de_lannonce_trop_longue)
                     false
                 }
                 else -> {
-                    til_desc_annonce.error = null
+                    tilDescAnnonce.error = null
                     true
                 }
             }
@@ -283,18 +284,18 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
 
     private fun checkTelInput(): Boolean {
         try {
-            val telInput = til_tel_annonce.editText!!.text.toString().trim { it <= ' ' }
+            val telInput = tilTelAnnonce.editText!!.text.toString().trim { it <= ' ' }
             return when {
                 telInput.isEmpty() -> {
-                    til_tel_annonce.error = getString(R.string.no_de_tel_requis)
+                    tilTelAnnonce.error = getString(R.string.no_de_tel_requis)
                     false
                 }
                 telInput.length > 13 -> {
-                    til_tel_annonce.error = getString(R.string.no_de_tel_invalide)
+                    tilTelAnnonce.error = getString(R.string.no_de_tel_invalide)
                     false
                 }
                 else -> {
-                    til_tel_annonce.error = null
+                    tilTelAnnonce.error = null
                     true
                 }
             }
@@ -305,54 +306,56 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
     }
 
     private fun checkVilleInput(): Boolean {
-        val villeInput = sp_ville.selectedItem.toString()
+        val villeInput = spVille.selectedItem.toString()
         return when {
             villeInput.isEmpty() -> {
-                tv_ville_error.visibility = View.VISIBLE
+                tvVilleError.visibility = View.VISIBLE
                 false
             }
             villeInput == "Choisir ville" -> {
-                tv_ville_error.visibility = View.VISIBLE
+                tvVilleError.visibility = View.VISIBLE
                 false
             }
             else -> {
-                tv_ville_error.visibility = View.GONE
+                tvVilleError.visibility = View.GONE
                 true
             }
         }
     }
 
     private fun checkCatInput(): Boolean {
-        val catInput = sp_categorie.selectedItem.toString()
+        val catInput = spCategorie.selectedItem.toString()
         return when {
             catInput.isEmpty() -> {
-                tv_categorie_error.visibility = View.VISIBLE
+                tvCategorieError.visibility = View.VISIBLE
                 false
             }
             catInput == "Choisir Categorie" -> {
-                tv_categorie_error.visibility = View.VISIBLE
+                tvCategorieError.visibility = View.VISIBLE
                 false
             }
             else -> {
-                tv_categorie_error.visibility = View.GONE
+                tvCategorieError.visibility = View.GONE
                 true
             }
         }
     }
 
     private fun checkImage(): Boolean {
-        return if (images!!.size == 0) {
-            tv_error_no_image.visibility = View.VISIBLE
+        return if (images.size == 0) {
+            tvErrorNoImage.visibility = View.VISIBLE
             false
         } else {
-            tv_error_no_image.visibility = View.GONE
+            tvErrorNoImage.visibility = View.GONE
             true
         }
     }
 
     override fun onItemClicked(position: Int) {
-        mAdapter!!.remove(position)
-        mAdapter!!.notifyItemRemoved(position)
+        //val image = images[position]
+        //images.remove(image)
+        mAdapter.remove(position)
+        mAdapter.notifyItemRemoved(position)
     }
 
     override fun onFinish() {
@@ -373,36 +376,35 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
     }
 
     override fun onError() {
-        btn_publish_offer.isEnabled = true
+        btnPublishOffer.isEnabled = true
         pourcent.text = getString(R.string.pas_d_acces_internet)
     }
 
     private fun publierAnnonce() {
-        // Cacher clavier
         if (currentFocus != null) {
             val inputManager = (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
             inputManager.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
         }
-        btn_publish_offer.isEnabled = false
+        btnPublishOffer.isEnabled = false
         overbox.visibility = View.VISIBLE
         if (user!!.isEmpty()) {
             startActivity(Intent(this, LoginActivity::class.java))
         } else {
-            val titre = til_titre_annonce.editText!!.text.toString().trim { it <= ' ' }
-            val description = til_desc_annonce.editText!!.text.toString()
-            val prix = ed_prix.editText!!.text.toString()
-            val tel = til_tel_annonce.editText!!.text.toString()
-            val tel1 = til_tel1_annonce.editText!!.text.toString()
-            val tel2 = til_tel2_annonce.editText!!.text.toString()
-            val ville = sp_ville.selectedItem.toString()
-            val categorie = sp_categorie.selectedItem.toString()
+            val titre = tilTitreAnnonce.editText!!.text.toString().trim { it <= ' ' }
+            val description = tilDescAnnonce.editText!!.text.toString()
+            val prix = edPrix.editText!!.text.toString()
+            val tel = tilTelAnnonce.editText!!.text.toString()
+            val tel1 = tilTel1Annonce.editText!!.text.toString()
+            val tel2 = tilTel2Annonce.editText!!.text.toString()
+            val ville = spVille.selectedItem.toString()
+            val categorie = spCategorie.selectedItem.toString()
             sharedManager.tel = tel
             sharedManager.tel1 = tel1
             sharedManager.tel2 = tel2
             sharedManager.ville = ville
             sharedManager.categorie = categorie
             val call = api!!.postAnnounce(
-                    id_annonce_fk,
+                    idAnnonceFk,
                     user,
                     description,
                     prix,
@@ -420,22 +422,22 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
                         val status = response.body()!!.status
                         if (!status) {
                             overbox.visibility = View.GONE
-                            btn_publish_offer.isEnabled = true
+                            btnPublishOffer.isEnabled = true
                         } else {
-                            id_annonce_fk = response.body()!!.id
+                            idAnnonceFk = response.body()!!.id
                             uploadPictures()
                         }
                     } catch (e: java.lang.Exception) {
                         e.printStackTrace()
                         overbox.visibility = View.GONE
-                        btn_publish_offer.isEnabled = true
+                        btnPublishOffer.isEnabled = true
                     }
                 }
 
                 override fun onFailure(call: Call<MyResponse?>, t: Throwable) {
                     Log.v(tag, t.toString())
-                    btn_publish_offer.isEnabled = true
-                    btn_publish_offer.setText(R.string.ressayer)
+                    btnPublishOffer.isEnabled = true
+                    btnPublishOffer.setText(R.string.ressayer)
                     overbox.visibility = View.GONE
                 }
             })
@@ -446,26 +448,26 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
         rlUploadPicture.visibility = View.VISIBLE
         val parts: MutableList<MultipartBody.Part> = ArrayList()
         val illustrationInterface = RetrofitClient.getClient().create(IllustrationInterface::class.java)
-        for (i in images!!.indices) {
-            parts.add(prepareFilePart("image$i", images!![i]))
+        for (i in images.indices) {
+            parts.add(prepareFilePart("image$i", images[i]))
         }
-        val id_ann = createPart(id_annonce_fk.toString())
+        val idAnn = createPart(idAnnonceFk.toString())
         val size = createPart(parts.size.toString() + "")
-        val call = illustrationInterface.uploadPhotos(id_ann, size, parts)
+        val call = illustrationInterface.uploadPhotos(idAnn, size, parts)
         call.enqueue(object : Callback<ResponseBody?> {
             override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
                 Log.d(tag, response.toString())
                 if (response.isSuccessful) {
-                    linear_uploading.visibility = View.GONE
-                    linear_succes.visibility = View.VISIBLE
+                    linearUploading.visibility = View.GONE
+                    linearSucces.visibility = View.VISIBLE
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
                 rlUploadPicture.visibility = View.GONE
                 overbox.visibility = View.GONE
-                btn_publish_offer.isEnabled = true
-                btn_publish_offer.setText(R.string.ressayer)
+                btnPublishOffer.isEnabled = true
+                btnPublishOffer.setText(R.string.ressayer)
                 Log.d(tag, t.toString())
             }
         })

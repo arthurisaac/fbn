@@ -50,7 +50,7 @@ public class ActivitySuggestion extends AppCompatActivity {
     }
 
     private void send_suggestion() {
-        String url = Constants.HOST_URL + "v1/suggestions";
+        String url = Constants.HOST.api_server_url() + "v1/suggestions";
         TextInputLayout txt_nom = findViewById(R.id.ed_nom);
         TextInputLayout txt_phone = findViewById(R.id.ed_phone);
         TextInputLayout txt_texte = findViewById(R.id.ed_texte);

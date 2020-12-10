@@ -3,7 +3,7 @@ package bf.fasobizness.bafatech.activities.recrutement;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -12,13 +12,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,26 +23,17 @@ import java.util.Objects;
 
 import bf.fasobizness.bafatech.R;
 import bf.fasobizness.bafatech.adapters.RecrutementAdapter;
-import bf.fasobizness.bafatech.helper.RetrofitClient;
-import bf.fasobizness.bafatech.interfaces.API;
 import bf.fasobizness.bafatech.interfaces.OnItemListener;
 import bf.fasobizness.bafatech.models.Recruit;
 import bf.fasobizness.bafatech.utils.DatabaseManager;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ActivityRecrutementRecherche extends AppCompatActivity
         implements OnItemListener {
-    // private static final String TAG = "ActivityRecherche";
-    private LinearLayout layout_ent_offline, layout_busy_system, layout_no_recruit;
-    private ShimmerFrameLayout mShimmerViewContainer;
+    private LinearLayout layout_no_recruit;
     private RecrutementAdapter mRecrutementAdapter;
     private ArrayList<Recruit.Recrutement> mRecrutements;
-    // private RequestQueue requestQueue;
     private TextView resultats;
     private String query;
-    private DatabaseManager databaseManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +65,6 @@ public class ActivityRecrutementRecherche extends AppCompatActivity
             return handled;
         });
 
-        // requestQueue = Volley.newRequestQueue(this);
         mRecrutements = new ArrayList<>();
         RecyclerView mRecyclerView = findViewById(R.id.recyclerview_recrutements);
         mRecrutementAdapter = new RecrutementAdapter(getApplicationContext(), mRecrutements);
@@ -88,14 +75,11 @@ public class ActivityRecrutementRecherche extends AppCompatActivity
             resultats.setText(R.string.que_recherchez_vous);
         }
 
-        layout_ent_offline = findViewById(R.id.layout_ent_offline);
-        layout_busy_system = findViewById(R.id.layout_busy_system);
         layout_no_recruit = findViewById(R.id.layout_no_recruit);
-        mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
         Button btn_refresh = findViewById(R.id.btn_refresh);
         btn_refresh.setOnClickListener(v -> jsonParse());
 
-        databaseManager = new DatabaseManager(this);
+        DatabaseManager databaseManager = new DatabaseManager(this);
         List<Recruit.Recrutement> recrutementList = databaseManager.getRecruits();
         mRecrutements.addAll(recrutementList);
         mRecrutementAdapter.notifyDataSetChanged();
@@ -104,7 +88,16 @@ public class ActivityRecrutementRecherche extends AppCompatActivity
 
     private void jsonParse() {
         mRecrutementAdapter.getFilter().filter(query);
-        Log.d("Filtering", "Recherche " + query);
+
+        new Handler().postDelayed(() -> {
+            if (mRecrutements.size() == 0) {
+                layout_no_recruit.setVisibility(View.VISIBLE);
+            } else {
+                resultats.setVisibility(View.VISIBLE);
+                String reslt = getString(R.string.resultats, mRecrutementAdapter.getItemCount() + "");
+                resultats.setText(reslt);
+            }
+        }, 200);
     }
 
     /*private void jsonParse() {

@@ -6,7 +6,7 @@
     android:background="@color/colorPrimaryDark"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".ActivitySplash"
+    tools:context=".activities.ActivitySplash"
     tools:ignore="UseCompoundDrawables">
 
     <ImageView

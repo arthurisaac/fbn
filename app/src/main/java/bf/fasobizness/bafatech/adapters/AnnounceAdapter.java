@@ -2,11 +2,16 @@ package bf.fasobizness.bafatech.adapters;
 
 import android.content.Context;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
@@ -17,22 +22,75 @@ import com.bumptech.glide.request.RequestOptions;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import bf.fasobizness.bafatech.R;
 import bf.fasobizness.bafatech.interfaces.OnAnnonceListener;
+import bf.fasobizness.bafatech.interfaces.OnLongItemListener;
 import bf.fasobizness.bafatech.models.Announce;
 
 
-public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.AnnonceHolder> {
+public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.AnnonceHolder> implements Filterable {
 
     final private Context mContext;
     private final ArrayList<Announce.Annonce> mAnnonces;
+    private ArrayList<Announce.Annonce> mAnnoncesFiltre;
+    // private SparseBooleanArray mSelectedItems;
+    private SparseBooleanArray mSelectedItems = new SparseBooleanArray();
     private OnAnnonceListener onAnnonceListener;
+    private OnLongItemListener onLongItemListener;
     private OnBottomReachedListener onBottomReachedListener;
+
+    private boolean mIsInChoiceMode;
+
+    public void switchSelectedState(int position) {
+        if (mSelectedItems.get(position)) {
+            mSelectedItems.delete(position);
+        } else {
+            mSelectedItems.put(position, true);
+        }
+        notifyDataSetChanged();
+    }
+
+    public void clearSelectedStated() {
+        List<Integer> selection = getSelectedItems();
+        mSelectedItems.clear();
+        for (Integer i : selection) {
+            notifyItemChanged(i);
+        }
+    }
+
+    public int getSelectedItemCount() {
+        return mSelectedItems.size();
+    }
+
+    public List<Integer> getSelectedItems() {
+        List<Integer> items = new ArrayList<>(mSelectedItems.size());
+        for (int i = 0; i < mSelectedItems.size(); i++) {
+            items.add(mSelectedItems.keyAt(i));
+        }
+        return items;
+    }
+
+    public void setIsInChoiceMode(boolean isInChoiceMode) {
+        this.mIsInChoiceMode = isInChoiceMode;
+    }
+
+    public boolean getIsInChoiceMode() {
+        return mIsInChoiceMode;
+    }
+
+    public void beginChoiceMode(int position) {
+        // mSelectedItems = new SparseBooleanArray();
+        clearSelectedStated();
+        setIsInChoiceMode(true);
+        switchSelectedState(position);
+    }
 
     public AnnounceAdapter(Context context, ArrayList<Announce.Annonce> annonces) {
         this.mContext = context;
         this.mAnnonces = annonces;
+        this.mAnnoncesFiltre = annonces;
     }
 
     public void setOnBottomReachedListener(OnBottomReachedListener onBottomReachedListener) {
@@ -41,6 +99,10 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.Annonc
 
     public void setOnItemListener(OnAnnonceListener onItemListener) {
         this.onAnnonceListener = onItemListener;
+    }
+
+    public void setOnLongItemListener(OnLongItemListener onLongItemListener) {
+        this.onLongItemListener = onLongItemListener;
     }
 
     @NonNull
@@ -52,7 +114,7 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.Annonc
 
     @Override
     public void onBindViewHolder(@NonNull final AnnonceHolder annonceHolder, int i) {
-        final Announce.Annonce annonce = mAnnonces.get(i);
+        final Announce.Annonce annonce = mAnnoncesFiltre.get(i);
 
         String vip = annonce.getVip();
 
@@ -97,10 +159,19 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.Annonc
             annonceHolder.favoriteView.setImageResource(R.drawable.ic_star_white);
         }
 
+        if (mIsInChoiceMode) {
+            annonceHolder.checkBox.setVisibility(View.VISIBLE);
+            annonceHolder.checkBox.setChecked(mSelectedItems.get(i));
+        } else {
+            annonceHolder.checkBox.setChecked(false);
+            annonceHolder.checkBox.setVisibility(View.GONE);
+        }
 
         // ViewCompat.setTransitionName(annonceHolder.AfficheView, annonce.getId_ann());
 
         annonceHolder.itemView.setOnClickListener(view -> onAnnonceListener.onAnnonceClicked(annonceHolder.getAdapterPosition()));
+        annonceHolder.checkBox.setOnClickListener(view -> onAnnonceListener.onAnnonceClicked(annonceHolder.getAdapterPosition()));
+        annonceHolder.itemView.setOnLongClickListener(view -> onLongItemListener.onLongItemClicked(annonceHolder.getAdapterPosition()));
 
         if (i == mAnnonces.size() - 1) {
             onBottomReachedListener.onBottomReached();
@@ -109,11 +180,44 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.Annonc
 
     @Override
     public int getItemCount() {
-        return mAnnonces.size();
+        return mAnnoncesFiltre.size();
     }
 
     public void clearAll() {
         mAnnonces.clear();
+        mAnnoncesFiltre.clear();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String query = constraint.toString();
+                if (query.isEmpty()) {
+                    mAnnoncesFiltre = mAnnonces;
+                } else {
+                    ArrayList<Announce.Annonce> annonces = new ArrayList<>();
+                    for (Announce.Annonce annonce : mAnnonces) {
+                        if (annonce.getTitre().toLowerCase().contains(query) ||
+                                annonce.getTexte().toLowerCase().contains(query)
+                        ) {
+                            annonces.add(annonce);
+                        }
+                    }
+                    mAnnoncesFiltre = annonces;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = mAnnoncesFiltre;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                mAnnoncesFiltre = (ArrayList<Announce.Annonce>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public interface OnBottomReachedListener {
@@ -122,7 +226,7 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.Annonc
 
     }
 
-    class AnnonceHolder extends RecyclerView.ViewHolder {
+    static class AnnonceHolder extends RecyclerView.ViewHolder {
 
         final TextView TexteView;
         final TextView PrixView;
@@ -130,6 +234,7 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.Annonc
         final ImageView vipView;
         private final ImageView favoriteView;
         final RoundedImageView AfficheView;
+        final CheckBox checkBox;
 
         AnnonceHolder(@NonNull View itemView) {
             super(itemView);
@@ -140,6 +245,7 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.Annonc
             AfficheView = itemView.findViewById(R.id.txt_affiche_ann);
             vipView = itemView.findViewById(R.id.vip);
             favoriteView = itemView.findViewById(R.id.favorite);
+            checkBox = itemView.findViewById(R.id.checkbox);
         }
     }
 

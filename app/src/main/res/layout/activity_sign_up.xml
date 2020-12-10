@@ -148,7 +148,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/email"
-                                android:inputType="text"
+                                android:inputType="textEmailAddress"
                                 android:singleLine="true" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -170,7 +170,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/numero_de_telephone"
-                                android:inputType="text"
+                                android:inputType="phone"
                                 android:singleLine="true" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -239,8 +239,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginBottom="10dp"
-                        android:text="@string/en_continuant_d_utiliser_l_application_vous_indiquez_que_vous_acceptez_les_conditions_g_n_rales_de_la_politique_d_utilisation"
-                        android:textColor="#AAA9A9" />
+                        android:textColor="#AAA9A9"
+                        android:textSize="12sp"/>
 
                     <Button
                         android:id="@+id/btn_sign_up"
