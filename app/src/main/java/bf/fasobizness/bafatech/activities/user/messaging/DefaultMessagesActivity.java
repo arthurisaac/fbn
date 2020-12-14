@@ -26,6 +26,11 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.devlomi.record_view.OnBasketAnimationEnd;
+import com.devlomi.record_view.OnRecordClickListener;
+import com.devlomi.record_view.OnRecordListener;
+import com.devlomi.record_view.RecordButton;
+import com.devlomi.record_view.RecordView;
 import com.google.gson.Gson;
 import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.messages.MessageInput;
@@ -87,6 +92,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
     private Button btn_see_annonce;
     private LinearLayout lltitre;
     private DatabaseManager databaseManager;
+    private TextView tv_message;
     // private WebSocket webSocket;
 
     protected MessagesListCustomAdapter<Message.Messages> messagesAdapter;
@@ -129,6 +135,54 @@ public class DefaultMessagesActivity extends AppCompatActivity
         btn_see_annonce = findViewById(R.id.btn_see_annonce);
         lltitre = findViewById(R.id.lltitre);
         iv_affiche = findViewById(R.id.affiche);
+        RecordView recordView = findViewById(R.id.record_view);
+        RecordButton recordButton = (RecordButton) findViewById(R.id.record_button);
+        recordButton.setRecordView(recordView);
+        recordView.setOnRecordListener(new OnRecordListener() {
+            @Override
+            public void onStart() {
+                //Start Recording..
+                Log.d("RecordView", "onStart");
+            }
+
+            @Override
+            public void onCancel() {
+                //On Swipe To Cancel
+                Log.d("RecordView", "onCancel");
+
+            }
+
+            @Override
+            public void onFinish(long recordTime) {
+                //Stop Recording..
+                // String time = getHumanTimeText(recordTime);
+                Log.d("RecordView", "onFinish");
+
+                // Log.d("RecordTime", time);
+            }
+
+            @Override
+            public void onLessThanSecond() {
+                //When the record time is less than One Second
+                Log.d("RecordView", "onLessThanSecond");
+            }
+        });
+
+        recordButton.setOnRecordClickListener(v -> {
+            Toast.makeText(DefaultMessagesActivity.this, "RECORD BUTTON CLICKED", Toast.LENGTH_SHORT).show();
+            Log.d("RecordButton","RECORD BUTTON CLICKED");
+        });
+
+        recordView.setOnBasketAnimationEndListener(() -> Log.d("RecordView", "Basket Animation Finished"));
+        recordView.setSoundEnabled(false);
+
+        //if (recordButton.isListenForRecord()) {
+            // recordButton.setListenForRecord(false);
+            //Toast.makeText(this, "onClickEnabled", Toast.LENGTH_SHORT).show();
+        //} else {
+          //  recordButton.setListenForRecord(true);
+           // Toast.makeText(this, "onClickDisabled", Toast.LENGTH_SHORT).show();
+        //}
 
         databaseManager = new DatabaseManager(this);
 

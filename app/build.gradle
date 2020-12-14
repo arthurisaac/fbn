@@ -13,7 +13,7 @@ android {
         applicationId "bf.fasobizness.bafatech"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 171
+        versionCode 172
         versionName "2.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -59,8 +59,8 @@ dependencies {
     implementation 'com.github.denzcoskun:ImageSlideshow:0.0.6'
     implementation 'com.auth0.android:jwtdecode:1.4.0'
     implementation 'com.github.nguyenhoanglam:ImagePicker:1.4.3'
-    implementation 'com.github.zhpanvip:BannerViewPager:3.2.0'
     implementation 'com.github.stfalcon:chatkit:0.3.3'
+    implementation 'com.devlomi.record-view:record-view:2.0.1'
 
     implementation 'com.google.firebase:firebase-config-ktx:20.0.2'
     implementation 'com.google.firebase:firebase-analytics-ktx:18.0.0'

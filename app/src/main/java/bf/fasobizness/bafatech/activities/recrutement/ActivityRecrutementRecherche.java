@@ -100,51 +100,11 @@ public class ActivityRecrutementRecherche extends AppCompatActivity
         }, 200);
     }
 
-    /*private void jsonParse() {
-        mRecrutements.clear();
-        mRecrutementAdapter.notifyDataSetChanged();
-        layout_busy_system.setVisibility(View.GONE);
-        layout_ent_offline.setVisibility(View.GONE);
-        layout_no_recruit.setVisibility(View.GONE);
-        mShimmerViewContainer.setVisibility(View.VISIBLE);
-        mRecrutements.clear();
-        mRecrutementAdapter.notifyDataSetChanged();
-
-        API api = RetrofitClient.getClient().create(API.class);
-        Call<Recruit> call = api.searchRecruits(query);
-        call.enqueue(new Callback<Recruit>() {
-            @Override
-            public void onResponse(@NonNull Call<Recruit> call, @NonNull Response<Recruit> response) {
-                mShimmerViewContainer.setVisibility(View.GONE);
-                Recruit recruit = response.body();
-                List<Recruit.Recrutement> recrutements = null;
-                if (recruit != null) {
-                    recrutements = recruit.recrutements;
-                }
-                if (recrutements != null) {
-                    mRecrutements.addAll(recrutements);
-                }
-                mRecrutementAdapter.notifyDataSetChanged();
-                if (mRecrutements.size() == 0) {
-                    layout_no_recruit.setVisibility(View.VISIBLE);
-                } else {
-                    resultats.setVisibility(View.VISIBLE);
-                    String reslt = getString(R.string.resultats, mRecrutements.size() + "");
-                    resultats.setText(reslt);
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<Recruit> call, @NonNull Throwable t) {
-                mShimmerViewContainer.setVisibility(View.GONE);
-                layout_ent_offline.setVisibility(View.VISIBLE);
-            }
-        });
-    }*/
 
     @Override
     public void onItemClicked(int position) {
-        Recruit.Recrutement recrutement = mRecrutements.get(position);
+        ArrayList<Recruit.Recrutement> recrutementArrayList = mRecrutementAdapter.getRecruit();
+        Recruit.Recrutement recrutement = recrutementArrayList.get(position);
         Intent intent = new Intent(getApplicationContext(), ActivityDetailsRecrutement.class);
         intent.putExtra("recrutement", recrutement);
         startActivity(intent);

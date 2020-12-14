@@ -246,10 +246,10 @@
     <string name="whatsapp">WhatsApp</string>
     <string name="prix_non_renseigne">Prix non renseigné</string>
     <string name="filtrer">Filtrer</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="espace_emplois">Espace emplois</string>
     <string name="rechercher_dans_recrutements">Rechercher dans recrutements…</string>
     <string name="supprimer">Supprimer</string>
     <string name="hors_ligne">Hors ligne</string>
+    <string name="bient_t_les_parutions_reprendront_restez_connect_s">Bientôt les parutions reprendront, restez connectés !</string>
 </resources>

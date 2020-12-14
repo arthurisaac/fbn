@@ -126,7 +126,7 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
         val cgu_txt = "<strong>En continuant d'utiliser l'application, vous indiquez que vous acceptez <u>les conditions générales de la politique d'utilisation</u></strong>"
         cgu.text = HtmlCompat.fromHtml(cgu_txt, HtmlCompat.FROM_HTML_MODE_LEGACY)
         cgu.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("http://fasobizness.com/uploads/cgu.pdf"))
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://fasobizness.com/uploads/cgu.pdf"))
             startActivity(intent)
         }
     }

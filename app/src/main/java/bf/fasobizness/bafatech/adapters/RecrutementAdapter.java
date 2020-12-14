@@ -79,6 +79,10 @@ public class RecrutementAdapter extends RecyclerView.Adapter<RecrutementAdapter.
         mRecrutementsFiltre.clear();
     }
 
+    public ArrayList<Recruit.Recrutement> getRecruit() {
+        return mRecrutementsFiltre;
+    }
+
     @Override
     public Filter getFilter() {
         return new Filter() {

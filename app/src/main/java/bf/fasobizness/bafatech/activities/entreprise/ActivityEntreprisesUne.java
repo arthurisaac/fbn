@@ -1,13 +1,16 @@
 package bf.fasobizness.bafatech.activities.entreprise;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +18,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.ArrayList;
@@ -37,8 +41,11 @@ public class ActivityEntreprisesUne extends AppCompatActivity
     private ArrayList<Entreprise.Entreprises> mEntreprises;
     private EntrepriseAdapter mEntrepriseAdapter;
     private LinearLayout layout_ent_offline;
+    private LinearLayout lottie_container;
+    private LottieAnimationView lottiefiles;
 
     private ShimmerFrameLayout shimmer_view_container;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,12 +73,14 @@ public class ActivityEntreprisesUne extends AppCompatActivity
         btn_refresh.setOnClickListener(view -> getData());
 
         shimmer_view_container = findViewById(R.id.shimmer_view_container);
+        lottie_container = findViewById(R.id.lottie_container);
+        lottiefiles = findViewById(R.id.lottiefiles);
 
         getData();
     }
 
     private void getData() {
-        shimmer_view_container.setVisibility(View.VISIBLE);
+        // shimmer_view_container.setVisibility(View.VISIBLE);
 
         layout_ent_offline.setVisibility(View.GONE);
         MySharedManager sharedManager = new MySharedManager(this);
@@ -91,6 +100,10 @@ public class ActivityEntreprisesUne extends AppCompatActivity
                     if (entreprises != null) {
                         mEntreprises.addAll(entreprises);
                     }
+                    if (entreprises.size() > 0) {
+                        lottie_container.setVisibility(View.GONE);
+                        lottiefiles.setVisibility(View.GONE);
+                    }
                     mEntrepriseAdapter.notifyDataSetChanged();
                 } else {
                     Toast.makeText(ActivityEntreprisesUne.this, R.string.une_erreur_sest_produite, Toast.LENGTH_SHORT).show();
@@ -102,6 +115,8 @@ public class ActivityEntreprisesUne extends AppCompatActivity
             public void onFailure(@NonNull Call<Entreprise> call, @NonNull Throwable t) {
                 shimmer_view_container.setVisibility(View.GONE);
                 layout_ent_offline.setVisibility(View.VISIBLE);
+                lottie_container.setVisibility(View.GONE);
+                lottiefiles.setVisibility(View.GONE);
                 Toast.makeText(ActivityEntreprisesUne.this, R.string.pas_d_acces_internet, Toast.LENGTH_SHORT).show();
             }
         });

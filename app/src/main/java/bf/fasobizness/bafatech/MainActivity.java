@@ -420,27 +420,6 @@ public class MainActivity extends AppCompatActivity
         user = sharedManager.getUser();
 
         getNewJWTToken(id, token);
-
-        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(this, task -> {
-            if (task.isSuccessful()) {
-                String fcm = Objects.requireNonNull(task.getResult()).getToken();
-                if (!user.isEmpty() && !token.isEmpty()) {
-                    Call<MyResponse> call = api.updateFCM(fcm, "Bearer " + token);
-                    call.enqueue(new Callback<MyResponse>() {
-                        @Override
-                        public void onResponse(@NonNull Call<MyResponse> call, @NonNull Response<MyResponse> response) {
-                            // Log.d(TAG, response.toString());
-                        }
-
-                        @Override
-                        public void onFailure(@NonNull Call<MyResponse> call, @NonNull Throwable t) {
-                            Log.d(TAG, t.toString());
-                        }
-                    });
-                }
-            }
-        });
-
     }
 
     private void getNewJWTToken(String id, String token) {
@@ -555,6 +534,7 @@ public class MainActivity extends AppCompatActivity
         mAnnonceAdapter.notifyDataSetChanged();
 
         shimmer_view_container.setVisibility(View.VISIBLE);
+        shimmer_view_container.startShimmer();
 
         jsonParse();
         // ads();
@@ -609,6 +589,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onResponse(@NonNull Call<Announce> call, @NonNull Response<Announce> response) {
                 shimmer_view_container.setVisibility(View.GONE);
+                shimmer_view_container.stopShimmer();
                 mSwipeRefreshLayout.setRefreshing(false);
                 loading_indicator.setVisibility(View.GONE);
                 Log.v(TAG, response.toString());
@@ -639,6 +620,7 @@ public class MainActivity extends AppCompatActivity
                 }
                 mSwipeRefreshLayout.setRefreshing(false);
                 shimmer_view_container.setVisibility(View.GONE);
+                shimmer_view_container.stopShimmer();
                 loading_indicator.setVisibility(View.GONE);
 
             }

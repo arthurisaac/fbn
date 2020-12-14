@@ -507,35 +507,6 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
                 }
             });
 
-            /*
-            String url = Constants.HOST_URL + "discussion/create?id_user=" + user + "&id_ann=" + id_ann + "&receiver_id=" + receiver_id;
-            StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
-                send_message.setEnabled(true);
-                send_message.setText(R.string.discuter_avec_le_vender);
-                iv_chat.setVisibility(View.VISIBLE);
-                progress_bar_discussion.setVisibility(View.GONE);
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    String discussion_id = jsonObject.getString("id");
-                    Intent intent = new Intent(getApplicationContext(), ActivityMessage.class);
-                    intent.putExtra("discussion_id", discussion_id);
-                    intent.putExtra("receiver_id", receiver_id);
-                    intent.putExtra("id_ann", id_ann);
-                    startActivity(intent);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Toast.makeText(this, R.string.le_serveur_est_occupe, Toast.LENGTH_SHORT).show();
-                }
-            }, error -> {
-                send_message.setEnabled(true);
-                send_message.setText(R.string.discuter_avec_le_vender);
-                iv_chat.setVisibility(View.VISIBLE);
-                progress_bar_discussion.setVisibility(View.GONE);
-                Toast.makeText(this, R.string.pas_d_acces_internet, Toast.LENGTH_SHORT).show();
-                // Log.v(TAG, error.toString());
-            });
-            requestQueue.add(request);
-            */
         }
     }
 

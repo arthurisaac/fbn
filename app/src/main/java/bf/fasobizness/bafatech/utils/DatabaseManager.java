@@ -1,5 +1,6 @@
 package bf.fasobizness.bafatech.utils;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -112,9 +113,26 @@ public class DatabaseManager extends SQLiteOpenHelper {
             String lien,
             String share
     ) {
-        String query = "INSERT INTO recrutements (id_recr, nom_ent, domaine, description, descr, date_pub, date_fin, heure_fin, nom_r, vue, lien, share) VALUES "
-                + "(\"" + id_recr + "\", \"" + nom_ent + "\", \"" + domaine + "\",  \"" + description + "\", '" + descr + "', '" + date_pub + "', '" + date_fin + "', '" + heure_fin + "', \"" + nom_r + "\", '" + vue + "', '" + lien + "', '" + share + "' )";
-        this.getWritableDatabase().execSQL(query);
+        // String query = "INSERT INTO recrutements (id_recr, nom_ent, domaine, description, descr, date_pub, date_fin, heure_fin, nom_r, vue, lien, share) VALUES "
+                //+ "(\"" + id_recr + "\", \"" + nom_ent + "\", \"" + domaine + "\",  \"" + description + "\", '" + descr + "', '" + date_pub + "', '" + date_fin + "', '" + heure_fin + "', \"" + nom_r + "\", '" + vue + "', '" + lien + "', '" + share + "' )";
+        //this.getWritableDatabase().execSQL(query);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id_recr", id_recr);
+        values.put("nom_ent", nom_ent);
+        values.put("domaine", domaine);
+        values.put("description", description);
+        values.put("descr", descr);
+        values.put("date_pub", date_pub);
+        values.put("date_fin", date_fin);
+        values.put("heure_fin", heure_fin);
+        values.put("nom_r", nom_r);
+        values.put("vue", vue);
+        values.put("lien", lien);
+        values.put("share", share);
+        db.insert("recrutements", null, values);
+
 
     }
 
@@ -137,9 +155,20 @@ public class DatabaseManager extends SQLiteOpenHelper {
             String type,
             String sender
     ) {
-        String query = "INSERT INTO messages (message_id, message, created_at, etat, discussion_id, type, sender) VALUES "
+        /*String query = "INSERT INTO messages (message_id, message, created_at, etat, discussion_id, type, sender) VALUES "
                 + "(\"" + message_id + "\", \"" + message + "\", '" + created_at + "', '" + etat + "', '" + discussion_id + "', '" + type + "', '" + sender + "' )";
-        this.getWritableDatabase().execSQL(query);
+        this.getWritableDatabase().execSQL(query);*/
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("message_id", message_id);
+        values.put("message", message);
+        values.put("created_at", created_at);
+        values.put("etat", etat);
+        values.put("discussion_id", discussion_id);
+        values.put("type", type);
+        values.put("sender", sender);
+        db.insert("messages", null, values);
     }
 
     public void insertMessage(
