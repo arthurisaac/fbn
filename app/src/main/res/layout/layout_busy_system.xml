@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layout_busy_system"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,12 +13,12 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableTop="@drawable/ic_searching"
         android:drawablePadding="10dp"
         android:fontFamily="@font/raleway_medium"
         android:padding="10dp"
         android:text="@string/le_serveur_est_occupe"
         android:textAlignment="center"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        app:drawableTopCompat="@drawable/ic_searching" />
 
 </LinearLayout>

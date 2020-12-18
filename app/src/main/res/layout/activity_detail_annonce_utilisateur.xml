@@ -89,64 +89,64 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
-                android:drawableStart="@drawable/ic_prix"
                 android:drawablePadding="10dp"
                 android:fontFamily="@font/raleway"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:drawableStartCompat="@drawable/ic_prix" />
 
             <TextView
                 android:id="@+id/txt_email_util"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
-                android:drawableStart="@drawable/ic_email"
                 android:drawablePadding="10dp"
-                android:fontFamily="@font/raleway" />
+                android:fontFamily="@font/raleway"
+                app:drawableStartCompat="@drawable/ic_email" />
 
             <TextView
                 android:id="@+id/txt_tel_annonce"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
-                android:drawableStart="@drawable/ic_phone"
                 android:drawablePadding="10dp"
-                android:fontFamily="@font/raleway" />
+                android:fontFamily="@font/raleway"
+                app:drawableStartCompat="@drawable/ic_phone" />
 
             <TextView
                 android:id="@+id/txt_tel1_annonce"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
-                android:drawableStart="@drawable/ic_phone"
                 android:drawablePadding="10dp"
-                android:fontFamily="@font/raleway" />
+                android:fontFamily="@font/raleway"
+                app:drawableStartCompat="@drawable/ic_phone" />
 
             <TextView
                 android:id="@+id/txt_tel2_annonce"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
-                android:drawableStart="@drawable/ic_phone"
                 android:drawablePadding="10dp"
-                android:fontFamily="@font/raleway" />
+                android:fontFamily="@font/raleway"
+                app:drawableStartCompat="@drawable/ic_phone" />
 
             <TextView
                 android:id="@+id/txt_location_annonce"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
-                android:drawableStart="@drawable/ic_location"
                 android:drawablePadding="10dp"
-                android:fontFamily="@font/raleway" />
+                android:fontFamily="@font/raleway"
+                app:drawableStartCompat="@drawable/ic_location" />
 
             <TextView
                 android:id="@+id/txt_categorie_annonce"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
-                android:drawableStart="@drawable/ic_view_list_black"
                 android:drawablePadding="10dp"
-                android:fontFamily="@font/raleway" />
+                android:fontFamily="@font/raleway"
+                app:drawableStartCompat="@drawable/ic_view_list_black" />
 
             <RelativeLayout
                 android:layout_width="match_parent"

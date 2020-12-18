@@ -1,4 +1,4 @@
-package bf.fasobizness.bafatech.utils;
+package bf.fasobizness.bafatech.utils
 
 
 class Constants {

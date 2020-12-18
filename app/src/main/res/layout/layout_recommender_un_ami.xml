@@ -26,11 +26,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:drawableEnd="@drawable/ic_user_colored"
                 android:drawablePadding="10dp"
                 android:text="@string/recommander_un_ami"
                 android:textColor="@color/colorPrimaryDark"
-                tools:ignore="RelativeOverlap" />
+                tools:ignore="RelativeOverlap"
+                app:drawableEndCompat="@drawable/ic_user_colored" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/headerIndicator"

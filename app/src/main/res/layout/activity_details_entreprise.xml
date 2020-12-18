@@ -180,50 +180,50 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
-                    android:drawableStart="@drawable/ic_email"
                     android:drawablePadding="10dp"
                     android:fontFamily="@font/raleway"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableStartCompat="@drawable/ic_email" />
 
                 <TextView
                     android:id="@+id/txt_tel_entreprise"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
-                    android:drawableStart="@drawable/ic_phone"
                     android:drawablePadding="10dp"
                     android:fontFamily="@font/raleway"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableStartCompat="@drawable/ic_phone" />
 
                 <TextView
                     android:id="@+id/txt_site_entreprise"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
-                    android:drawableStart="@drawable/ic_site"
                     android:drawablePadding="10dp"
                     android:fontFamily="@font/raleway"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableStartCompat="@drawable/ic_site" />
 
                 <TextView
                     android:id="@+id/txt_adresse_entreprise"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
-                    android:drawableStart="@drawable/ic_location"
                     android:drawablePadding="10dp"
                     android:fontFamily="@font/raleway"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableStartCompat="@drawable/ic_location" />
 
                 <TextView
                     android:id="@+id/txt_location_entreprise"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
-                    android:drawableStart="@drawable/ic_location"
                     android:drawablePadding="10dp"
                     android:fontFamily="@font/raleway"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableStartCompat="@drawable/ic_location" />
 
             </LinearLayout>
 

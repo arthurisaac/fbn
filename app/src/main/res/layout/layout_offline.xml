@@ -10,16 +10,21 @@
     android:padding="10dp"
     android:visibility="gone">
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_margin="50dp"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/no_connection" />
+
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawablePadding="10dp"
-        android:fontFamily="@font/raleway_medium"
         android:padding="10dp"
         android:text="@string/pas_d_acces_internet"
-        android:textAlignment="center"
-        android:textSize="16sp"
-        app:drawableTopCompat="@drawable/ic_no_wifi" />
+        android:textSize="18sp"
+        android:textAlignment="center" />
 
     <View
         android:layout_width="wrap_content"

@@ -252,4 +252,5 @@
     <string name="supprimer">Supprimer</string>
     <string name="hors_ligne">Hors ligne</string>
     <string name="bient_t_les_parutions_reprendront_restez_connect_s">Bientôt les parutions reprendront, restez connectés !</string>
+    <string name="copier">Copier</string>
 </resources>

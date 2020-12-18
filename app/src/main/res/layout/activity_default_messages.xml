@@ -166,7 +166,8 @@
                     android:id="@+id/btn_add"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/ic_send" />
+                    android:src="@drawable/ic_send"
+                    android:contentDescription="@string/envoyer" />
 
                 <TextView
                     android:id="@+id/tv_message"
@@ -193,7 +194,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_toLeftOf="@id/record_button"
+                android:layout_toStartOf="@id/record_button"
                 app:slide_to_cancel_arrow="@drawable/recv_ic_arrow"
                 app:slide_to_cancel_arrow_color="#000000"
                 app:slide_to_cancel_bounds="8dp"
@@ -207,7 +208,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:padding="10dp"
                 android:background="@drawable/border_rounded_solid_primary"
                 android:scaleType="centerInside"

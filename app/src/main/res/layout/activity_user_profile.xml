@@ -46,7 +46,7 @@
                             android:contentDescription="@null"
                             android:scaleType="centerCrop"
                             android:src="@color/colorPrimaryDark"
-                            android:tint="#860CA3A9" />
+                            app:tint="#860CA3A9" />
 
                         <ImageView
                             android:layout_width="match_parent"
@@ -102,9 +102,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:fontFamily="@font/raleway_medium"
-                        android:text="@string/nom_d_utlisateur"
-                        android:textSize="23sp"
+                        android:fontFamily="@font/raleway_medium" android:textSize="23sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -112,10 +110,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:drawableStart="@drawable/ic_user_colored"
                         android:drawablePadding="10dp"
-                        android:text="@string/nom_d_utlisateur"
-                        android:textColor="@color/colorPrimaryDark" />
+                        android:textColor="@color/colorPrimaryDark"
+                        app:drawableStartCompat="@drawable/ic_user_colored" />
 
                 </LinearLayout>
 
@@ -158,9 +155,9 @@
                         android:id="@+id/tv_publish_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_megaphone"
                         android:drawablePadding="10dp"
-                        android:text="@string/publications_x" />
+                        android:text="@string/publications_x"
+                        app:drawableStartCompat="@drawable/ic_megaphone" />
 
                 </LinearLayout>
 

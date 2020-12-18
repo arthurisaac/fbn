@@ -32,7 +32,8 @@
                     android:background="@drawable/ic_widgetbgleft"
                     android:src="@drawable/ic_search_white"
                     android:padding="3dp"
-                    android:layout_gravity="center_vertical"/>
+                    android:layout_gravity="center_vertical"
+                    android:contentDescription="@string/rechercher" />
 
                 <TextView
                     android:id="@+id/edit_rechercher"
@@ -41,6 +42,7 @@
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
                     android:layout_weight="1"
+                    android:maxLines="1"
                     android:background="@color/colorPrimaryUltraLight"
                     android:text="@string/rechercher"
                     android:gravity="center_vertical"
@@ -50,7 +52,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:background="@color/colorPrimaryUltraLight"
-                    android:src="@drawable/ic_vertical"/>
+                    android:src="@drawable/ic_vertical"
+                    android:contentDescription="@string/aucun_resultat" />
 
                 <Button
                     android:id="@+id/btn_filtrer"
@@ -226,10 +229,10 @@
                     android:id="@+id/tab_chat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableTop="@drawable/chat_bubble"
                     android:text="@string/discussions"
                     android:textAlignment="center"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/tab_text_size"
+                    app:drawableTopCompat="@drawable/chat_bubble" />
 
             </RelativeLayout>
 
@@ -238,21 +241,21 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/ic_category"
                 android:text="@string/categories"
                 android:textAlignment="center"
-                android:textSize="12sp" />
+                android:textSize="@dimen/tab_text_size"
+                app:drawableTopCompat="@drawable/ic_category" />
 
             <TextView
                 android:id="@+id/tab_offre_en_or"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/megaphone_or"
                 android:text="@string/offres_en_or"
                 android:textAlignment="center"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/tab_text_size"
+                android:textStyle="bold"
+                app:drawableTopCompat="@drawable/megaphone_or" />
 
             <RelativeLayout
                 android:layout_width="0dp"
@@ -273,10 +276,10 @@
                     android:id="@+id/tab_entrepise"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableTop="@drawable/ic_enterprise"
                     android:text="@string/entreprises"
                     android:textAlignment="center"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/tab_text_size"
+                    app:drawableTopCompat="@drawable/ic_enterprise" />
 
             </RelativeLayout>
 
@@ -286,10 +289,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/shopping_bag"
                 android:text="@string/boutiques"
                 android:textAlignment="center"
-                android:textSize="12sp" />
+                android:textSize="@dimen/tab_text_size"
+                app:drawableTopCompat="@drawable/shopping_bag" />
 
         </LinearLayout>
     </LinearLayout>

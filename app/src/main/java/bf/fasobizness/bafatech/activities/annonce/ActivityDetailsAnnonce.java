@@ -389,10 +389,6 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
                 FragmentNotConnected notConnected = FragmentNotConnected.newInstance();
                 notConnected.show(getSupportFragmentManager(), "");
             } else {
-                // send_message.setEnabled(false);
-                // send_message.setText(R.string.chargement_en_cours);
-                // iv_chat.setVisibility(View.GONE);
-                // progress_bar_discussion.setVisibility(View.VISIBLE);
                 createDiscussion(annonce.getId_per_fk(), id_ann);
             }
         });
@@ -437,12 +433,6 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
                 intent.putExtra("position", i);
                 startActivity(intent);
             });
-
-            /*
-            CircleIndicator indicator = findViewById(R.id.indicator);
-            indicator.setViewPager(pager);
-            */
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -455,26 +445,12 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
             FragmentNotConnected notConnected = FragmentNotConnected.newInstance();
             notConnected.show(getSupportFragmentManager(), "");
         } else {
-
-            /*Intent intent = new Intent(getApplicationContext(), ActivityMessage.class);
-            intent.putExtra("receiver_id", receiver_id);
-            intent.putExtra("id_ann", id_ann);
-            intent.putExtra("new", "1");
-            startActivity(intent);*/
-
             progressBar.setVisibility(View.VISIBLE);
             send_message.setEnabled(false);
             Call<MyResponse> call = api.createDiscussion(receiver_id, id_ann, token);
             call.enqueue(new Callback<MyResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<MyResponse> call, @NonNull Response<MyResponse> response) {
-                    //  Log.d(TAG, response.toString());
-
-                    // send_message.setEnabled(true);
-                    // send_message.setText(R.string.discuter_avec_le_vender);
-                    // iv_chat.setVisibility(View.VISIBLE);
-                    // progress_bar_discussion.setVisibility(View.GONE);
-
                     progressBar.setVisibility(View.GONE);
                     send_message.setEnabled(true);
                     if (response.isSuccessful()) {
@@ -497,10 +473,6 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
 
                 @Override
                 public void onFailure(@NonNull Call<MyResponse> call, @NonNull Throwable t) {
-                    // send_message.setEnabled(true);
-                    // send_message.setText(R.string.discuter_avec_le_vender);
-                    // iv_chat.setVisibility(View.VISIBLE);
-                    // progress_bar_discussion.setVisibility(View.GONE);
                     progressBar.setVisibility(View.GONE);
                     send_message.setEnabled(true);
                     Toast.makeText(ActivityDetailsAnnonce.this, R.string.pas_d_acces_internet, Toast.LENGTH_SHORT).show();
@@ -512,7 +484,6 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
 
     private void action(final String numero) {
         try {
-
             final CharSequence[] items = {"Composer numéro", "Envoyer SMS"};
             AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
             builder.setTitle(getString(R.string.choisir_action));
@@ -575,20 +546,6 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
                 Toast.makeText(ActivityDetailsAnnonce.this, R.string.pas_d_acces_internet, Toast.LENGTH_SHORT).show();
             }
         });
-        /*
-        String url = Constants.HOST_URL + "annonce/share";
-        StringRequest request = new StringRequest(Request.Method.POST, url,
-                response -> Log.v(TAG, "Shared response "+response), error -> Log.v(TAG, error.toString())) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("id", id_ann);
-
-                return params;
-            }
-        };
-        requestQueue.add(request);
-         */
     }
 
     private void addFavorite(String id_ann) {
@@ -624,16 +581,5 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
                 Toast.makeText(ActivityDetailsAnnonce.this, R.string.pas_d_acces_internet, Toast.LENGTH_SHORT).show();
             }
         });
-        /*
-        String url = Constants.HOST_URL + "annonce/favori/create?id_pers_fk=" + user + "&id_annonce_fk=" + id_ann + "&favori=" + favori + "&id_fav=" + id_fav;
-        StringRequest request = new StringRequest(Request.Method.GET, url,
-                response -> {
-                    Snackbar.make(ann, getString(R.string.favoris_ajoute), Snackbar.LENGTH_SHORT);
-                }, error -> {
-                    Log.v(TAG, error.toString());
-                    Toast.makeText(getApplicationContext(), R.string.pas_d_acces_internet, Toast.LENGTH_SHORT).show();
-                });
-        requestQueue.add(request);
-         */
     }
 }

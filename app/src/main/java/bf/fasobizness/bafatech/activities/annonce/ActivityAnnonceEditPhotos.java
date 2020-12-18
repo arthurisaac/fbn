@@ -157,23 +157,20 @@ public class ActivityAnnonceEditPhotos extends AppCompatActivity implements OnIt
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch (id) {
-            case R.id.nav_illustration_add:
-                requestMultiplePermissions();
-                break;
-            case R.id.nav_illustration_remove:
-                ArrayList<Announce.Annonce.Illustration> checked = adapter.getChecked();
-                StringBuilder idList = new StringBuilder();
-                for (int i = 0; i < checked.size(); i++) {
-                    idList.append(checked.get(i).getId_illustration()).append(",");
-                    images.remove(checked.get(i));
-                    adapter.notifyDataSetChanged();
-                }
-                delete(idList.toString());
-                checked.clear();
+        if (id == R.id.nav_illustration_add) {
+            requestMultiplePermissions();
+        } else if (id == R.id.nav_illustration_remove) {
+            ArrayList<Announce.Annonce.Illustration> checked = adapter.getChecked();
+            StringBuilder idList = new StringBuilder();
+            for (int i = 0; i < checked.size(); i++) {
+                idList.append(checked.get(i).getId_illustration()).append(",");
+                images.remove(checked.get(i));
                 adapter.notifyDataSetChanged();
-                countPictures();
-                break;
+            }
+            delete(idList.toString());
+            checked.clear();
+            adapter.notifyDataSetChanged();
+            countPictures();
         }
 
         return super.onOptionsItemSelected(item);

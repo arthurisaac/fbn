@@ -1,5 +1,6 @@
 package bf.fasobizness.bafatech.helper;
 
+import android.annotation.SuppressLint;
 import android.text.Spannable;
 import android.text.method.LinkMovementMethod;
 import android.util.SparseArray;
@@ -41,14 +42,15 @@ public class MessageHolders {
     private Class<? extends ViewHolder<Date>> dateHeaderHolder;
     private int dateHeaderLayout;
 
-    private HolderConfig<IMessage> incomingTextConfig;
-    private HolderConfig<IMessage> outcomingTextConfig;
-    private HolderConfig<MessageContentType.Image> incomingImageConfig;
-    private HolderConfig<MessageContentType.Image> outcomingImageConfig;
+    private final HolderConfig<IMessage> incomingTextConfig;
+    private final HolderConfig<IMessage> outcomingTextConfig;
+    private final HolderConfig<MessageContentType.Image> incomingImageConfig;
+    private final HolderConfig<MessageContentType.Image> outcomingImageConfig;
 
-    private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    @SuppressLint("SimpleDateFormat")
+    private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    private List<ContentTypeConfig> customContentTypes = new ArrayList<>();
+    private final List<ContentTypeConfig> customContentTypes = new ArrayList<>();
     private ContentChecker contentChecker;
 
     public MessageHolders() {
@@ -1188,9 +1190,9 @@ public class MessageHolders {
 
     private static class ContentTypeConfig<TYPE extends MessageContentType> {
 
-        private byte type;
-        private HolderConfig<TYPE> incomingConfig;
-        private HolderConfig<TYPE> outcomingConfig;
+        private final byte type;
+        private final HolderConfig<TYPE> incomingConfig;
+        private final HolderConfig<TYPE> outcomingConfig;
 
         private ContentTypeConfig(
                 byte type, HolderConfig<TYPE> incomingConfig, HolderConfig<TYPE> outcomingConfig) {

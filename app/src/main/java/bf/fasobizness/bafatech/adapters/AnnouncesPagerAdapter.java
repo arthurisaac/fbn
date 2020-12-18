@@ -9,7 +9,7 @@ import java.util.List;
 
 public class AnnouncesPagerAdapter extends FragmentStatePagerAdapter {
 
-    private List<Fragment> fragmentList;
+    private final List<Fragment> fragmentList;
 
     public AnnouncesPagerAdapter(@NonNull FragmentManager fm, List<Fragment> fragmentList) {
         super(fm);

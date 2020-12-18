@@ -36,7 +36,7 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.Annonc
     private final ArrayList<Announce.Annonce> mAnnonces;
     private ArrayList<Announce.Annonce> mAnnoncesFiltre;
     // private SparseBooleanArray mSelectedItems;
-    private SparseBooleanArray mSelectedItems = new SparseBooleanArray();
+    private final SparseBooleanArray mSelectedItems = new SparseBooleanArray();
     private OnAnnonceListener onAnnonceListener;
     private OnLongItemListener onLongItemListener;
     private OnBottomReachedListener onBottomReachedListener;

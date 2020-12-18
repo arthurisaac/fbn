@@ -193,7 +193,7 @@ public class Message {
 
         public static class Image {
 
-            private String url;
+            private final String url;
 
             public Image(String url) {
                 this.url = url;
@@ -202,8 +202,8 @@ public class Message {
 
         public static class Voice {
 
-            private String url;
-            private int duration;
+            private final String url;
+            private final int duration;
 
             public Voice(String url, int duration) {
                 this.url = url;

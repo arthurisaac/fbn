@@ -391,8 +391,8 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
     }
 
     private fun checkPass(): Boolean {
-        val passwd: String = mdp.editText?.getText().toString().trim()
-        val conf: String = confirm.editText?.getText().toString().trim()
+        val passwd: String = mdp.editText?.text.toString().trim()
+        val conf: String = confirm.editText?.text.toString().trim()
         return when {
             passwd.isEmpty() -> {
                 mdp.error = getString(R.string.mot_de_passe_requis)

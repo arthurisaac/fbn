@@ -19,6 +19,3 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
-
--keep class bf.fasobizness.bafatech.helper.MsvAuthority
--keepclassmembers class bf.fasobizness.bafatech.helper** { *; }

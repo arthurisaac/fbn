@@ -534,15 +534,10 @@ public class ActivityMessage extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch (id) {
-            case R.id.nav_add_photo:
-                requestMultiplePermissions();
-                break;
-
-            case R.id.nav_delete_discussion:
-                supprimerDiscussion();
-                break;
-
+        if (id == R.id.nav_add_photo) {
+            requestMultiplePermissions();
+        } else if (id == R.id.nav_delete_discussion) {
+            supprimerDiscussion();
         }
         return super.onOptionsItemSelected(item);
     }

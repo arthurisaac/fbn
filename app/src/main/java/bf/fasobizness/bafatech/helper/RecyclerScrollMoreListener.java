@@ -10,13 +10,13 @@ import com.stfalcon.chatkit.commons.ImageLoader;
 public class RecyclerScrollMoreListener
         extends RecyclerView.OnScrollListener {
 
-    private OnLoadMoreListener loadMoreListener;
+    private final OnLoadMoreListener loadMoreListener;
     private int currentPage = 0;
     private int previousTotalItemCount = 0;
     private boolean loading = true;
     protected ImageLoader imageLoader;
 
-    private RecyclerView.LayoutManager mLayoutManager;
+    private final RecyclerView.LayoutManager mLayoutManager;
 
     public RecyclerScrollMoreListener(LinearLayoutManager layoutManager, OnLoadMoreListener loadMoreListener) {
         this.mLayoutManager = layoutManager;

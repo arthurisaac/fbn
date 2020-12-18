@@ -1,8 +1,6 @@
 package bf.fasobizness.bafatech.utils
 
 import android.util.Log
-import bf.fasobizness.bafatech.R
-import com.google.firebase.BuildConfig
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig

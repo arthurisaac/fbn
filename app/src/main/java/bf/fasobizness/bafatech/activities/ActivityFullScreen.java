@@ -80,13 +80,10 @@ public class ActivityFullScreen extends AppCompatActivity implements OnItemListe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch (id) {
-            case R.id.nav_close:
-                finish();
-                break;
-            case R.id.nav_save_image:
-                requestMultiplePermissions();
-                break;
+        if (id == R.id.nav_close) {
+            finish();
+        } else if (id == R.id.nav_save_image) {
+            requestMultiplePermissions();
         }
 
         return super.onOptionsItemSelected(item);

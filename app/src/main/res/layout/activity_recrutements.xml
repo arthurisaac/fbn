@@ -348,7 +348,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/discussions"
                     android:textAlignment="center"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/tab_text_size"
                     app:drawableTopCompat="@drawable/chat_bubble" />
 
             </RelativeLayout>
@@ -360,7 +360,7 @@
                 android:layout_weight="1"
                 android:text="@string/categories"
                 android:textAlignment="center"
-                android:textSize="12sp"
+                android:textSize="@dimen/tab_text_size"
                 app:drawableTopCompat="@drawable/ic_category" />
 
             <TextView
@@ -370,7 +370,7 @@
                 android:layout_weight="1"
                 android:text="@string/offres_en_or"
                 android:textAlignment="center"
-                android:textSize="12sp"
+                android:textSize="@dimen/tab_text_size"
                 android:textStyle="bold"
                 app:drawableTopCompat="@drawable/megaphone_or" />
 
@@ -395,7 +395,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/entreprises"
                     android:textAlignment="center"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/tab_text_size"
                     app:drawableTopCompat="@drawable/ic_enterprise" />
 
             </RelativeLayout>
@@ -408,7 +408,7 @@
                 android:layout_weight="1"
                 android:text="@string/boutiques"
                 android:textAlignment="center"
-                android:textSize="12sp"
+                android:textSize="@dimen/tab_text_size"
                 app:drawableTopCompat="@drawable/shopping_bag" />
 
         </LinearLayout>

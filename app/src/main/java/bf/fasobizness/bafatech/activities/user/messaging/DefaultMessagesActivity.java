@@ -1,7 +1,6 @@
 package bf.fasobizness.bafatech.activities.user.messaging;
 
 import android.annotation.SuppressLint;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -26,16 +25,12 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.devlomi.record_view.OnBasketAnimationEnd;
-import com.devlomi.record_view.OnRecordClickListener;
 import com.devlomi.record_view.OnRecordListener;
 import com.devlomi.record_view.RecordButton;
 import com.devlomi.record_view.RecordView;
-import com.google.gson.Gson;
 import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.messages.MessageInput;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -53,19 +48,12 @@ import bf.fasobizness.bafatech.adapters.MessagesList;
 import bf.fasobizness.bafatech.adapters.MessagesListCustomAdapter;
 import bf.fasobizness.bafatech.helper.RetrofitClient;
 import bf.fasobizness.bafatech.interfaces.API;
-import bf.fasobizness.bafatech.models.Announce;
 import bf.fasobizness.bafatech.models.Message;
 import bf.fasobizness.bafatech.models.User;
 import bf.fasobizness.bafatech.utils.AppUtils;
-import bf.fasobizness.bafatech.utils.Constants;
 import bf.fasobizness.bafatech.utils.DatabaseManager;
 import bf.fasobizness.bafatech.utils.MySharedManager;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.ResponseBody;
-import okhttp3.WebSocket;
-import okhttp3.WebSocketListener;
-import okio.ByteString;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -77,7 +65,6 @@ public class DefaultMessagesActivity extends AppCompatActivity
         MessagesListCustomAdapter.SelectionListener,
         MessagesListCustomAdapter.OnLoadMoreListener {
 
-    private static final String TAG = "Activity";
     private MessagesList messagesList;
     private Menu menu;
     private int selectionCount;
@@ -503,14 +490,12 @@ public class DefaultMessagesActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_delete:
-                messagesAdapter.deleteSelectedMessages();
-                break;
-            case R.id.action_copy:
-                messagesAdapter.copySelectedMessagesText(this, getMessageStringFormatter(), true);
-                AppUtils.showToast(this, "Copié", true);
-                break;
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_delete) {
+            messagesAdapter.deleteSelectedMessages();
+        } else if (itemId == R.id.action_copy) {
+            messagesAdapter.copySelectedMessagesText(this, getMessageStringFormatter(), true);
+            AppUtils.showToast(this, "Copié", true);
         }
         return true;
     }
