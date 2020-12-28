@@ -223,6 +223,9 @@ class DatabaseManager(context: Context?) : SQLiteOpenHelper(context, DATABASE_NA
             message.type = cursor.getString(6)
             message.is_deleted = cursor.getString(7)
             message.sender = cursor.getString(8)
+            if (message.type == "image") {
+                message.image = Message.Messages.Image(message.message)
+            }
             messages.add(message)
             cursor.moveToNext()
         }

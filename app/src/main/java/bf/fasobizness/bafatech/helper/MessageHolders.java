@@ -585,12 +585,7 @@ public class MessageHolders {
                 final int key = clickListenersArray.keyAt(i);
                 final View view = holder.itemView.findViewById(key);
                 if (view != null) {
-                    view.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            clickListenersArray.get(key).onMessageViewClick(view, (bf.fasobizness.bafatech.interfaces.IMessage) item);
-                        }
-                    });
+                    view.setOnClickListener(v -> clickListenersArray.get(key).onMessageViewClick(view, (IMessage) item));
                 }
             }
         } else if (item instanceof Date) {

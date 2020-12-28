@@ -35,7 +35,6 @@ import java.util.Objects;
 
 import bf.fasobizness.bafatech.R;
 import bf.fasobizness.bafatech.activities.ActivityFullScreen;
-import bf.fasobizness.bafatech.activities.user.messaging.ActivityMessage;
 import bf.fasobizness.bafatech.activities.user.messaging.DefaultMessagesActivity;
 import bf.fasobizness.bafatech.fragments.FragmentNotConnected;
 import bf.fasobizness.bafatech.fragments.FragmentSignaler;
@@ -80,7 +79,6 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
     private ImageSlider pager;
     // private ProgressBar progress_bar_discussion;
     private API api;
-    private Toolbar toolbar;
     private ProgressBar progressBar;
 
     @Override
@@ -93,7 +91,7 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
         user = mySharedManager.getUser();
         token = "Bearer " + mySharedManager.getToken();
 
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setTitle("");
         // toolbar.setTitle(R.string.details);
@@ -234,9 +232,14 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
             txt_text.setText(annonce.getTexte());
         }
 
-        toolbar.setTitle(annonce.getTitre());
         txt_titre_annonce.setText(annonce.getTitre());
-        txt_prix.setText(annonce.getPrix());
+        if (annonce.getPrix().isEmpty() || annonce.getPrix() == null || annonce.getPrix().equals("0")) {
+            txt_prix.setText(R.string.prix_sur_demande);
+        } else {
+            String prix = annonce.getPrix() + " F CFA";
+            txt_prix.setText(prix);
+        }
+        // txt_prix.setText(annonce.getPrix());
         txt_email.setText(annonce.getEmail());
         txt_tel.setText(annonce.getTel());
         txt_tel1.setText(annonce.getTel1());
@@ -368,7 +371,7 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
         btn_share.setOnClickListener(v -> {
             Intent sharingIntent = new Intent(Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
-            String shareBodyText = annonce.getTexte() + "\n" + getString(R.string.telecharger_et_partager_l_application, "http://fasobizness.com/annonces/" + id_ann);
+            String shareBodyText = annonce.getTitre() + "\n" +annonce.getTexte() + "\n" + getString(R.string.telecharger_et_partager_l_application);
             sharingIntent.putExtra(Intent.EXTRA_SUBJECT, titre);
             sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBodyText);
             startActivity(Intent.createChooser(sharingIntent, getString(R.string.partager_avec)));
@@ -399,12 +402,15 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
                 if (!annonce.getWhatsapp().contains("226")) {
                     numero = "+226" + annonce.getWhatsapp();
                 }
-                String link = "https://wa.me/" + numero + "?text=Bonjour,%20j’%20vu%20votre%20affiche%20sur%20Faso%20Biz%20Nèss%20et%20je%20voudrais%20avoir%20plus%20d’informations";
+                String waMessage = "Bonjour, je suis intéressé par votre annonce publiée sur *Faso Biz Nèss* intitulée « " + annonce.getTitre() + " ». Merci de m’envoyer plus d’informations. L’annonce se trouve ici https://fasobizness.com/annonce/"+annonce.getId_ann();
+                waMessage = waMessage.replace(" ", "%20");
+                String link = "https://wa.me/" + numero + "?text=" + waMessage;
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(link));
                 startActivity(i);
             });
-        } else {
+        }
+        /*else {
             String numero = annonce.getTel();
             if (!annonce.getTel().contains("226")) {
                 numero = "+226" + annonce.getTel();
@@ -415,7 +421,7 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
                 i.setData(Uri.parse(link));
                 startActivity(i);
             });
-        }
+        }*/
 
         try {
             List<Announce.Annonce.Illustration> arrayList = annonce.illustrations;
@@ -520,13 +526,13 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
         startActivity(sendIntent);
     }
 
-    private void sendEmail(String emailTo, String titre) {
+    /*private void sendEmail(String emailTo, String titre) {
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                 "mailto", emailTo, null));
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, titre);
         emailIntent.putExtra(Intent.EXTRA_TEXT, "Votre message");
         startActivity(Intent.createChooser(emailIntent, "Envoyer un email..."));
-    }
+    }*/
 
     private void share_ann(final String id_ann) {
         Call<MyResponse> call = api.setAnnouncesActions("share", id_ann, user);

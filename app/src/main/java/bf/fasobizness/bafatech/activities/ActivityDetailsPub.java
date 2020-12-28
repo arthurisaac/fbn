@@ -1,14 +1,14 @@
 package bf.fasobizness.bafatech.activities;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,7 +25,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.models.SlideModel;
 
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -43,7 +42,9 @@ public class ActivityDetailsPub extends AppCompatActivity {
 
     private static final String TAG = "ActivityDetailsPub";
     // private static final String TAG = "ActivityDetailsPub";
-    private TextView description, vue, partage, tv_appel, tv_whatsapp, tv_facebook;
+    private WebView wb_description_ad;
+    private TextView description, vue, partage;
+    private ImageView tv_appel, tv_whatsapp, tv_facebook;
     private LinearLayout ad_layout, loading_indicator_ad, layout_ent_offline, layout_busy_system;
     private API api;
     private ArrayList<SlideModel> imageList;
@@ -68,6 +69,7 @@ public class ActivityDetailsPub extends AppCompatActivity {
         description = findViewById(R.id.tv_description_ad);
         vue = findViewById(R.id.txt_vue);
         partage = findViewById(R.id.txt_share);
+        wb_description_ad = findViewById(R.id.wb_description_ad);
 
         ArrayList<String> imagesList = new ArrayList<>();
         imageList = new ArrayList<>();
@@ -145,12 +147,32 @@ public class ActivityDetailsPub extends AppCompatActivity {
         });
     }
 
-    @SuppressWarnings("deprecation")
+    /*@SuppressWarnings("deprecation")
     public static Spanned fromHtml(String source) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             return Html.fromHtml(source, Html.FROM_HTML_MODE_LEGACY);
         } else {
             return Html.fromHtml(source);
+        }
+    }*/
+
+    private class CustomWebViewClient extends WebViewClient {
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView wv, String url) {
+            if(url.startsWith("tel:")) {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse(url));
+                    startActivity(intent);
+                    return true;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(ActivityDetailsPub.this, R.string.une_erreur_sest_produite, Toast.LENGTH_SHORT).show();
+                }
+
+            }
+            return false;
         }
     }
 
@@ -162,9 +184,21 @@ public class ActivityDetailsPub extends AppCompatActivity {
             description.setVisibility(View.GONE);
         } else {
             try {
-                // Spanned d = HtmlCompat.fromHtml(desc, HtmlCompat.FROM_HTML_MODE_COMPACT);
-                Spanned d = fromHtml(desc);
+                Spanned d = HtmlCompat.fromHtml(desc, HtmlCompat.FROM_HTML_MODE_LEGACY);
                 description.setText(d);
+
+
+                String encodedHtml = ad.getDescription() + "<style type=\"text/css\">@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;500&display=swap'); body {font-family: 'Raleway';}</style>";
+                wb_description_ad.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, request.getUrl());
+                        view.getContext().startActivity(intent);
+                        return true;
+                    }
+                });
+                wb_description_ad.loadData(encodedHtml, "text/html", "UTF-8");
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -181,59 +215,62 @@ public class ActivityDetailsPub extends AppCompatActivity {
         }
 
         if (ad.getAppel() != null) {
-            tv_appel.setText(ad.getAppel());
+            // tv_appel.setText(ad.getAppel());
             tv_appel.setVisibility(View.VISIBLE);
+            tv_appel.setOnClickListener( v -> {
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", ad.getAppel(), null));
+                startActivity(intent);
+            });
         }
         if (ad.getFacebook() != null) {
             tv_facebook.setVisibility(View.VISIBLE);
-            tv_facebook.setText(ad.getFacebook());
+            // tv_facebook.setText(ad.getFacebook());
             tv_facebook.setOnClickListener( v -> {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(ad.getFacebook()));
-                startActivity(i);
+                try {
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(ad.getFacebook()));
+                    startActivity(i);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, R.string.une_erreur_sest_produite, Toast.LENGTH_SHORT).show();
+                }
             });
         }
         if (ad.getWhatsapp() != null) {
-            String link = "https://wa.me/" + ad.getWhatsapp() + "?text=Bonjour,%20j’%20vu%20votre%20affiche%20sur%20Faso%20Biz%20Nèss%20et%20je%20voudrais%20avoir%20plus%20d’informations";
-            tv_whatsapp.setVisibility(View.VISIBLE);
-            tv_whatsapp.setText(ad.getWhatsapp());
-            tv_whatsapp.setOnClickListener( v -> {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(link));
-                startActivity(i);
-            });
-            /*tv_whatsapp.setOnClickListener(v -> {
-                String message = "Bonjour, j’ai vu votre affiche sur Faso Biz Nèss et je voudrais avoir plus d’informations..";
-                try {
-                    PackageManager packageManager = getPackageManager();
-                    Intent i = new Intent(Intent.ACTION_VIEW);
+            try {
+                String waMessage = "Bonjour, j’ai vu votre affiche sur *Faso Biz Nèss* et je voudrais avoir plus d’informations…";
+                waMessage = waMessage.replace(" ", "%20");
 
-                    try {
-                        String url = "https://api.whatsapp.com/send?phone=" + ad.getWhatsapp() + "&text=" + URLEncoder.encode(message, "UTF-8");
-                        i.setPackage("com.whatsapp");
-                        i.setData(Uri.parse(url));
-                        if (i.resolveActivity(packageManager) != null) {
-                            startActivity(i);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });*/
+                String link = "https://wa.me/" + ad.getWhatsapp() + "?text=" + waMessage;
+                tv_whatsapp.setVisibility(View.VISIBLE);
+                // tv_whatsapp.setText(ad.getWhatsapp());
+                tv_whatsapp.setOnClickListener( v -> {
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(link));
+                    startActivity(i);
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, R.string.une_erreur_sest_produite, Toast.LENGTH_SHORT).show();
+            }
+
         }
 
         btn_share.setOnClickListener(v -> {
-            Spanned d = HtmlCompat.fromHtml(desc, HtmlCompat.FROM_HTML_MODE_COMPACT);
+            try {
+                Spanned d = HtmlCompat.fromHtml(desc, HtmlCompat.FROM_HTML_MODE_COMPACT);
 
-            Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-            sharingIntent.setType("text/plain");
-            String shareBodyText = d + getString(R.string.telecharger_et_partager_l_application, "http://fasobizness.com/ads/" + ad.getId());
-            sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "");
-            sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBodyText);
-            startActivity(Intent.createChooser(sharingIntent, getString(R.string.partager_avec)));
-            share_ad(ad.getId());
+                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                String shareBodyText = d + getString(R.string.telecharger_et_partager_l_application);
+                sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "");
+                sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBodyText);
+                startActivity(Intent.createChooser(sharingIntent, getString(R.string.partager_avec)));
+                share_ad(ad.getId());
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, R.string.une_erreur_sest_produite, Toast.LENGTH_SHORT).show();
+            }
         });
 
         List<Advertising.Ads.Affiche> afficheList = ad.getAffiches();

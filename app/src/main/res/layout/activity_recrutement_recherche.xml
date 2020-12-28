@@ -20,7 +20,7 @@
             android:background="#FFFFFF"
             android:drawableEnd="@drawable/ic_search_black"
             android:drawablePadding="8dp"
-            android:hint="@string/rechercher_dans_recrutements"
+            android:hint="@string/rechercher_dans_espace_emplois"
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:textColor="#000000"

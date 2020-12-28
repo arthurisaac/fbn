@@ -109,6 +109,7 @@
                     android:id="@+id/sp_ville_annonce"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
                     android:entries="@array/villes" />
 
                 <LinearLayout
@@ -123,9 +124,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:background="@drawable/frame"
                         android:hint="@string/prix_min"
                         android:importantForAutofill="no"
+                        android:textAlignment="center"
                         android:inputType="number"
                         android:textSize="12sp" />
 
@@ -142,8 +143,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:background="@drawable/frame"
                         android:hint="@string/prix_max"
+                        android:textAlignment="center"
                         android:importantForAutofill="no"
                         android:textSize="12sp"
                         android:inputType="number" />
@@ -153,10 +154,20 @@
                 <Button
                     android:id="@+id/btn_valider"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_marginTop="16dp"
                     android:background="@color/colorPrimary"
                     android:text="@string/lancer_la_recherche"
+                    android:textSize="12sp"
+                    android:textColor="#FCF4F4" />
+
+                <Button
+                    android:id="@+id/btn_reset"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@color/colorPrimary"
+                    android:text="@string/r_initialiser"
                     android:textSize="12sp"
                     android:textColor="#FCF4F4" />
 

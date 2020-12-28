@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -26,7 +27,6 @@ import bf.fasobizness.bafatech.interfaces.API
 import bf.fasobizness.bafatech.interfaces.OnItemListener
 import bf.fasobizness.bafatech.models.Recruit
 import bf.fasobizness.bafatech.models.Recruit.Recrutement
-import bf.fasobizness.bafatech.utils.DatabaseManager
 import bf.fasobizness.bafatech.utils.MySharedManager
 import com.facebook.shimmer.ShimmerFrameLayout
 import retrofit2.Call
@@ -42,8 +42,8 @@ class ActivityRecrutements : AppCompatActivity(), OnItemListener {
     private lateinit var mShimmerViewContainer: ShimmerFrameLayout
     private lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
 
-    // private LinearLayout offline_layout;
-    private var databaseManager: DatabaseManager? = null
+    private lateinit var offlineLayout: LinearLayout
+    // private var databaseManager: DatabaseManager? = null
 
     // private MaterialSearchView searchView;
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,7 +61,7 @@ class ActivityRecrutements : AppCompatActivity(), OnItemListener {
         val sharedManager = MySharedManager(this)
         val user = sharedManager.user
 
-        // offline_layout = findViewById(R.id.layout_ent_offline);
+        offlineLayout = findViewById(R.id.layout_ent_offline)
         // searchView = findViewById(R.id.search_view);
         val refresh = findViewById<Button>(R.id.btn_refresh)
         refresh.setOnClickListener { recruits }
@@ -88,12 +88,13 @@ class ActivityRecrutements : AppCompatActivity(), OnItemListener {
                 notConnected.show(supportFragmentManager, "")
             }
         }
-        databaseManager = DatabaseManager(this)
+        // databaseManager = DatabaseManager(this)
         recruits
         // searchView.setOnSearchViewListener(this);
     }
 
     private fun refresh() {
+        offlineLayout.visibility = View.GONE
         mShimmerViewContainer.visibility = View.VISIBLE
         mShimmerViewContainer.stopShimmer()
         mRecrutementAdapter.clearAll()
@@ -168,13 +169,14 @@ class ActivityRecrutements : AppCompatActivity(), OnItemListener {
 
     private val recruits: Unit
         get() {
-            val recrutementList = databaseManager!!.recruits
-            mRecrutements.addAll(recrutementList)
-            mRecrutementAdapter.notifyDataSetChanged()
-            if (mRecrutements.size == 0) {
-                mShimmerViewContainer.visibility = View.VISIBLE
-            }
+            // val recrutementList = databaseManager!!.recruits
+            // mRecrutements.addAll(recrutementList)
+            // mRecrutementAdapter.notifyDataSetChanged()
+            // if (mRecrutements.size == 0) {
+            // }
             val api = RetrofitClient.getClient().create(API::class.java)
+            mShimmerViewContainer.visibility = View.VISIBLE
+            offlineLayout.visibility = View.GONE
             val call = api.recruits
             call.enqueue(object : Callback<Recruit?> {
                 override fun onResponse(call: Call<Recruit?>, response: Response<Recruit?>) {
@@ -190,7 +192,7 @@ class ActivityRecrutements : AppCompatActivity(), OnItemListener {
                     if (recrutements != null) {
                         mRecrutementAdapter.clearAll()
                         mRecrutements.addAll(recrutements)
-                        databaseManager!!.truncateRecruits()
+                        /*databaseManager!!.truncateRecruits()
                         for (recrutement in recrutements) {
                             databaseManager!!.insertRecrutement(
                                     recrutement.id_recr,
@@ -212,13 +214,14 @@ class ActivityRecrutements : AppCompatActivity(), OnItemListener {
                                     recrutement.id_recr
                             )
                         }
-                        databaseManager!!.close()
+                        databaseManager!!.close()*/
                     }
                     mRecrutementAdapter.notifyDataSetChanged()
                 }
 
                 override fun onFailure(call: Call<Recruit?>, t: Throwable) {
                     Log.d(TAG, t.toString())
+                    offlineLayout.visibility = View.VISIBLE
                     mShimmerViewContainer.visibility = View.GONE
                     mShimmerViewContainer.stopShimmer()
                     mSwipeRefreshLayout.isRefreshing = false

@@ -161,6 +161,10 @@ public class Announce {
             return whatsapp;
         }
 
+        public void setFavoris(String favoris) {
+            this.favoris = favoris;
+        }
+
         public class Illustration implements Serializable {
 
             @SerializedName("nom")

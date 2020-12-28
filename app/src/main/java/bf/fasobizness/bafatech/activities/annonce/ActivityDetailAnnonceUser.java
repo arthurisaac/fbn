@@ -267,7 +267,7 @@ public class ActivityDetailAnnonceUser extends AppCompatActivity implements OnIm
         btn_share.setOnClickListener(v -> {
             Intent sharingIntent = new Intent(Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
-            String shareBodyText = annonce.getTexte() + "\n" + getString(R.string.telecharger_et_partager_l_application, "http://fasobizness.com/annonces/" + id_ann);
+            String shareBodyText = annonce.getTitre() + "\n" +annonce.getTexte() + "\n" + getString(R.string.telecharger_et_partager_l_application);
             sharingIntent.putExtra(Intent.EXTRA_SUBJECT, annonce.getTitre());
             sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBodyText);
             startActivity(Intent.createChooser(sharingIntent, getString(R.string.partager_avec)));

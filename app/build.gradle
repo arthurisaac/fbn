@@ -8,12 +8,12 @@ repositories {
 
 android {
     compileSdkVersion 30
-    buildToolsVersion '30.0.2'
+    buildToolsVersion '30.0.3'
     defaultConfig {
         applicationId "bf.fasobizness.bafatech"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 172
+        versionCode 176
         versionName "2.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

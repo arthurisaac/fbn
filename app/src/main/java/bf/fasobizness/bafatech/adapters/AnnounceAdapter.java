@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,15 +20,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.snackbar.Snackbar;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import bf.fasobizness.bafatech.R;
+import bf.fasobizness.bafatech.activities.annonce.ActivityDetailsAnnonce;
+import bf.fasobizness.bafatech.helper.RetrofitClient;
+import bf.fasobizness.bafatech.interfaces.API;
 import bf.fasobizness.bafatech.interfaces.OnAnnonceListener;
 import bf.fasobizness.bafatech.interfaces.OnLongItemListener;
 import bf.fasobizness.bafatech.models.Announce;
+import bf.fasobizness.bafatech.models.MyResponse;
+import bf.fasobizness.bafatech.utils.MySharedManager;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.AnnonceHolder> implements Filterable {
@@ -40,6 +50,8 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.Annonc
     private OnAnnonceListener onAnnonceListener;
     private OnLongItemListener onLongItemListener;
     private OnBottomReachedListener onBottomReachedListener;
+    private final API api = RetrofitClient.getClient().create(API.class);
+    private MySharedManager sharedManager;
 
     private boolean mIsInChoiceMode;
 
@@ -91,6 +103,7 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.Annonc
         this.mContext = context;
         this.mAnnonces = annonces;
         this.mAnnoncesFiltre = annonces;
+        sharedManager = new MySharedManager(context);
     }
 
     public void setOnBottomReachedListener(OnBottomReachedListener onBottomReachedListener) {
@@ -172,6 +185,31 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.Annonc
         annonceHolder.itemView.setOnClickListener(view -> onAnnonceListener.onAnnonceClicked(annonceHolder.getAdapterPosition()));
         annonceHolder.checkBox.setOnClickListener(view -> onAnnonceListener.onAnnonceClicked(annonceHolder.getAdapterPosition()));
         annonceHolder.itemView.setOnLongClickListener(view -> onLongItemListener.onLongItemClicked(annonceHolder.getAdapterPosition()));
+        annonceHolder.favoriteView.setOnClickListener( v -> {
+            if (!sharedManager.getUser().isEmpty()) {
+                Call<MyResponse> call = api.setAnnouncesActions("favorite", annonce.getId_ann(), sharedManager.getUser());
+                call.enqueue(new Callback<MyResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<MyResponse> call, @NonNull Response<MyResponse> response) {
+                        if (response.isSuccessful()) {
+                            if (annonce.getFavori() != null && annonce.getFavori().equals("1")) {
+                                annonceHolder.favoriteView.setImageResource(R.drawable.ic_star_white);
+                                annonce.setFavoris("0");
+                            } else {
+                                annonceHolder.favoriteView.setImageResource(R.drawable.ic_star_yellow);
+                                annonce.setFavoris("1");
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<MyResponse> call, @NonNull Throwable t) {
+                        Toast.makeText(mContext, R.string.pas_d_acces_internet, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+        });
 
         if (i == mAnnonces.size() - 1) {
             onBottomReachedListener.onBottomReached();
@@ -232,7 +270,7 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.Annonc
         final TextView PrixView;
         // final TextView btnVueView;
         final ImageView vipView;
-        private final ImageView favoriteView;
+        private final ImageButton favoriteView;
         final RoundedImageView AfficheView;
         final CheckBox checkBox;
 

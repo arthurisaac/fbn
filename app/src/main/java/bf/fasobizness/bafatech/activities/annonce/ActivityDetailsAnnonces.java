@@ -9,9 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.denzcoskun.imageslider.models.SlideModel;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -19,7 +16,6 @@ import java.util.Objects;
 import bf.fasobizness.bafatech.R;
 import bf.fasobizness.bafatech.adapters.AnnouncesPagerAdapter;
 import bf.fasobizness.bafatech.fragments.FragmentAnnonce;
-import bf.fasobizness.bafatech.utils.MySharedManager;
 
 public class ActivityDetailsAnnonces extends AppCompatActivity {
     // private static final String TAG = "ActivityDetailsAnnonce";

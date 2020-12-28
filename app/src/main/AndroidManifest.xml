@@ -89,7 +89,10 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="www.fasobizness.com"
+                    android:host="fasobizness.com"
+                    android:scheme="https" />
+                <data
+                    android:host="fasobizness.com"
                     android:scheme="http" />
             </intent-filter>
         </activity>
@@ -126,7 +129,7 @@
         </service>
 
         <activity
-            android:name=".activities.user.ActivityFavorite"
+            android:name=".activities.annonce.ActivityFavorite"
             android:theme="@style/AppTheme.Main" />
         <activity
             android:name=".activities.annonce.ActivitySearchAnnonce"

@@ -70,7 +70,7 @@
     <string name="comment_s_enregistrer">Comment s\'enregistrer ?</string>
     <string name="pour_s_enregistrer_rendez_vous_dans_la_barre_de_navigation_et_cliquer_sur_connectez_vous_puis_cliquer_sur_s_inscrire_ici">Pour s\'enregistrer, rendez-vous dans la barre de navigation et cliquer sur \'Connectez-vous\' puis cliquer sur \'S\'inscrire ici\'.</string>
 
-    <string name="telecharger_et_partager_l_application">Téléchargez ou parcourez l\'application Faso Biz Nèss pour en savoir plus. Pour android: http://bit.ly/AndroidFBN. Retrouver l\'article à (%1$s)</string>
+    <string name="telecharger_et_partager_l_application">Téléchargez ou parcourez l\'application Faso Biz Nèss pour en savoir plus. Pour android: http://bit.ly/AndroidFBN.</string>
     <string name="telecharger_et_partager_l_application_recommender">Je t\'invite à découvrir une application gratuite pour publier tes offres, vendre, acheter, et être informé de toutes les opportunités d\'emploi au Burkina. Disponible sur Playstore: http://bit.ly/AndroidFBN</string>
     <string name="comment_publier_une_annonce">Comment publier une annonce ?</string>
     <string name="comment_nous_contacter">Comment nous contacter ?</string>
@@ -181,7 +181,7 @@
     <string name="profil_modifie_avec_succes">Profil modifié avec succès</string>
     <string name="choisir_action">Choisir action</string>
     <string name="minimum_6_caracteres">Minimum 06 caractères</string>
-    <string name="votre_suggestion_a_bien_t_envoy_e">Votre suggestion a bien été envoyée. Merci pour votre suggestion</string>
+    <string name="votre_suggestion_a_bien_t_envoy_e">Votre suggestion a bien été enregistrée. Merci pour votre contribution</string>
     <string name="ressayer">Reéssayer</string>
     <string name="suppresion_en_cours">Suppression en cours…</string>
     <string name="noter_l_application">Noter l\'application</string>
@@ -226,7 +226,7 @@
     <string name="_partages">%1$s partages</string>
     <string name="ajouter_une_photo_de_profil">Ajouter une photo de profil</string>
     <string name="nom_et_prenom">Nom et Prenom</string>
-    <string name="vos_resultats">Résultats</string>
+    <string name="vos_resultats">Vos Résultats</string>
     <string name="aimez_notre_page_facebook">Aimez notre page Facebook</string>
     <string name="publie_le">Publié le %1$s</string>
     <string name="particulier">particulier</string>
@@ -248,9 +248,15 @@
     <string name="filtrer">Filtrer</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="espace_emplois">Espace emplois</string>
-    <string name="rechercher_dans_recrutements">Rechercher dans recrutements…</string>
+    <string name="rechercher_dans_espace_emplois">Rechercher dans Espace Emplois…</string>
     <string name="supprimer">Supprimer</string>
     <string name="hors_ligne">Hors ligne</string>
     <string name="bient_t_les_parutions_reprendront_restez_connect_s">Bientôt les parutions reprendront, restez connectés !</string>
     <string name="copier">Copier</string>
+    <string name="_0_annonces">%1$s annonces</string>
+    <string name="contact_telephonique_whatsapp">Contact téléphonique/WhatsApp</string>
+    <string name="nous_accordons_beaucoup_de_valeur_vos_avis_n_h_sitez_pas_nous_faire_part_de_vos_idees_et_suggestions">Nous accordons beaucoup de valeur à vos avis. N’hésitez pas à nous faire part de vos idées et suggestions.</string>
+    <string name="rechercher_dans_offres_et_annonces">Rechercher dans offres et annonces</string>
+    <string name="r_initialiser">Réinitialiser</string>
+    <string name="contact">Contacts</string>
 </resources>

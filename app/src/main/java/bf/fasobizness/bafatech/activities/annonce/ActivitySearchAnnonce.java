@@ -155,64 +155,6 @@ public class ActivitySearchAnnonce extends AppCompatActivity implements OnAnnonc
                 layout_ent_offline.setVisibility(View.VISIBLE);
             }
         });
-
-        /*String url = Constants.HOST_URL + "annonce/search?q="+query;
-        StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
-            shimmer_view_container.setVisibility(View.GONE);
-            try {
-                JSONObject jsonObject = new JSONObject(response);
-                JSONArray jsonArray = jsonObject.getJSONArray("data");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject data = jsonArray.getJSONObject(i);
-
-                    String titre = data.getString("titre");
-                    String vue = data.getString("vue");
-                    String id_ann = data.getString("id_ann");
-                    String categorie = data.getString("categorie");
-                    String vip = data.getString("vip");
-
-                    String affiche = data.getString("illNom");
-
-                    Annonce annonce = new Annonce();
-                    annonce.setAffiche(affiche);
-                    annonce.setVue(vue);
-                    annonce.setId_ann(id_ann);
-                    annonce.setCategorie(categorie);
-                    annonce.setTitre(titre);
-                    annonce.setVip(vip);
-
-                    mAnnonces.add(annonce);
-                }
-                String reslt = getString(R.string.resultats, mAnnonces.size() + "");
-                if (mAnnonces.size() == 0) {
-                    resultats.setText(R.string.aucun_resultat);
-                }
-
-                resultats.setText(reslt);
-                page++;
-                mAnnonceAdapter.notifyDataSetChanged();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                if (page <= 1) {
-                    layout_busy_system.setVisibility(View.VISIBLE);
-                } else {
-                    Toast.makeText(this, "Fin", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-        }, error -> {
-            Log.d(TAG, "" + error.toString());
-            error.printStackTrace();
-            layout_ent_offline.setVisibility(View.VISIBLE);
-            shimmer_view_container.setVisibility(View.GONE);
-        });
-        request.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 40,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES * 4,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT * 2)
-        );
-        requestQueue.add(request);*/
     }
 
     @Override

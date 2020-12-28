@@ -130,7 +130,11 @@ public class ActivityUserProfile extends AppCompatActivity implements OnAnnonceL
                         }
 
                         tv_user_username.setText(user.getUsername());
-                        tv_user_account_type.setText(user.getType());
+                        if (user.getType().equals("entreprise")) {
+                            tv_user_account_type.setText("Entreprise");
+                        } else {
+                            tv_user_account_type.setText("Particulier");
+                        }
                         String count = getString(R.string.publications_x, annonces.size() + "");
                         tv_publish_count.setText(count);
                     }

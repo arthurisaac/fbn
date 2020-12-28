@@ -200,7 +200,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:drawablePadding="10dp"
-                    app:drawableStartCompat="@drawable/ic_category" />
+                    android:text="@string/categories"
+                    android:textColor="@color/colorPrimaryDark"
+                    app:drawableStartCompat="@drawable/ic_category"
+                    app:drawableTint="@color/colorPrimaryDark" />
 
             </LinearLayout>
 

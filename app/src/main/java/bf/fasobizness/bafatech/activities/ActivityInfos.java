@@ -40,8 +40,6 @@ public class ActivityInfos extends AppCompatActivity {
         rl_rate.setOnClickListener(v -> {
             Uri uri = Uri.parse("market://details?id=" + getApplication().getPackageName());
             Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
-            // To count with Play market backstack, After pressing back button,
-            // to taken back to our application, we need to add following flags to intent.
             goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
                     Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
             try {
@@ -53,7 +51,7 @@ public class ActivityInfos extends AppCompatActivity {
         });
         Button btn_voir_plus = findViewById(R.id.btn_voir_plus);
         btn_voir_plus.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://fasobizness.com/cgu.pdf"));
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://fasobizness.com/uploads/cgu.pdf"));
             startActivity(intent);
         });
 

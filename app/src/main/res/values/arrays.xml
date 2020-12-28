@@ -22,7 +22,7 @@
     </string-array>
 
     <string-array name="categories">
-        <item>Choisir Categorie *</item>
+        <item>Toutes les catégories</item>
         <item>Immobilier (vente et location)</item>
         <item>Articles pour bébés et enfants</item>
         <item>Vêtements et accessoires pour hommes</item>
@@ -44,7 +44,7 @@
     </string-array>
 
     <string-array name="villes">
-        <item>Choisir ville *</item>
+        <item>Toutes les villes</item>
         <item>Ouagadougou</item>
         <item>Bobo Dioulasso</item>
         <item>Koudougou</item>

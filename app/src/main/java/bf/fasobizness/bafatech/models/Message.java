@@ -1,12 +1,14 @@
 package bf.fasobizness.bafatech.models;
 
+import androidx.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
-import com.stfalcon.chatkit.commons.models.MessageContentType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import bf.fasobizness.bafatech.interfaces.IMessage;
+import bf.fasobizness.bafatech.interfaces.MessageContentType;
 
 
 public class Message {
@@ -70,7 +72,7 @@ public class Message {
     }
 
     public static class Messages
-            implements IMessage {
+            implements IMessage, MessageContentType.Image {
         private String message_id;
         private String message;
         private String created_at;
@@ -81,30 +83,7 @@ public class Message {
         private String sender;
         private String type;
         private String is_deleted;
-
-        /*public String getMessage_id() {
-            return message_id;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public String getCreated_at() {
-            return created_at;
-        }
-
-        public String getDiscussion_id() {
-            return discussion_id;
-        }
-
-        public String getSender() {
-            return sender;
-        }
-
-        public String getType() {
-            return type;
-        }*/
+        private Image image;
 
         public String getBellow() {
             return bellow;
@@ -189,6 +168,20 @@ public class Message {
 
         public void setIs_deleted(String is_deleted) {
             this.is_deleted = is_deleted;
+        }
+
+        public Image getImage() {
+            return image;
+        }
+
+        public void setImage(Image image) {
+            this.image = image;
+        }
+
+        @Nullable
+        @Override
+        public String getImageUrl() {
+            return image == null ? null : image.url;
         }
 
         public static class Image {

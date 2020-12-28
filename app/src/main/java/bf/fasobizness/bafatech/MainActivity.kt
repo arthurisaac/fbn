@@ -1,6 +1,7 @@
 package bf.fasobizness.bafatech
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -23,7 +24,7 @@ import bf.fasobizness.bafatech.activities.*
 import bf.fasobizness.bafatech.activities.annonce.*
 import bf.fasobizness.bafatech.activities.entreprise.ActivityEntreprisesUne
 import bf.fasobizness.bafatech.activities.recrutement.ActivityRecrutements
-import bf.fasobizness.bafatech.activities.user.ActivityFavorite
+import bf.fasobizness.bafatech.activities.annonce.ActivityFavorite
 import bf.fasobizness.bafatech.activities.user.ActivityProfile
 import bf.fasobizness.bafatech.activities.user.LoginActivity
 import bf.fasobizness.bafatech.activities.user.messaging.ActivityDiscussions
@@ -48,6 +49,7 @@ import com.denzcoskun.imageslider.ImageSlider
 import com.denzcoskun.imageslider.interfaces.ItemClickListener
 import com.denzcoskun.imageslider.models.SlideModel
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import org.json.JSONObject
 import retrofit2.Call
@@ -109,14 +111,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toolbar.title = getString(R.string.annonces)
         setSupportActionBar(toolbar)
         val fab = findViewById<Button>(R.id.fab)
+        val fabUp = findViewById<FloatingActionButton>(R.id.fab_up)
         fab.setOnClickListener {
             if (user.isEmpty()) {
                 val notConnected = FragmentNotConnected.newInstance()
                 notConnected.show(supportFragmentManager, "")
             } else {
-                // startActivity(new Intent(MainActivity.this, ActivityNouvelleAnnonce.class));
                 startActivity(Intent(this@MainActivity, ActivityNewAnnounce::class.java))
             }
+        }
+        fabUp.setOnClickListener {
+            mRecyclerView.layoutManager?.smoothScrollToPosition(mRecyclerView, null, 0)
         }
         drawer = findViewById(R.id.drawer_layout)
         val toggle = ActionBarDrawerToggle(
@@ -125,6 +130,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         sharedManager = MySharedManager(this)
         toggle.syncState()
         val btnFiltrer = findViewById<Button>(R.id.btn_filtrer)
+        val btnReset = findViewById<Button>(R.id.btn_reset)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         val navigationView2 = findViewById<NavigationView>(R.id.nav_view2)
         val btnValider = navigationView2.findViewById<Button>(R.id.btn_valider)
@@ -134,6 +140,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val spCategorie = findViewById<Spinner>(R.id.sp_categorie_annonce)
         spVille.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, resources.getStringArray(R.array.villes))
         spCategorie.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, resources.getStringArray(R.array.categories))
+        btnReset.setOnClickListener {
+            edMin.editableText.clear()
+            edMax.editableText.clear()
+            spCategorie.setSelection(0)
+            spVille.setSelection(0)
+        }
         btnValider.setOnClickListener {
             val txtMin = edMin.text.toString()
             val txtMax = edMax.text.toString()
@@ -141,10 +153,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             var ville = spVille.selectedItem.toString()
 
             // Advanced request
-            if (ville == "Choisir ville") {
+            if (ville == "Toutes les villes") {
                 ville = ""
             }
-            if (cat == "Choisir Categorie") {
+            if (cat == "Toutes les catégories") {
                 cat = ""
             }
             filtre = "multiple"
@@ -287,8 +299,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy < 0) {
                     fab.visibility = View.VISIBLE
+                    fabUp.visibility = View.VISIBLE
                 } else if (dy > 0) {
                     fab.visibility = View.GONE
+                    fabUp.visibility = View.GONE
                 }
             }
         })

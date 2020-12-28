@@ -68,14 +68,14 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="45dp"
                         android:layout_marginBottom="10dp"
-                        android:maxLines="1"
                         android:textColor="@android:color/white"
                         android:textSize="14sp" />
 
-                    <ImageView
+                    <ImageButton
+                        style="@style/Widget.AppCompat.Button.Borderless"
                         android:id="@+id/favorite"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:layout_alignParentEnd="true"
                         android:contentDescription="@string/favoris"
                         android:src="@drawable/ic_star_white" />
