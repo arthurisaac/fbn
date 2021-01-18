@@ -1,11 +1,13 @@
 package bf.fasobizness.bafatech.activities.user
 
 import android.Manifest
-import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
+import android.app.Activity
+import android.content.*
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.util.Patterns
 import android.view.Menu
@@ -46,11 +48,14 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
+import java.io.*
 import java.util.*
 
 
 class ActivityProfile : AppCompatActivity(), UploadCallbacks {
+
+    private val CAMERA = 2
+    private val GALLERY = 1
 
     private lateinit var username: TextInputLayout
     private lateinit var email: TextInputLayout
@@ -72,7 +77,8 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
     private lateinit var sect: RelativeLayout
     private lateinit var pre: RelativeLayout
     private lateinit var us: RelativeLayout
-    private var images: ArrayList<Image> = ArrayList()
+    private var mCurrentPhotoPath: String = ""
+    // private var images: ArrayList<Image> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,7 +127,7 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
         progressBar = findViewById(R.id.progress_bar_photo)
         progressBarHead = findViewById(R.id.progress_bar_head)
 
-        photoProfile.setOnClickListener { options() }
+        photoProfile.setOnClickListener { requestMultiplePermissions() }
 
         updateMdp.setOnClickListener {
             val fragmentManager: FragmentManager = supportFragmentManager
@@ -215,7 +221,8 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
                 .withListener(object : MultiplePermissionsListener {
                     override fun onPermissionsChecked(report: MultiplePermissionsReport) {
                         if (report.areAllPermissionsGranted()) {
-                            showChooser()
+                            // showChooser()
+                            options()
                         }
                     }
 
@@ -228,40 +235,107 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
     }
 
     private fun options() {
-        val items = arrayOf<CharSequence>("Modifier", "Supprimer")
+        val items = arrayOf<CharSequence>("Camera", "Galerie", "Supprimer")
         val builder = AlertDialog.Builder(this@ActivityProfile)
         builder.setTitle(R.string.choisir_la_source)
         builder.setItems(items) { _: DialogInterface?, i: Int ->
-            if (items[i] == "Modifier") {
-                requestMultiplePermissions()
-            } else if (items[i] == "Supprimer") {
-                removeProfilePhoto()
+            when {
+                items[i] == "Camera" -> {
+                    // pickFromCamera()
+                    pickFromCamera()
+                }
+                items[i] == "Galerie" -> {
+                    pickFromGallery()
+                }
+                items[i] == "Supprimer" -> {
+                    removeProfilePhoto()
+                }
             }
         }
         builder.show()
     }
 
-    private fun showChooser() {
-        ImagePicker.with(this)
-                .setFolderMode(true)
-                .setFolderTitle("Photos")
-                .setRootDirectoryName(Config.ROOT_DIR_DCIM)
-                .setDirectoryName("Faso Biz Ness")
-                .setMultipleMode(false)
-                .setShowNumberIndicator(true)
-                .setMaxSize(1)
-                .setLimitMessage("Vous pouvez selectionner 10 images")
-                .setSelectedImages(images)
-                .setRequestCode(100)
-                .start()
+    private fun pickFromGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent, GALLERY)
+    }
+
+    private fun pickFromCamera() {
+        val values = ContentValues(1)
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
+        val fileUri = contentResolver
+                .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        values)
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if(intent.resolveActivity(packageManager) != null) {
+            mCurrentPhotoPath = fileUri.toString()
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri)
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            startActivityForResult(intent, CAMERA)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (ImagePicker.shouldHandleResult(requestCode, resultCode, data, 100)) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        /*if (ImagePicker.shouldHandleResult(requestCode, resultCode, data, 100)) {
             images = ImagePicker.getImages(data)
             updateProfilePhoto(images[0].uri)
+        }*/
+
+        if (resultCode != Activity.RESULT_CANCELED) {
+            if (requestCode == GALLERY) {
+                if (data != null) {
+                    val contentURI = data.data
+                    try {
+                        val protection = Array(1) { MediaStore.Images.Media.DATA }
+                        val cursor = this.managedQuery(contentURI, protection, null, null, null)
+                        cursor?.moveToFirst()
+                        val photoPath = cursor?.getString(0)
+                        cursor?.close()
+                        val file = File(photoPath)
+                        val uri = Uri.fromFile(file)
+                        updateProfilePhoto(uri)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            } else if (requestCode == CAMERA) {
+                val cursor = contentResolver.query(Uri.parse(mCurrentPhotoPath),
+                        Array(1) { MediaStore.Images.ImageColumns.DATA},
+                        null, null, null)
+                cursor?.moveToFirst()
+                val photoPath = cursor?.getString(0)
+                cursor?.close()
+                val file = File(photoPath)
+                val uri = Uri.fromFile(file)
+                updateProfilePhoto(uri)
+            }
         }
-        super.onActivityResult(requestCode, resultCode, data)
+
+    }
+
+    private fun bitmapToUri(bitmap: Bitmap): Uri {
+        /*val wrapper = ContextWrapper(applicationContext)
+        var file = wrapper.getDir("Pictures", Context.MODE_PRIVATE)
+        file = File(file, "${UUID.randomUUID()}.jpg")
+        try {
+            val stream:OutputStream = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream)
+            stream.flush()
+            stream.close()
+        } catch (e:IOException) {
+            e.printStackTrace()
+            Toast.makeText(this, "Erreur", Toast.LENGTH_SHORT).show()
+        }
+        return Uri.parse(file.absolutePath)*/
+        val file = File(Environment.getExternalStorageDirectory().toString() + File.separator + "Pictures" + File.separator + "${UUID.randomUUID()}.jpg")
+        file.createNewFile()
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos)
+        val bitmapData = baos.toByteArray()
+        return Uri.parse(file.absolutePath)
     }
 
     private fun updateProfilePhoto(uri: Uri) {
@@ -282,7 +356,7 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
                                         .override(400, 400)
                         )
                         .asBitmap()
-                        .load(images[0].uri)
+                        .load(uri)
                         .thumbnail(0.1f)
                         .into(photoProfile)
 

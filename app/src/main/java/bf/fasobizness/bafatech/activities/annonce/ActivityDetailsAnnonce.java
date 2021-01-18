@@ -73,7 +73,7 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
     // private ImageView iv_affiche;
     private ImageView txt_photo_util;
     private TextView txt_vue;
-    private LinearLayout ann, layout_no_annonce, loading_indicator_ann, layout_ent_offline, layout_busy_system;
+    private LinearLayout ann, layout_no_annonce, loading_indicator_ann, layout_ent_offline, layout_busy_system, bottom_buttons;
     private RelativeLayout see_more_annonce;
     private String fav;
     private ImageSlider pager;
@@ -128,6 +128,7 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
         ann = findViewById(R.id.ann);
         layout_busy_system = findViewById(R.id.layout_busy_system);
         Button btn_refresh = findViewById(R.id.btn_refresh);
+        bottom_buttons = findViewById(R.id.bottom_buttons);
 
         see_more_annonce = findViewById(R.id.see_more_annonce);
         layout_ent_offline.setVisibility(View.GONE);
@@ -153,6 +154,7 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
     private void getAnnounce(String id_ann) {
         layout_ent_offline.setVisibility(View.GONE);
         loading_indicator_ann.setVisibility(View.VISIBLE);
+        bottom_buttons.setVisibility(View.GONE);
 
         Call<Announce.Annonce> call = api.getAnnounce(id_ann, user);
         call.enqueue(new Callback<Announce.Annonce>() {
@@ -160,6 +162,7 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
             public void onResponse(@NonNull Call<Announce.Annonce> call, @NonNull Response<Announce.Annonce> response) {
                 loading_indicator_ann.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
+                    bottom_buttons.setVisibility(View.VISIBLE);
                     // Log.d(TAG, response.toString());
                     loading_indicator_ann.setVisibility(View.GONE);
                     ann.setVisibility(View.VISIBLE);

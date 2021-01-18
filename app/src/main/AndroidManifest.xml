@@ -138,9 +138,6 @@
             android:name=".activities.ActivityInfos"
             android:theme="@style/AppTheme.Main" />
         <activity
-            android:name=".activities.annonce.ActivityNouvelleAnnonce"
-            android:theme="@style/AppTheme.Main" />
-        <activity
             android:name=".activities.ActivityFullScreen"
             android:theme="@style/AppTheme.TranslucideBar" />
         <activity

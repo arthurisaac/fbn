@@ -135,8 +135,8 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
         overbox.visibility = View.GONE
         rlUploadPicture.visibility = View.GONE
 
-        spVille.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, resources.getStringArray(R.array.villes))
-        spCategorie.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, resources.getStringArray(R.array.categories))
+        spVille.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, resources.getStringArray(R.array.villes_2))
+        spCategorie.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, resources.getStringArray(R.array.categories_2))
 
         btnPublishOffer.setOnClickListener {
             if (!checkTitreInput() or !checkDescInput() or !checkTelInput() or !checkVilleInput() or !checkCatInput() or !checkImage()) {
@@ -312,7 +312,7 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
                 tvVilleError.visibility = View.VISIBLE
                 false
             }
-            villeInput == "Choisir ville" -> {
+            (villeInput == "Choisir ville" || villeInput == "Toutes les villes") -> {
                 tvVilleError.visibility = View.VISIBLE
                 false
             }
@@ -330,7 +330,7 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
                 tvCategorieError.visibility = View.VISIBLE
                 false
             }
-            catInput == "Choisir Categorie" -> {
+            (catInput == "Toutes les catégories" || catInput == "Choisir catégorie") -> {
                 tvCategorieError.visibility = View.VISIBLE
                 false
             }

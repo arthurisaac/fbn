@@ -325,7 +325,7 @@
                 android:textColor="#3e3e3e"
                 android:textSize="18sp" />
 
-            <LinearLayout
+            <!--<LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -357,24 +357,24 @@
                     android:textAllCaps="false"
                     android:textColor="#3e3e3e" />
 
-                <!--<ProgressBar
+                &lt;!&ndash;<ProgressBar
                     android:id="@+id/progress_bar_discussion"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="25dp"
-                    android:visibility="gone" />-->
+                    android:visibility="gone" />&ndash;&gt;
 
-                <!--<ImageView
+                &lt;!&ndash;<ImageView
                     android:id="@+id/iv_chat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="25dp"
                     android:contentDescription="@string/discuter_avec_le_vender"
-                    android:src="@drawable/chat_bubble" />-->
+                    android:src="@drawable/chat_bubble" />&ndash;&gt;
 
-            </LinearLayout>
+            </LinearLayout>-->
 
             <View
                 android:layout_width="match_parent"
@@ -384,7 +384,8 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <!--<LinearLayout
+    <LinearLayout
+        android:id="@+id/bottom_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -400,6 +401,7 @@
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:background="@drawable/border_rounded_solid_primary"
+            android:drawableStart="@drawable/chat_bubble"
             android:drawablePadding="10dp"
             android:text="@string/message"
             android:textAllCaps="false"
@@ -411,30 +413,31 @@
             android:layout_height="35dp"
             android:layout_margin="5dp"
             android:layout_weight="1"
+            android:drawableStart="@drawable/ic_whatsapp"
             android:background="@drawable/border_rounded_solid_primary"
             android:drawablePadding="10dp"
             android:text="@string/whatsapp"
             android:textAllCaps="false"
             android:textColor="#3e3e3e" />
 
-        &lt;!&ndash;<ProgressBar
+        <!--<ProgressBar
             android:id="@+id/progress_bar_discussion"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="25dp"
-            android:visibility="gone" />&ndash;&gt;
+            android:visibility="gone" />-->
 
-        &lt;!&ndash;<ImageView
+        <!--<ImageView
             android:id="@+id/iv_chat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="25dp"
             android:contentDescription="@string/discuter_avec_le_vender"
-            android:src="@drawable/chat_bubble" />&ndash;&gt;
+            android:src="@drawable/chat_bubble" />-->
 
-    </LinearLayout>-->
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/loading_indicator_ann"

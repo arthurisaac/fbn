@@ -15,6 +15,6 @@ class ActivityBoutique : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationIcon(R.drawable.left_white)
-        toolbar.setNavigationOnClickListener { view: View? -> finish() }
+        toolbar.setNavigationOnClickListener { finish() }
     }
 }

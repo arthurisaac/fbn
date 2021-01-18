@@ -1,6 +1,10 @@
 package bf.fasobizness.bafatech
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -24,7 +28,6 @@ import bf.fasobizness.bafatech.activities.*
 import bf.fasobizness.bafatech.activities.annonce.*
 import bf.fasobizness.bafatech.activities.entreprise.ActivityEntreprisesUne
 import bf.fasobizness.bafatech.activities.recrutement.ActivityRecrutements
-import bf.fasobizness.bafatech.activities.annonce.ActivityFavorite
 import bf.fasobizness.bafatech.activities.user.ActivityProfile
 import bf.fasobizness.bafatech.activities.user.LoginActivity
 import bf.fasobizness.bafatech.activities.user.messaging.ActivityDiscussions
@@ -43,6 +46,7 @@ import bf.fasobizness.bafatech.models.Announce.Annonce
 import bf.fasobizness.bafatech.models.MyResponse
 import bf.fasobizness.bafatech.models.User
 import bf.fasobizness.bafatech.utils.MySharedManager
+import bf.fasobizness.bafatech.utils.RemoteConfigUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.denzcoskun.imageslider.ImageSlider
@@ -56,6 +60,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnAnnonceListener, OnImageListener, OnLongItemListener {
     private val tag = "MainActivity"
@@ -338,6 +343,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (user.isNotEmpty()) {
             checkNewMessage()
         }
+        RemoteConfigUtils.init()
+        checkVersion()
     }
 
     private fun checkUser() {
@@ -345,6 +352,35 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val id = sharedManager.user
         user = sharedManager.user
         getNewJWTToken(id, token)
+    }
+
+    private fun checkVersion() {
+        try {
+            val pInfo: PackageInfo = this.packageManager.getPackageInfo(this.packageName, 0)
+            val version = pInfo.versionName
+            if (version != RemoteConfigUtils.getLastVersion()) {
+                val dialog: AlertDialog = AlertDialog.Builder(this)
+                        .setTitle("Nouvelle version disponible")
+                        .setMessage("Nous vous recommandons d'installer la dernière version de l'application Faso Biz Nèss.")
+                        .setPositiveButton("Mettre à jour",
+                                DialogInterface.OnClickListener { _, _ -> redirectStore()})
+                        .create()
+                dialog.show()
+            }
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun redirectStore() {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=bf.fasobizness.bafatech&hl=fr&gl=US"))
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+        } catch (e:Exception) {
+            e.printStackTrace()
+        }
+
     }
 
     private fun getNewJWTToken(id: String, token: String) {

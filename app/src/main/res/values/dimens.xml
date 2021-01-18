@@ -6,4 +6,6 @@
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="grid_expected_size">120dp</dimen>
     <dimen name="chargement_en_cours_message_size">30sp</dimen>
+    <dimen name="text_size">17sp</dimen>
+    <dimen name="tab_text_size">10sp</dimen>
 </resources>

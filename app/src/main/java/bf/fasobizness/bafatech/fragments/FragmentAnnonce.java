@@ -31,6 +31,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import bf.fasobizness.bafatech.R;
 import bf.fasobizness.bafatech.activities.ActivityFullScreen;
@@ -355,7 +356,8 @@ public class FragmentAnnonce extends Fragment {
         btn_share.setOnClickListener(v -> {
             Intent sharingIntent = new Intent(Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
-            String shareBodyText = annonce.getTexte() + "\n" + getString(R.string.telecharger_et_partager_l_application, "http://fasobizness.com/annonces/" + id_ann);
+            String url = "http://fasobizness.com/annonces/" + id_ann;
+            String shareBodyText = annonce.getTexte() + "\n" + getString(R.string.telecharger_et_partager_l_application) + url;
             sharingIntent.putExtra(Intent.EXTRA_SUBJECT, titre);
             sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBodyText);
             startActivity(Intent.createChooser(sharingIntent, getString(R.string.partager_avec)));
@@ -411,6 +413,7 @@ public class FragmentAnnonce extends Fragment {
 
         if (user.isEmpty()) {
             FragmentNotConnected notConnected = FragmentNotConnected.newInstance();
+            assert getFragmentManager() != null;
             notConnected.show(getFragmentManager(), "");
         } else {
 

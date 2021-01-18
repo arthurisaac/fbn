@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@color/colorBackground"
-    tools:context=".activities.annonce.ActivityNouvelleAnnonce">
+    android:background="@color/colorBackground">
 
     <RelativeLayout
         android:id="@+id/overbox"
@@ -412,7 +411,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
-                        android:entries="@array/villes" />
+                        android:entries="@array/villes_2" />
 
                 </LinearLayout>
 
@@ -445,7 +444,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:entries="@array/categories" />
+                        android:entries="@array/categories_2" />
 
                 </LinearLayout>
 
