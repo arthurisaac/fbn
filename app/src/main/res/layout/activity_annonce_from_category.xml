@@ -1,223 +1,241 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:shimmer="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".activities.annonce.ActivityAnnounceFilter">
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <include layout="@layout/layout_busy_system" />
+    android:layout_width="match_parent">
 
     <LinearLayout
-        android:id="@+id/layout_no_annonce"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="10dp"
-        android:visibility="gone">
+        tools:context=".activities.annonce.ActivityAnnounceFilter">
 
-        <ImageView
-            android:layout_width="186dp"
-            android:layout_height="186dp"
-            android:layout_margin="30dp"
-            android:adjustViewBounds="false"
-            android:contentDescription="@string/pas_d_acces_internet"
-            android:cropToPadding="false"
-            android:padding="10dp"
-            android:src="@drawable/megaphone" />
-
-        <TextView
-            android:layout_width="wrap_content"
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="@string/aucune_annonce_trouv_e"
-            android:textSize="16sp" />
+            android:theme="@style/AppTheme.AppBarOverlay">
 
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="30dp" />
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <include layout="@layout/layout_busy_system" />
+
+        <LinearLayout
+            android:id="@+id/layout_no_annonce"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="186dp"
+                android:layout_height="186dp"
+                android:layout_margin="30dp"
+                android:adjustViewBounds="false"
+                android:contentDescription="@string/pas_d_acces_internet"
+                android:cropToPadding="false"
+                android:padding="10dp"
+                android:src="@drawable/megaphone" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="@string/aucune_annonce_trouv_e"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="30dp" />
+
+        </LinearLayout>
+
+        <include layout="@layout/layout_offline" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_view_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="?actionBarSize"
+            android:orientation="vertical"
+            shimmer:shimmer_duration="1200"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:columnCount="2"
+                    android:rowCount="2">
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:layout_height="200dp"
+                        android:layout_row="0"
+                        android:layout_rowWeight="1"
+                        android:layout_column="0"
+                        android:layout_columnWeight="1"
+                        android:padding="8dp"
+                        android:scaleType="centerCrop"
+                        android:src="@color/background"
+                        android:tint="#86000000"
+                        app:riv_corner_radius="8dip" />
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:layout_height="200dp"
+                        android:layout_row="0"
+                        android:layout_rowWeight="1"
+                        android:layout_column="1"
+                        android:layout_columnWeight="1"
+                        android:padding="8dp"
+                        android:scaleType="centerCrop"
+                        android:src="@color/background"
+                        android:tint="#86000000"
+                        app:riv_corner_radius="8dip" />
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:layout_height="200dp"
+                        android:layout_row="1"
+                        android:layout_rowWeight="1"
+                        android:layout_column="0"
+                        android:layout_columnWeight="1"
+                        android:padding="8dp"
+                        android:scaleType="centerCrop"
+                        android:src="@color/background"
+                        android:tint="#86000000"
+                        app:riv_corner_radius="8dip" />
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:layout_height="200dp"
+                        android:layout_row="1"
+                        android:layout_rowWeight="1"
+                        android:layout_column="1"
+                        android:layout_columnWeight="1"
+                        android:padding="8dp"
+                        android:scaleType="centerCrop"
+                        android:src="@color/background"
+                        android:tint="#86000000"
+                        app:riv_corner_radius="8dip" />
+
+
+                </GridLayout>
+
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:columnCount="2"
+                    android:rowCount="2">
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:layout_height="200dp"
+                        android:layout_row="0"
+                        android:layout_rowWeight="1"
+                        android:layout_column="0"
+                        android:layout_columnWeight="1"
+                        android:padding="8dp"
+                        android:scaleType="centerCrop"
+                        android:src="@color/background"
+                        android:tint="#86000000"
+                        app:riv_corner_radius="8dip" />
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:layout_height="200dp"
+                        android:layout_row="0"
+                        android:layout_rowWeight="1"
+                        android:layout_column="1"
+                        android:layout_columnWeight="1"
+                        android:padding="8dp"
+                        android:scaleType="centerCrop"
+                        android:src="@color/background"
+                        android:tint="#86000000"
+                        app:riv_corner_radius="8dip" />
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:layout_height="200dp"
+                        android:layout_row="1"
+                        android:layout_rowWeight="1"
+                        android:layout_column="0"
+                        android:layout_columnWeight="1"
+                        android:padding="8dp"
+                        android:scaleType="centerCrop"
+                        android:src="@color/background"
+                        android:tint="#86000000"
+                        app:riv_corner_radius="8dip" />
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:layout_height="200dp"
+                        android:layout_row="1"
+                        android:layout_rowWeight="1"
+                        android:layout_column="1"
+                        android:layout_columnWeight="1"
+                        android:padding="8dp"
+                        android:scaleType="centerCrop"
+                        android:src="@color/background"
+                        android:tint="#86000000"
+                        app:riv_corner_radius="8dip" />
+
+
+                </GridLayout>
+            </LinearLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_count_announce"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:layout_margin="20dp"
+                    android:text="@string/_0_annonces" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/annonces_card_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible" />
+
+            </LinearLayout>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
     </LinearLayout>
 
-    <include layout="@layout/layout_offline" />
-
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmer_view_container"
-        android:layout_width="match_parent"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_up"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="?actionBarSize"
-        android:orientation="vertical"
-        shimmer:shimmer_duration="1200"
-        android:visibility="gone">
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:contentDescription="@string/haut_de_page"
+        android:src="@drawable/ic_baseline_arrow_upward_24"
+        android:visibility="gone"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <GridLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:columnCount="2"
-                android:rowCount="2">
-
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:layout_height="200dp"
-                    android:layout_row="0"
-                    android:layout_rowWeight="1"
-                    android:layout_column="0"
-                    android:layout_columnWeight="1"
-                    android:padding="8dp"
-                    android:scaleType="centerCrop"
-                    android:src="@color/background"
-                    android:tint="#86000000"
-                    app:riv_corner_radius="8dip" />
-
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:layout_height="200dp"
-                    android:layout_row="0"
-                    android:layout_rowWeight="1"
-                    android:layout_column="1"
-                    android:layout_columnWeight="1"
-                    android:padding="8dp"
-                    android:scaleType="centerCrop"
-                    android:src="@color/background"
-                    android:tint="#86000000"
-                    app:riv_corner_radius="8dip" />
-
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:layout_height="200dp"
-                    android:layout_row="1"
-                    android:layout_rowWeight="1"
-                    android:layout_column="0"
-                    android:layout_columnWeight="1"
-                    android:padding="8dp"
-                    android:scaleType="centerCrop"
-                    android:src="@color/background"
-                    android:tint="#86000000"
-                    app:riv_corner_radius="8dip" />
-
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:layout_height="200dp"
-                    android:layout_row="1"
-                    android:layout_rowWeight="1"
-                    android:layout_column="1"
-                    android:layout_columnWeight="1"
-                    android:padding="8dp"
-                    android:scaleType="centerCrop"
-                    android:src="@color/background"
-                    android:tint="#86000000"
-                    app:riv_corner_radius="8dip" />
-
-
-            </GridLayout>
-
-            <GridLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:columnCount="2"
-                android:rowCount="2">
-
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:layout_height="200dp"
-                    android:layout_row="0"
-                    android:layout_rowWeight="1"
-                    android:layout_column="0"
-                    android:layout_columnWeight="1"
-                    android:padding="8dp"
-                    android:scaleType="centerCrop"
-                    android:src="@color/background"
-                    android:tint="#86000000"
-                    app:riv_corner_radius="8dip" />
-
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:layout_height="200dp"
-                    android:layout_row="0"
-                    android:layout_rowWeight="1"
-                    android:layout_column="1"
-                    android:layout_columnWeight="1"
-                    android:padding="8dp"
-                    android:scaleType="centerCrop"
-                    android:src="@color/background"
-                    android:tint="#86000000"
-                    app:riv_corner_radius="8dip" />
-
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:layout_height="200dp"
-                    android:layout_row="1"
-                    android:layout_rowWeight="1"
-                    android:layout_column="0"
-                    android:layout_columnWeight="1"
-                    android:padding="8dp"
-                    android:scaleType="centerCrop"
-                    android:src="@color/background"
-                    android:tint="#86000000"
-                    app:riv_corner_radius="8dip" />
-
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:layout_height="200dp"
-                    android:layout_row="1"
-                    android:layout_rowWeight="1"
-                    android:layout_column="1"
-                    android:layout_columnWeight="1"
-                    android:padding="8dp"
-                    android:scaleType="centerCrop"
-                    android:src="@color/background"
-                    android:tint="#86000000"
-                    app:riv_corner_radius="8dip" />
-
-
-            </GridLayout>
-        </LinearLayout>
-
-    </com.facebook.shimmer.ShimmerFrameLayout>
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_count_announce"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:layout_margin="20dp"
-                android:text="@string/_0_annonces" />
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/annonces_card_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="visible" />
-
-        </LinearLayout>
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

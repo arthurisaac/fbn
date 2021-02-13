@@ -175,7 +175,8 @@
                         android:layout_height="wrap_content"
                         app:counterEnabled="true"
                         app:counterMaxLength="35"
-                        app:errorEnabled="true">
+                        app:errorEnabled="true"
+                        app:errorTextColor="@color/design_default_color_error">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
@@ -210,8 +211,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:counterEnabled="true"
-                        app:counterMaxLength="600"
+                        app:counterMaxLength="1000"
                         app:errorEnabled="true"
+                        app:errorTextColor="@color/design_default_color_error"
                         app:hintEnabled="true">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -220,7 +222,7 @@
                             android:gravity="top"
                             android:hint="@string/description_de_l_annonce"
                             android:inputType="textMultiLine"
-                            android:maxLength="600"
+                            android:maxLength="1000"
                             android:maxLines="8"
                             android:textColorLink="@color/colorPrimaryDark"
                             android:textSize="14sp" />
@@ -228,6 +230,43 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_description_audio"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_baseline_mic"
+                        android:drawableTint="@color/colorPrimaryDark"
+                        android:layout_marginTop="11dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/frame_primary_tiny"
+                        android:text="@string/ajouter_description_audio"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorPrimaryDark" />
+
+                    <ImageView
+                        android:id="@+id/btn_supprimer_audio"
+                        android:layout_width="30dp"
+                        android:scaleType="fitXY"
+                        android:layout_height="30dp"
+                        android:layout_weight="0"
+                        android:src="@drawable/ic_delete_forever_accent_24dp"
+                        android:drawableTint="@color/design_default_color_error"
+                        android:layout_marginTop="21dp"
+                        android:layout_marginBottom="10dp"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:visibility="gone"
+                        android:contentDescription="@string/supprimer_description_audio" />
+
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -248,6 +287,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="4"
+                        app:errorTextColor="@color/design_default_color_error"
                         app:hintEnabled="true">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -304,6 +344,7 @@
                         android:layout_height="wrap_content"
                         app:counterEnabled="false"
                         app:errorEnabled="true"
+                        app:errorTextColor="@color/design_default_color_error"
                         app:hintEnabled="true">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -340,6 +381,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:errorEnabled="true"
+                        app:errorTextColor="@color/design_default_color_error"
                         app:hintEnabled="true">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -376,6 +418,7 @@
                         android:layout_height="wrap_content"
                         app:counterEnabled="false"
                         app:errorEnabled="true"
+                        app:errorTextColor="@color/design_default_color_error"
                         app:hintEnabled="true">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -422,7 +465,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:text="@string/vous_devez_choisir_la_ville"
-                    android:textColor="#FF0059"
+                    android:textColor="@color/design_default_color_error"
+                    android:textSize="12sp"
                     android:visibility="gone" />
 
                 <LinearLayout
@@ -455,7 +499,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:text="@string/vous_devez_choisir_une_cat_gorie"
-                    android:textColor="#FF0059"
+                    android:textColor="@color/design_default_color_error"
+                    android:textSize="12sp"
                     android:visibility="gone" />
 
                 <LinearLayout
@@ -492,7 +537,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:text="@string/vous_devez_ajouter_au_mois_une_image"
-                    android:textColor="#FF0059"
+                    android:textColor="@color/design_default_color_error"
+                    android:textSize="12sp"
                     android:visibility="gone" />
 
                 <Button

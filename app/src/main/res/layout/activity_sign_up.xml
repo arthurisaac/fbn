@@ -200,6 +200,50 @@
 
                     </RelativeLayout>
 
+                    <RelativeLayout
+                        android:id="@+id/dateNaissanceLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/dateNaissance"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:editable="false"
+                            android:inputType="text"
+                            android:hint="@string/date_de_naissance" />
+
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/genreLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <Spinner
+                            android:id="@+id/sp_genre"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:entries="@array/genre" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#B9B9B9" />
+
+                        <TextView
+                            android:id="@+id/txt_genre_erreur"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:textColor="@color/design_default_color_error"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/password"
                         android:layout_width="match_parent"
@@ -240,7 +284,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginBottom="10dp"
                         android:textColor="#AAA9A9"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp" />
 
                     <Button
                         android:id="@+id/btn_sign_up"

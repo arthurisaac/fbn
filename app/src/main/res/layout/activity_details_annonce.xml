@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context=".activities.annonce.ActivityDetailsAnnonce">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -14,11 +13,11 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
             app:collapsedTitleTextAppearance="@android:color/transparent"
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginEnd="64dp"
             app:expandedTitleMarginStart="48dp"
-            android:fitsSystemWindows="true"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <com.denzcoskun.imageslider.ImageSlider
@@ -37,8 +36,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:titleTextColor="@color/white"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:titleTextColor="@color/white" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -56,7 +55,7 @@
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
+    <LinearLayout
             android:id="@+id/ann"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -76,18 +75,18 @@
                 android:id="@+id/txt_date_pub"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/txt_date_modification"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:text="@string/derni_re_mise_jour_le_1_s"
                 android:textSize="12sp"
-                android:layout_marginStart="10dp"
                 android:visibility="gone" />
 
 
@@ -107,9 +106,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:textSize="20sp"
                 android:drawablePadding="10dp"
-                android:textColor="@color/colorPrimaryDark" />
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -152,8 +151,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:drawablePadding="10dp"
-                    android:visibility="gone"
                     android:textColor="@color/colorPrimaryDark"
+                    android:visibility="gone"
                     app:drawableStartCompat="@drawable/ic_email" />
 
                 <TextView
@@ -192,7 +191,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:drawablePadding="10dp"
-                    app:drawableStartCompat="@drawable/ic_location_on_black" />
+                    android:textColor="@color/colorPrimaryDark"
+                    app:drawableStartCompat="@drawable/ic_location_on_black"
+                    app:drawableTint="@color/colorPrimaryDark" />
 
                 <TextView
                     android:id="@+id/txt_categorie_annonce"
@@ -253,12 +254,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@color/colorPrimaryLighter"
-                android:paddingStart="10dp"
-                android:paddingTop="10dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:paddingEnd="0dp"
-                android:padding="5dp">
+                android:padding="5dp"
+                android:paddingStart="10dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="0dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/txt_username_logo_ann"
@@ -271,10 +272,10 @@
                     android:id="@+id/mis_en_ligne"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/txt_username_logo_ann"
                     android:layout_alignParentTop="true"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="3dp"
+                    android:layout_toEndOf="@+id/txt_username_logo_ann"
                     android:text="@string/mise_en_ligne_par" />
 
                 <TextView
@@ -283,12 +284,12 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/mis_en_ligne"
                     android:layout_marginStart="15dp"
-                    android:layout_toEndOf="@+id/txt_username_logo_ann"
                     android:layout_marginTop="3dp"
+                    android:layout_toEndOf="@+id/txt_username_logo_ann"
                     android:maxLines="1"
-                    android:textStyle="bold"
                     android:text="@string/nom_d_utlisateur"
                     android:textSize="20sp"
+                    android:textStyle="bold"
                     tools:ignore="RelativeOverlap" />
 
                 <TextView
@@ -316,8 +317,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:layout_marginEnd="40dp"
+                android:layout_marginBottom="10dp"
                 android:drawableEnd="@drawable/ic_warning"
                 android:text="@string/signaler_l_annonce"
                 android:textAlignment="center"
@@ -413,8 +414,8 @@
             android:layout_height="35dp"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:drawableStart="@drawable/ic_whatsapp"
             android:background="@drawable/border_rounded_solid_primary"
+            android:drawableStart="@drawable/ic_whatsapp"
             android:drawablePadding="10dp"
             android:text="@string/whatsapp"
             android:textAllCaps="false"

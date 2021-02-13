@@ -49,6 +49,13 @@
                 android:layout_height="0.5dp"
                 android:background="#CCC" />
 
+            <include layout="@layout/layout_comment_creer_une_offre_irr" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#CCC" />
+
             <include layout="@layout/layout_comment_nous_contacter" />
 
             <View
@@ -71,6 +78,18 @@
                 android:background="#CCC" />
 
             <include layout="@layout/layout_aimer_notre_application_sur_facebook" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#CCC" />
+
+            <include layout="@layout/layout_conseils_securite" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#CCC" />
 
             <include layout="@layout/layout_conditions_generale_dutilisateur" />
 

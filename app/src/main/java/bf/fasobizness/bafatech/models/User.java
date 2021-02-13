@@ -49,6 +49,12 @@ public class User implements IUser {
     @SerializedName("status")
     private boolean status;
 
+    @SerializedName("date_naissance")
+    public String date_naissance;
+
+    @SerializedName("genre")
+    public String genre;
+
     public boolean getStatus() {
         return status;
     }

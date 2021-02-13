@@ -90,7 +90,7 @@ public class ActivityFullScreen extends AppCompatActivity implements OnItemListe
     }
 
     private void requestMultiplePermissions() {
-        Dexter.withActivity(this)
+        Dexter.withContext(this)
                 .withPermissions(
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -125,13 +125,12 @@ public class ActivityFullScreen extends AppCompatActivity implements OnItemListe
             request.setDescription("Téléchargement");
             request.allowScanningByMediaScanner();
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "faso_biz_ness_" + System.currentTimeMillis() + ".jpg");
+            request.setDestinationInExternalPublicDir("/FasoBizNess", uri.getLastPathSegment());
             request.setMimeType("*/*");
             if (downloadManager != null) {
                 downloadManager.enqueue(request);
             }
         } catch (Exception e) {
-            // Toast.makeText(this, R.string.une_erreur_sest_produite, Toast.LENGTH_SHORT).show();
             new DownloadingTask().execute();
         }
 

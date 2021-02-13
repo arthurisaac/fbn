@@ -280,7 +280,7 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
             }
         }
 
-        String dt_str = getString(R.string.publie_le, annonce.getDate_pub());
+        String dt_str = getString(R.string.publiee_le, annonce.getDate_pub());
         txt_date_pub.setText(dt_str);
 
         String _txt_vue = getString(R.string._vues, annonce.getVue());
@@ -290,8 +290,6 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
             txt_categorie.setText(R.string.aucune_categorie_renseignee);
         } else {
             txt_categorie.setOnClickListener(v -> {
-
-                //String arguments = "{\"ville\": \"\", \"categorie\": \"" + annonce.getCategorie() + "\"}";
                 try {
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("categorie", annonce.getCategorie());
@@ -300,11 +298,27 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
                     intent.putExtra("params", jsonObject.toString());
                     intent.putExtra("title", annonce.getCategorie());
                     startActivity(intent);
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            });
+        }
 
+        if (annonce.getLocation() == null || annonce.getLocation().isEmpty()) {
+            txt_location.setVisibility(View.GONE);
+        } else {
+            txt_location.setOnClickListener(v -> {
+                try {
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("location", annonce.getLocation());
+                    Intent intent = new Intent(this, ActivityAnnounceFilter.class);
+                    intent.putExtra("filter", "multiple");
+                    intent.putExtra("params", jsonObject.toString());
+                    intent.putExtra("title", annonce.getLocation());
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             });
         }
 
@@ -374,7 +388,10 @@ public class ActivityDetailsAnnonce extends AppCompatActivity {
         btn_share.setOnClickListener(v -> {
             Intent sharingIntent = new Intent(Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
-            String shareBodyText = annonce.getTitre() + "\n" +annonce.getTexte() + "\n" + getString(R.string.telecharger_et_partager_l_application);
+            // String shareBodyText = annonce.getTitre() + "\n" +annonce.getTexte() + "\n" + getString(R.string.telecharger_et_partager_l_application);
+            String shareBodyText = "Salut, voici une annonce intéressante que je viens de découvrir sur Faso Biz Nèss : " + annonce.getTitre() + " " + annonce.getTexte() +
+                    "\n\nPour en savoir plus, clique ici : https://fasobizness.com/annonce/" + annonce.getId_ann() + ". \n" +
+                    "\n\nSi tu n’as pas encore l’application tu peux la télécharger gratuitement sur Playstore : http://bit.ly/AndroidFBN";
             sharingIntent.putExtra(Intent.EXTRA_SUBJECT, titre);
             sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBodyText);
             startActivity(Intent.createChooser(sharingIntent, getString(R.string.partager_avec)));

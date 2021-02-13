@@ -76,6 +76,8 @@ public class Announce {
         private String id_fav;
         @SerializedName("whatsapp")
         private String whatsapp;
+        @SerializedName("audio")
+        private String audio;
 
         public String getUpdatedAt() {
             return updatedAt;
@@ -163,6 +165,10 @@ public class Announce {
 
         public void setFavoris(String favoris) {
             this.favoris = favoris;
+        }
+
+        public String getAudio() {
+            return audio;
         }
 
         public class Illustration implements Serializable {

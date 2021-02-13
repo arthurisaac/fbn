@@ -84,7 +84,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setWhen(System.currentTimeMillis())
                 .setSmallIcon(R.drawable.megaphone)
-                .setColor(resources.getColor(R.color.colorPrimary))
+                //.setColor(resources.getColor(R.color.colorPrimary))
                 .setContentTitle(title)
                 .setContentText(body)
         if (data["discussion_id"] != null) {

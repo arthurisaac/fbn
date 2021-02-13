@@ -2,6 +2,7 @@ package bf.fasobizness.bafatech.activities.user
 
 import android.Manifest
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.content.*
 import android.graphics.Bitmap
 import android.net.Uri
@@ -49,6 +50,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -63,6 +65,8 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
     private lateinit var nom: TextInputLayout
     private lateinit var prenom: TextInputLayout
     private lateinit var sectActivite: TextInputLayout
+    // private lateinit var dateNaissance: TextInputLayout
+    private lateinit var dateNaissance: EditText
     private lateinit var photoProfile: CircleImageView
     private lateinit var sharedManager: MySharedManager
     private lateinit var user: String
@@ -77,7 +81,13 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
     private lateinit var sect: RelativeLayout
     private lateinit var pre: RelativeLayout
     private lateinit var us: RelativeLayout
+    private lateinit var dateNaissanceLayout: RelativeLayout
     private var mCurrentPhotoPath: String = ""
+    private val myCalendar = Calendar.getInstance()
+
+    private lateinit var genreLayout: LinearLayout
+    private lateinit var txtGenreErreur: TextView
+    private lateinit var spGenre: Spinner
     // private var images: ArrayList<Image> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,6 +96,7 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
 
         sharedManager = MySharedManager(this)
         user = sharedManager.user
+        val type = sharedManager.type
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.title = getString(R.string.profil)
@@ -107,14 +118,6 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
         layoutProfile.visibility = View.GONE
         layoutLoading.visibility = View.VISIBLE
 
-        val type = sharedManager.type
-        if (type == "entreprise") {
-            pre.visibility = View.GONE
-            us.visibility = View.GONE
-        } else {
-            sect.visibility = View.GONE
-        }
-
         photoProfile = findViewById(R.id.photo_de_profil)
         username = findViewById(R.id.username)
         email = findViewById(R.id.email)
@@ -123,9 +126,15 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
         prenom = findViewById(R.id.prenom)
         sectActivite = findViewById(R.id.sect_activite)
         val updateMdp = findViewById<Button>(R.id.btn_update_mdp)
+        dateNaissance = findViewById(R.id.dateNaissance)
 
         progressBar = findViewById(R.id.progress_bar_photo)
         progressBarHead = findViewById(R.id.progress_bar_head)
+        dateNaissanceLayout = findViewById(R.id.dateNaissanceLayout)
+        genreLayout = findViewById(R.id.genreLayout)
+        txtGenreErreur = findViewById(R.id.txt_genre_erreur)
+        spGenre = findViewById(R.id.sp_genre)
+        spGenre.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, resources.getStringArray(R.array.genre))
 
         photoProfile.setOnClickListener { requestMultiplePermissions() }
 
@@ -144,14 +153,42 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
                      updateProfile()
                 }
             } else {
-                if (checkUsername() && checkNom() && checkEmail() && checkPrenom()) {
+                if (checkUsername() && checkNom() && checkEmail() && checkDateNaiss() && checkPrenom()) {
                     updateProfile()
                 }
             }
+
+            /*if (type == "entreprise") {
+                pre.visibility = View.GONE
+                us.visibility = View.GONE
+                dateNaissanceLayout.visibility = View.GONE
+                genreLayout.visibility = View.GONE
+            } else {
+                sect.visibility = View.GONE
+                sectActivite.visibility = View.GONE
+            }
+
+            if (type == "particuler") {
+                sect.visibility = View.GONE
+                sectActivite.visibility = View.GONE
+            }*/
         }
+        Toast.makeText(this@ActivityProfile, "" + type, Toast.LENGTH_SHORT).show()
 
         api = RetrofitClient.getClient().create(API::class.java)
         getUserProfile()
+
+        val date = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+            myCalendar[Calendar.YEAR] = year
+            myCalendar[Calendar.MONTH] = monthOfYear
+            myCalendar[Calendar.DAY_OF_MONTH] = dayOfMonth
+            updateDate()
+        }
+
+        dateNaissance.setOnClickListener {
+            DatePickerDialog(this@ActivityProfile, date, myCalendar[Calendar.YEAR], myCalendar[Calendar.MONTH],
+                    myCalendar[Calendar.DAY_OF_MONTH]).show()
+        }
 
         val btnRefresh = findViewById<Button>(R.id.btn_refresh)
         btnRefresh.setOnClickListener { getUserProfile() }
@@ -169,6 +206,7 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
                 if (response.isSuccessful) {
                     layoutProfile.visibility = View.VISIBLE
                     val user: User? = response.body()
+                    val arrayAdapter = ArrayAdapter(this@ActivityProfile, android.R.layout.simple_list_item_1, resources.getStringArray(R.array.genre))
 
                     if (user != null) {
                         username.editText!!.setText(user.username)
@@ -176,7 +214,19 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
                         prenom.editText?.setText(user.prenom)
                         telephone.editText?.setText(user.tel)
                         sectActivite.editText?.setText(user.sect_activite)
+                        dateNaissance.setText(user.date_naissance)
                         nom.editText?.setText(user.nom)
+                        if (user.genre != null) {
+                            spGenre.setSelection(arrayAdapter.getPosition(user.genre))
+                        }
+                        Toast.makeText(this@ActivityProfile, "" + user.type, Toast.LENGTH_SHORT).show()
+                        if (user.type == "particulier" || user.type == "utilisateur") {
+                            sect.visibility = View.GONE
+                        } else {
+                            pre.visibility = View.GONE
+                            sect.visibility = View.GONE
+                            us.visibility = View.GONE
+                        }
                         sharedManager.username = user.username
                         sharedManager.email = user.email
                         sharedManager.photo = user.photo
@@ -387,6 +437,8 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
         val txtnom = nom.editText?.text.toString().trim()
         val txtprenom = prenom.editText?.text.toString().trim()
         val txtsectActivite = sectActivite.editText?.text.toString().trim()
+        // val txtDateNaissance: String = dateNaissance.editText?.text.toString()
+        val txtDateNaissance: String = dateNaissance.text.toString()
         val call = api.updateUser(
                 txtemail,
                 txtusername,
@@ -394,12 +446,14 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
                 txtnom,
                 txtprenom,
                 txtsectActivite,
+                txtDateNaissance,
+                spGenre.selectedItem.toString() + "",
                 user,
                 "Bearer " + sharedManager.token
         )
         call.enqueue(object : Callback<User?> {
             override fun onResponse(call: Call<User?>, response: Response<User?>) {
-                btnUpdateProfile.setText(R.string.enregistrer)
+                btnUpdateProfile.setText(R.string.enregistrer_les_modifications)
                 btnUpdateProfile.isEnabled = true
                 progressBarHead.visibility = View.GONE
                 if (response.isSuccessful) {
@@ -443,7 +497,7 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
             }
 
             override fun onFailure(call: Call<User?>, t: Throwable) {
-                btnUpdateProfile.setText(R.string.enregistrer)
+                btnUpdateProfile.setText(R.string.enregistrer_les_modifications)
                 btnUpdateProfile.isEnabled = true
                 progressBarHead.visibility = View.GONE
                 Toast.makeText(this@ActivityProfile, "Erreur " + t.message, Toast.LENGTH_SHORT).show()
@@ -484,6 +538,12 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
             }
 
         })
+    }
+
+    private fun updateDate() {
+        val format = "dd/MM/yyyy"
+        val simpleDateFormat = SimpleDateFormat(format, Locale.FRENCH)
+        dateNaissance.setText(simpleDateFormat.format(myCalendar.time))
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -565,6 +625,35 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
         }
     }
 
+    private fun checkDateNaiss(): Boolean {
+        val txtDateNaiss = dateNaissance.text.toString().trim()
+        return if (txtDateNaiss.isEmpty()) {
+            dateNaissance.error = getString(R.string.date_de_naissance_requise)
+            false
+        } else {
+            sectActivite.error = null
+            true
+        }
+    }
+
+    private fun checkGenreInput(): Boolean {
+        val genre = spGenre.selectedItem.toString()
+        return when {
+            genre.isEmpty() -> {
+                txtGenreErreur.visibility = View.VISIBLE
+                false
+            }
+            (genre == "Choisir genre") -> {
+                txtGenreErreur.visibility = View.VISIBLE
+                false
+            }
+            else -> {
+                txtGenreErreur.visibility = View.GONE
+                true
+            }
+        }
+    }
+
     private fun getFile(context: Context, uri: Uri): File? {
         val path = PathUtils.getPath(context, uri)
         if (path != null) {
@@ -581,9 +670,9 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
 
     private fun prepareFilePart(part: String, uri: Uri): MultipartBody.Part {
         val file = getFile(this, uri)
-        val fileCompressingUtil = FileCompressingUtil()
-        val compressedFile = fileCompressingUtil.saveBitmapToFile(file)
-        val requestFile = ProgressRequestBody(compressedFile, this)
+        //val fileCompressingUtil = FileCompressingUtil()
+        //val compressedFile = fileCompressingUtil.saveBitmapToFile(file)
+        val requestFile = ProgressRequestBody(file, this)
         return MultipartBody.Part.createFormData(part, file!!.name, requestFile)
     }
 

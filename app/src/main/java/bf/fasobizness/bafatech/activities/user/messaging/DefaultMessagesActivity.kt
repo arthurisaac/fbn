@@ -396,21 +396,21 @@ open class DefaultMessagesActivity : AppCompatActivity(), UploadCallbacks, Input
                         .asBitmap()
                         .load(message.affiche)
                         .thumbnail(0.1f)
-                        .into(iv_affiche!!)
-                iv_affiche!!.contentDescription = message.affiche
+                        .into(iv_affiche)
+                iv_affiche.contentDescription = message.affiche
             }
             if (message.titre != null) {
-                txt_titre_annonce!!.text = message.titre
+                txt_titre_annonce.text = message.titre
             }
             if (message.id_ann != null) {
                 val intent = Intent(this, ActivityDetailsAnnonce::class.java)
                 intent.putExtra("id_ann", message.id_ann)
-                btn_see_annonce!!.setOnClickListener { v: View? -> startActivity(intent) }
-                lltitre!!.setOnClickListener { v: View? -> startActivity(intent) }
+                btn_see_annonce.setOnClickListener { v: View? -> startActivity(intent) }
+                lltitre.setOnClickListener { v: View? -> startActivity(intent) }
             }
         } else {
-            lltitre!!.visibility = View.GONE
-            txt_no_annonce_error!!.visibility = View.VISIBLE
+            lltitre.visibility = View.GONE
+            txt_no_annonce_error.visibility = View.VISIBLE
         }
     }
 
@@ -427,8 +427,8 @@ open class DefaultMessagesActivity : AppCompatActivity(), UploadCallbacks, Input
                     .asBitmap()
                     .load(user.photo)
                     .thumbnail(0.1f)
-                    .into(txt_username_logo_ann!!)
-            txt_username!!.text = user.username
+                    .into(txt_username_logo_ann)
+            txt_username.text = user.username
         }
     }
 
@@ -523,9 +523,9 @@ open class DefaultMessagesActivity : AppCompatActivity(), UploadCallbacks, Input
 
     private fun prepareFilePart(part: String, uri: Uri): MultipartBody.Part {
         val file = getFile(this, uri)
-        val fileCompressingUtil = FileCompressingUtil()
-        val compressedFile = fileCompressingUtil.saveBitmapToFile(file)
-        val requestFile = ProgressRequestBody(compressedFile, this)
+        //val fileCompressingUtil = FileCompressingUtil()
+        //val compressedFile = fileCompressingUtil.saveBitmapToFile(file)
+        val requestFile = ProgressRequestBody(file, this)
         return MultipartBody.Part.createFormData(part, file!!.name, requestFile)
     }
 

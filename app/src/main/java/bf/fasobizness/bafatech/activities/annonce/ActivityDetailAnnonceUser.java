@@ -187,7 +187,7 @@ public class ActivityDetailAnnonceUser extends AppCompatActivity implements OnIm
             }
         }
 
-        String datePub = getString(R.string.publi_le, annonce.getDate_pub());
+        String datePub = getString(R.string.publiee_le, annonce.getDate_pub());
         txt_date_pub.setText(datePub);
 
         if (annonce.getCategorie().equals("null") || annonce.getCategorie().isEmpty()) {

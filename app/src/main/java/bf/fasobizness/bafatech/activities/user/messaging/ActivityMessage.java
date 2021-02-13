@@ -506,9 +506,9 @@ public class ActivityMessage extends AppCompatActivity
 
     private MultipartBody.Part prepareFilePart(String part, Uri uri) {
         File file = getFile(this, uri);
-        FileCompressingUtil fileCompressingUtil = new FileCompressingUtil();
-        File compressedFile = fileCompressingUtil.saveBitmapToFile(file);
-        ProgressRequestBody requestFile = new ProgressRequestBody(compressedFile, this);
+        // FileCompressingUtil fileCompressingUtil = new FileCompressingUtil();
+        // File compressedFile = fileCompressingUtil.saveBitmapToFile(file);
+        ProgressRequestBody requestFile = new ProgressRequestBody(file, this);
         assert file != null;
         return MultipartBody.Part.createFormData(part, file.getName(), requestFile);
     }

@@ -33,7 +33,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ActivityFavorite extends AppCompatActivity implements OnAnnonceListener {
-    private static final String TAG = "ActivityFavorite";
+    // private static final String TAG = "ActivityFavorite";
     private LinearLayout layout_ent_offline, layout_busy_system, layout_no_annonce;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ShimmerFrameLayout shimmer_view_container;
@@ -102,7 +102,6 @@ public class ActivityFavorite extends AppCompatActivity implements OnAnnonceList
         layout_ent_offline.setVisibility(View.GONE);
         layout_no_annonce.setVisibility(View.GONE);
         shimmer_view_container.setVisibility(View.VISIBLE);
-
         jsonParse();
     }
 
@@ -115,7 +114,6 @@ public class ActivityFavorite extends AppCompatActivity implements OnAnnonceList
             public void onResponse(@NonNull Call<Announce> call, @NonNull Response<Announce> response) {
                 shimmer_view_container.setVisibility(View.GONE);
                 mSwipeRefreshLayout.setRefreshing(false);
-                Log.d(TAG, response.toString());
 
                 if (response.isSuccessful()) {
                     Announce announce = response.body();
@@ -134,17 +132,13 @@ public class ActivityFavorite extends AppCompatActivity implements OnAnnonceList
                 } else {
                     layout_busy_system.setVisibility(View.VISIBLE);
                 }
-
-
             }
 
             @Override
             public void onFailure(@NonNull Call<Announce> call, @NonNull Throwable t) {
-
                 layout_ent_offline.setVisibility(View.VISIBLE);
                 shimmer_view_container.setVisibility(View.GONE);
                 mSwipeRefreshLayout.setRefreshing(false);
-
             }
         });
     }

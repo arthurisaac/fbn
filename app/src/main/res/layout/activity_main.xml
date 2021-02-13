@@ -51,7 +51,6 @@
                     android:layout_marginStart="10dp"
                     android:text="@string/pomouvoir_mes_annonces"
                     android:textColor="@android:color/white"
-                    android:textSize="12sp"
                     android:textStyle="bold">
 
                 </TextView>

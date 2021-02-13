@@ -21,6 +21,7 @@ import bf.fasobizness.bafatech.interfaces.OnAnnonceListener
 import bf.fasobizness.bafatech.models.Announce
 import bf.fasobizness.bafatech.models.Announce.Annonce
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -38,6 +39,7 @@ class ActivityAnnounceFilter : AppCompatActivity(), OnAnnonceListener {
     private lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
     private lateinit var shimmerViewContainer: ShimmerFrameLayout
     private lateinit var tvCountAnnounce: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_annonce_from_category)
@@ -59,6 +61,7 @@ class ActivityAnnounceFilter : AppCompatActivity(), OnAnnonceListener {
         toolbar.setNavigationIcon(R.drawable.left_white)
         toolbar.setNavigationOnClickListener { finish() }
         tvCountAnnounce = findViewById(R.id.tv_count_announce)
+        val fabUp = findViewById<FloatingActionButton>(R.id.fab_up)
 
         // Fetch annonces
         mAnnonces = ArrayList()
@@ -71,13 +74,17 @@ class ActivityAnnounceFilter : AppCompatActivity(), OnAnnonceListener {
         mAnnonceAdapter.setOnItemListener(this)
         mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                /*if (dy < 0) {
-                    fab.setVisibility(View.VISIBLE);
+                if (dy < 0) {
+                    fabUp.visibility = View.VISIBLE
                 } else if (dy > 0) {
-                    fab.setVisibility(View.GONE);
-                }*/
+                    fabUp.visibility = View.GONE
+                }
             }
         })
+
+        fabUp.setOnClickListener {
+            mRecyclerView.layoutManager?.smoothScrollToPosition(mRecyclerView, null, 0)
+        }
         mAnnonceAdapter.setOnBottomReachedListener {}
         layoutEntOffline = findViewById(R.id.layout_ent_offline)
         val btnRefresh = findViewById<Button>(R.id.btn_refresh)
@@ -104,7 +111,7 @@ class ActivityAnnounceFilter : AppCompatActivity(), OnAnnonceListener {
         val call = api.filterAnnounce(filter, params)
         call.enqueue(object : Callback<Announce?> {
             override fun onResponse(call: Call<Announce?>, response: Response<Announce?>) {
-                Log.d("ActivityAnnounce", params.toString());
+                Log.d("ActivityAnnounce", params.toString())
                 shimmerViewContainer.visibility = View.GONE
                 mSwipeRefreshLayout.isRefreshing = false
                 val announce = response.body()

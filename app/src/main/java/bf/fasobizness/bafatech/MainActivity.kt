@@ -33,6 +33,7 @@ import bf.fasobizness.bafatech.activities.user.LoginActivity
 import bf.fasobizness.bafatech.activities.user.messaging.ActivityDiscussions
 import bf.fasobizness.bafatech.activities.user.messaging.DefaultMessagesActivity
 import bf.fasobizness.bafatech.adapters.AnnounceAdapter
+import bf.fasobizness.bafatech.fragments.FragmentMaintenance
 import bf.fasobizness.bafatech.fragments.FragmentNotConnected
 import bf.fasobizness.bafatech.helper.RetrofitClient
 import bf.fasobizness.bafatech.interfaces.API
@@ -345,6 +346,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         RemoteConfigUtils.init()
         checkVersion()
+        // showMaintenance()
     }
 
     private fun checkUser() {
@@ -357,13 +359,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun checkVersion() {
         try {
             val pInfo: PackageInfo = this.packageManager.getPackageInfo(this.packageName, 0)
+            val url = RemoteConfigUtils.getUpdateUrl()
             val version = pInfo.versionName
-            if (version != RemoteConfigUtils.getLastVersion()) {
+            if (version != RemoteConfigUtils.getMinVersion()) {
                 val dialog: AlertDialog = AlertDialog.Builder(this)
                         .setTitle("Nouvelle version disponible")
                         .setMessage("Nous vous recommandons d'installer la dernière version de l'application Faso Biz Nèss.")
-                        .setPositiveButton("Mettre à jour",
-                                DialogInterface.OnClickListener { _, _ -> redirectStore()})
+                        .setPositiveButton("Mettre à jour") { _, _ -> redirectStore(url) }
                         .create()
                 dialog.show()
             }
@@ -372,15 +374,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    private fun redirectStore() {
+    private fun redirectStore(url: String) {
         try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=bf.fasobizness.bafatech&hl=fr&gl=US"))
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
-        } catch (e:Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
 
+    private fun showMaintenance() {
+        val fragmentMaintenance = FragmentMaintenance.newInstance("100")
+        fragmentMaintenance.show(supportFragmentManager, "")
     }
 
     private fun getNewJWTToken(id: String, token: String) {
@@ -449,6 +455,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_my_post -> {
                 startActivity(Intent(this, ActivityAnnoncesPublished::class.java))
+                return true
+            }
+            R.id.nav_partager -> {
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, getString(R.string.telecharger_et_partager_l_application_recommender))
+                    type = "text/plain"
+                }
+                val shareIntent = Intent.createChooser(sendIntent, null)
+                startActivity(shareIntent)
                 return true
             }
             else -> {
@@ -579,10 +595,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     imageSlider.setItemClickListener(object : ItemClickListener {
                         override fun onItemSelected(position: Int) {
                             val advertising1 = images[position]
-                            val intent = Intent(this@MainActivity, ActivityDetailsPub::class.java)
+                            val intent = Intent(this@MainActivity, AdvertisingActivity::class.java)
                             intent.putExtra("id", advertising1.id)
                             intent.putExtra("lien", advertising1.lien)
                             intent.putExtra("description", advertising1.description)
+                            intent.putExtra("ads", images)
+                            intent.putExtra("position", position)
                             startActivity(intent)
                         }
                     })
@@ -595,9 +613,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onAnnonceClicked(position: Int) {
         val annonce = mAnnonces[position]
-        val intent = Intent(this, ActivityDetailsAnnonce::class.java)
+        // val intent = Intent(this, ActivityDetailsAnnonce::class.java)
+        val intent = Intent(this, ActivityDetailsAnnonces::class.java)
         intent.putExtra("id_ann", annonce.id_ann)
         intent.putExtra("affiche", annonce.affiche)
+        intent.putExtra("annonces", mAnnonces)
+        intent.putExtra("position", position)
         startActivity(intent)
     }
 
@@ -613,10 +634,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onImageClicked(position: Int) {
         val advertising1 = images[position]
-        val intent = Intent(this@MainActivity, ActivityDetailsPub::class.java)
+        val intent = Intent(this@MainActivity, AdvertisingActivity::class.java)
         intent.putExtra("id", advertising1.id)
         intent.putExtra("lien", advertising1.lien)
         intent.putExtra("description", advertising1.description)
+        intent.putExtra("ads", images)
+        intent.putExtra("position", position)
         startActivity(intent)
     }
 

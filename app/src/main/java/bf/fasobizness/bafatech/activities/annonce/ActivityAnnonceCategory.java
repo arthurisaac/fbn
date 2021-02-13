@@ -37,7 +37,7 @@ public class ActivityAnnonceCategory extends AppCompatActivity implements OnItem
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(manager);
 
-        categories = getResources().getStringArray(R.array.categories_2);
+        categories = getResources().getStringArray(R.array.categories_3);
         CategoryAdapter adapter = new CategoryAdapter(this, categories);
         mRecyclerView.setAdapter(adapter);
         adapter.setOnItemListener(this);

@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="categories_2">
-        <item>Choisir catégorie</item>
+        <item>Choisir catégorie *</item>
+        <item>Immobilier (vente et location)</item>
+        <item>Articles pour bébés et enfants</item>
+        <item>Vêtements et accessoires pour hommes</item>
+        <item>Vêtements et accessoires pour femmes</item>
+        <item>Beauté et Santé</item>
+        <item>Informatique et accessoires</item>
+        <item>Téléphones, tablettes et accessoires</item>
+        <item>Auto-moto</item>
+        <item>Electroménager, articles et linge de maison</item>
+        <item>Meubles et décoration d\'intérieur</item>
+        <item>Image, son, et jeux vidéo</item>
+        <item>Electronique et solaire</item>
+        <item>Agrobusiness, alimentation et restauration</item>
+        <item>Art, sport, et divertissement</item>
+        <item>Services, emplois et formations</item>
+        <item>Matériels de construction et équipements professionnels</item>
+        <item>Commerce général</item>
+        <item>Autres catégories</item>
+    </string-array>
+
+    <string-array name="categories_3">
         <item>Immobilier (vente et location)</item>
         <item>Articles pour bébés et enfants</item>
         <item>Vêtements et accessoires pour hommes</item>
@@ -46,23 +67,55 @@
 
     <string-array name="villes">
         <item>Toutes les villes</item>
-        <item>Ouagadougou</item>
-        <item>Bobo Dioulasso</item>
-        <item>Koudougou</item>
-        <item>Kaya</item>
-        <item>Fada</item>
-        <item>Ouahigouya</item>
         <item>Livre partout au Burkina</item>
+        <item>Ouagadougou</item>
+        <item>Bobo-Dioulasso</item>
+        <item>Koudougou</item>
+        <item>Fada-N’Gourma</item>
+        <item>Ouahigouya</item>
+        <item>Banfora</item>
+        <item>Dédougou</item>
+        <item>Kaya</item>
+        <item>Tenkodogo</item>
+        <item>Dori</item>
+        <item>Réo</item>
+        <item>Houndé</item>
+        <item>Djibo</item>
+        <item>Léo</item>
+        <item>Po</item>
+        <item>Kongoussi</item>
+        <item>Yako</item>
+        <item>Koupèla</item>
+        <item>Autre ville (nom précisé dans la description de l’offre)</item>
     </string-array>
 
     <string-array name="villes_2">
-        <item>Choisir ville</item>
-        <item>Ouagadougou</item>
-        <item>Bobo Dioulasso</item>
-        <item>Koudougou</item>
-        <item>Kaya</item>
-        <item>Fada</item>
-        <item>Ouahigouya</item>
+        <item>Choisir ville *</item>
         <item>Livre partout au Burkina</item>
+        <item>Ouagadougou</item>
+        <item>Bobo-Dioulasso</item>
+        <item>Koudougou</item>
+        <item>Fada-N’Gourma</item>
+        <item>Ouahigouya</item>
+        <item>Banfora</item>
+        <item>Dédougou</item>
+        <item>Kaya</item>
+        <item>Tenkodogo</item>
+        <item>Dori</item>
+        <item>Réo</item>
+        <item>Houndé</item>
+        <item>Djibo</item>
+        <item>Léo</item>
+        <item>Po</item>
+        <item>Kongoussi</item>
+        <item>Yako</item>
+        <item>Koupèla</item>
+        <item>Autre ville (nom précisé dans la description de l’offre)</item>
+    </string-array>
+
+    <string-array name="genre">
+        <item>Choisir genre</item>
+        <item>Homme</item>
+        <item>Femme</item>
     </string-array>
 </resources>

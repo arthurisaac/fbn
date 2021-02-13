@@ -18,7 +18,6 @@
     <string name="prix_facultatif">Prix (Facultatif)</string>
     <string name="offres_en_or">Offres en or</string>
     <string name="boutiques">Boutiques</string>
-    <string name="enregistrement">Enregistrement</string>
     <string name="continuer">Continuer</string>
     <string name="code">Code</string>
     <string name="mot_de_passe_requis">Mot de passe requis</string>
@@ -32,20 +31,18 @@
     <string name="infos_pratiques">Infos pratiques</string>
     <string name="haut_de_page">Haut de page</string>
     <string name="suprrimer_l_annonce">Suprrimer l\'annonce</string>
-    <string name="nous_venons_d_envoyer_un_code_dauthentification">Nous venons d\'envoyer un code d\'authentification via email à %1$s</string>
+    <string name="nous_venons_d_envoyer_un_code_dauthentification">Nous venons d\'envoyer un code d\'authentification via email à %1$s. Vérifiez dans vos spams si vous ne recevez pas l’email</string>
     <string name="renvoyer_le_code">Renvoyer le code</string>
     <string name="profil">Profil</string>
     <string name="recommander_un_ami">Recommander à un ami</string>
     <string name="rechercher">Rechercher</string>
     <string name="favoris">Favoris</string>
-    <string name="trier">Trier</string>
     <string name="ajouter_annonce">Ajouter annonce</string>
     <string name="veuillez_patienter_pendant_le_chargement">Veuillez patienter svp pendant le chargement</string>
     <string name="pas_d_acces_internet">Pas d\'acces internet</string>
     <string name="aucune_annonce_trouv_e">Aucune annonce trouvée</string>
     <string name="ads">ads</string>
     <string name="vip">VIP</string>
-    <string name="nombre_de_vue">Nombre de vue</string>
     <string name="connectez_vous_ici">Connectez-vous ici</string>
     <string name="affiche_de_l_annonce">Affiche de l\'annonce</string>
     <string name="ajouter_aux_favoris">Ajouter aux favoris</string>
@@ -54,7 +51,6 @@
     <string name="chargement_en_cours">Chargement en cours</string>
     <string name="signaler_l_annonce">Signaler l\'annonce</string>
     <string name="envoyer_message_direct">Envoyer un message direct</string>
-    <string name="discuter_avec_le_vender">Discuter avec le vendeur</string>
     <string name="voir_plus">Voir plus</string>
     <string name="plus_d_article_de_ce_utilisateur">Plus d\'articles de cet utilisateur</string>
     <string name="avatar_du_vendeur">Avatar du vendeur</string>
@@ -65,10 +61,8 @@
     <string name="aucune_categorie_renseignee">Aucune catégorie renseignée</string>
     <string name="prix_sur_demande">Prix sur demande</string>
 
-    <string name="pour_publier_une_annonce_ouvrez_la_barre_de_navigation_et_choisir_le_menu_offres_et_annonces_cliquer_sur_le_bouton_ajouter_annonce_situ_vers_le_bas_de_votre_cran_remplissez_les_champs_demand_s_et_cliquer_sur_le_bouton_publier_pour_publier_votre_annonce">Pour publier une annonce, ouvrez la barre de navigation et choisir le menu \'Offres et Annonces\'. Cliquer sur le bouton \'Ajouter annonce\' situé vers le bas de votre écran. Remplissez les champs demandés et cliquer sur le bouton publier pour publier votre annonce.</string>
     <string name="remarque_pour_publier_une_annonce_il_faudra_tre_connect_au_pr_alable">Remarque: Pour publier une annonce, il faudra être connecté au préalable.</string>
-    <string name="comment_s_enregistrer">Comment s\'enregistrer ?</string>
-    <string name="pour_s_enregistrer_rendez_vous_dans_la_barre_de_navigation_et_cliquer_sur_connectez_vous_puis_cliquer_sur_s_inscrire_ici">Pour s\'enregistrer, rendez-vous dans la barre de navigation et cliquer sur \'Connectez-vous\' puis cliquer sur \'S\'inscrire ici\'.</string>
+    <string name="comment_s_inscrire">Comment s\'inscrire</string>
 
     <string name="telecharger_et_partager_l_application">Téléchargez ou parcourez l\'application Faso Biz Nèss pour en savoir plus. Pour android: http://bit.ly/AndroidFBN.</string>
     <string name="telecharger_et_partager_l_application_recommender">Je t\'invite à découvrir une application gratuite pour publier tes offres, vendre, acheter, et être informé de toutes les opportunités d\'emploi au Burkina. Disponible sur Playstore: http://bit.ly/AndroidFBN</string>
@@ -88,12 +82,13 @@
     <string name="changer_mot_de_passe">Changer de mot de passe</string>
     <string name="enregistrer">Enregistrer</string>
     <string name="secteur_d_activite">Secteur(s) d\'activité(s)</string>
-    <string name="numero_de_telephone">Numero de téléphone / WhatsApp</string>
+    <string name="numero_de_telephone">Numéro de Tél (WhatsApp)</string>
     <string name="prenom">Prénom (s)</string>
     <string name="nom">Nom</string>
     <string name="nom_d_utlisateur">Nom d\'utilisateur</string>
     <string name="entrer_un_nom_d_utilisateur_plus_long">Entrer un nom d\'utilisateur plus long</string>
     <string name="secteut_d_activite_requis">Secteur d\'activité requis</string>
+    <string name="date_de_naissance_requise">Date de naissance requise</string>
     <string name="partager">Partager</string>
     <string name="affiche_entreprise_la_une">Affiche entreprise à la une</string>
     <string name="entreprise_a_la_une">Entreprises à la une</string>
@@ -143,7 +138,6 @@
     <string name="l_exp_rience_digitale_au_service_de_l_entreprenariat">L’expérience digitale au service de l’entreprenariat</string>
     <string name="publications_x">Publications (%1$s)</string>
     <string name="postuler">Postuler</string>
-    <string name="publi_le">Publiée le %1$s</string>
     <string name="date_de_depot">Date limite de dépôt :</string>
     <string name="heure_de_depot">Heure limite de dépôt :</string>
     <string name="resultats">Resultats (%1$s)</string>
@@ -151,7 +145,6 @@
     <string name="que_recherchez_vous">Que recherchez-vous?</string>
     <string name="aucun_resultat">aucun résultat</string>
     <string name="envoyer">Envoyer</string>
-    <string name="_226_xx_xx_xx_xx" tools:ignore="Typos">(+226) xx xx xx xx</string>
     <string name="vos_suggestions">Vos suggestions</string>
     <string name="telecharement_en_cours">Téléchargement en cours</string>
     <string name="modifier_l_annonce">Modifier l\'annonce</string>
@@ -212,7 +205,6 @@
     <string name="supprimer_discussion">Supprimer discussion</string>
     <string name="supprimer_la_discussion">Supprimer la discussion?</string>
     <string name="code_incorrect">Code incorrect</string>
-    <string name="en_continuant_d_utiliser_l_application_vous_indiquez_que_vous_acceptez_les_conditions_g_n_rales_de_la_politique_d_utilisation">En continuant d\'utiliser l\'application, vous indiquez que vous acceptez les conditions générales de la politique d\'utilisation</string>
     <string name="je_voudrais_promouvoir_mes_produits">Je voudrais promouvoir mes produits</string>
     <string name="prix_min">Prix min</string>
     <string name="prix_max">Prix max</string>
@@ -229,6 +221,7 @@
     <string name="vos_resultats">Vos Résultats</string>
     <string name="aimez_notre_page_facebook">Aimez notre page Facebook</string>
     <string name="publie_le">Publié le %1$s</string>
+    <string name="publiee_le">Publiée le %1$s</string>
     <string name="particulier">particulier</string>
     <string name="conversation_supprimee">Conversation supprimée</string>
     <string name="veuillez_entrer_un_message">Veuillez entrer un message</string>
@@ -244,9 +237,7 @@
     <string name="mise_en_ligne_par">Mise en ligne par</string>
     <string name="message">Message</string>
     <string name="whatsapp">WhatsApp</string>
-    <string name="prix_non_renseigne">Prix non renseigné</string>
     <string name="filtrer">Filtrer</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="espace_emplois">Espace emplois</string>
     <string name="rechercher_dans_espace_emplois">Rechercher dans Espace Emplois…</string>
     <string name="supprimer">Supprimer</string>
@@ -259,4 +250,20 @@
     <string name="rechercher_dans_offres_et_annonces">Rechercher dans offres et annonces</string>
     <string name="r_initialiser">Réinitialiser</string>
     <string name="contact">Contacts</string>
+    <string name="enregistrer_les_modifications">Enregistrer les modifications</string>
+    <string name="date_de_naissance">Date de naissance</string>
+    <string name="invit_les_amis">Inviter les amis</string>
+    <string name="pour_vous_inscrire_rendez_vous_dans_la_barre_de_menu_de_navigation_lat_rale_et_cliquez_sur_connectez_vous_ici_puis_sur_la_touche_s_inscrire_ici_situ_e_vers_le_bas_de_la_page_de_connexion_vous_choisissez_entre_l_option_particulier_ou_entreprise_si_vous_tes_un_commer_ant_et_vous_remplissez_les_diff_rents_champs"><![CDATA[Pour vous inscrire, rendez-vous dans la barre de menu de navigation latérale, et cliquez sur « Connectez-vous ici », puis sur la touche « S’inscrire ici », située vers le bas de la page de connexion. Vous choisissez entre l’option Particulier ou Entreprise (si vous êtes un commerçant), et vous remplissez les différents champs.]]></string>
+    <string name="en_page_d_accueil_de_l_application_cliquez_sur_la_touche_publier_annonce_situ_e_vers_le_bas_de_votre_cran_puis_remplissez_les_diff_rents_champs_et_cliquez_sur_publier_nb_pour_publier_vos_offres_vous_devez_tre_inscrit_sur_faso_biz_n_ss_et_connect_votre_compte"><![CDATA[En page d’accueil de l’application, cliquez sur la touche « Publier annonce » située vers le bas de votre écran. Puis remplissez les différents champs, et cliquez sur Publier. NB :pour publier vos offres, vous devez être inscrit sur Faso Biz Nèss et connecté à votre compte.]]></string>
+    <string name="conseils_de_securite">Conseils de sécurité</string>
+    <string name="comment_creer_une_offre_irresistible">Comment créer une offre irrésistible ?</string>
+    <string name="application_en_maintenance">Application en maintenance</string>
+    <string name="ajouter_description_audio">Ajouter description audio</string>
+    <string name="arreter_l_enregistrement">Arrêter l\'enregistrement</string>
+    <string name="supprimer_description_audio">Supprimer discription audio</string>
+    <string name="audio_description">audio description</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="suivant">Suivant</string>
+    <string name="page_suivante">Page suivante</string>
 </resources>

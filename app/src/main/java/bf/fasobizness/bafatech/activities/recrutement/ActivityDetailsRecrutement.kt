@@ -57,7 +57,7 @@ class ActivityDetailsRecrutement : AppCompatActivity(), OnItemListener {
                 } else {
                     btnPostuler.visibility = View.VISIBLE
                 }
-                val datePub = getString(R.string.publi_le, recrutement.date_pub)
+                val datePub = getString(R.string.publie_le, recrutement.date_pub)
                 tvNomR.text = recrutement.nom_r
                 tvDomaine.text = recrutement.domaine
                 tvDescription.text = recrutement.description

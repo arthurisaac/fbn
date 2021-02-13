@@ -49,8 +49,10 @@ public interface API {
             @Field("prenom") String prenom,
             @Field("nom_pers") String nom_pers,
             @Field("sect_activite") String sect_activite,
+            @Field("date_naissance") String dateNaissance,
             @Field("mdp") String mdp,
-            @Field("type") String type
+            @Field("type") String type,
+            @Field("genre") String genre
     );
 
     @FormUrlEncoded
@@ -77,6 +79,8 @@ public interface API {
             @Field("nom") String nom,
             @Field("prenom") String prenom,
             @Field("sect_activite") String sect_activite,
+            @Field("date_naissance") String dateNaissance,
+            @Field("genre") String genre,
             @Path("id") String id,
             @Header("Authorization") String auth);
 

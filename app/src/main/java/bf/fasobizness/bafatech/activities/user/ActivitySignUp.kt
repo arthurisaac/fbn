@@ -1,6 +1,8 @@
 package bf.fasobizness.bafatech.activities.user
 
 import android.Manifest
+import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -45,6 +47,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -59,20 +62,28 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
     private lateinit var sectActivite: TextInputLayout
     private lateinit var mdp: TextInputLayout
     private lateinit var confirm: TextInputLayout
+    private lateinit var dateNaissance: EditText
     private lateinit var sharedManager: MySharedManager
     private lateinit var requestQueue: RequestQueue
     private lateinit var linear_sign_up_base: LinearLayout
+    private lateinit var dateNaissanceLayout: RelativeLayout
+    private lateinit var genreLayout: LinearLayout
+    private lateinit var txtGenreErreur: TextView
+
     private lateinit var type: String
     private lateinit var btn_sign_up: Button
     private var api: API = RetrofitClient.getClient().create(API::class.java)
     private var images: ArrayList<Image> = ArrayList()
+    private val myCalendar = Calendar.getInstance()
+
+    private lateinit var spGenre: Spinner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
         val toolbar: Toolbar = findViewById(bf.fasobizness.bafatech.R.id.toolbar)
-        toolbar.title = getString(R.string.profil)
+        toolbar.title = "Inscription"
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationIcon(R.drawable.left_white)
@@ -93,12 +104,31 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
         sectActivite = findViewById(R.id.sect_activite)
         mdp = findViewById(R.id.password)
         confirm = findViewById(R.id.passwordConfirm)
+        dateNaissance = findViewById(R.id.dateNaissance)
+        genreLayout = findViewById(R.id.genreLayout)
+        txtGenreErreur = findViewById(R.id.txt_genre_erreur)
+        val date = OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+            myCalendar[Calendar.YEAR] = year
+            myCalendar[Calendar.MONTH] = monthOfYear
+            myCalendar[Calendar.DAY_OF_MONTH] = dayOfMonth
+            updateDate()
+        }
+
+        dateNaissance.setOnClickListener {
+            DatePickerDialog(this@ActivitySignUp, date, myCalendar[Calendar.YEAR], myCalendar[Calendar.MONTH],
+                    myCalendar[Calendar.DAY_OF_MONTH]).show()
+        }
 
         btn_sign_up = findViewById(R.id.btn_sign_up)
         sharedManager = MySharedManager(this)
 
         requestQueue = Volley.newRequestQueue(this)
         linear_sign_up_base = findViewById(R.id.linear_sign_up_base)
+        dateNaissanceLayout = findViewById(R.id.dateNaissanceLayout)
+        dateNaissanceLayout.setOnClickListener {
+            DatePickerDialog(this@ActivitySignUp, date, myCalendar[Calendar.YEAR], myCalendar[Calendar.MONTH],
+                    myCalendar[Calendar.DAY_OF_MONTH]).show()
+        }
 
         val extras = intent
         type = extras.getStringExtra("type").toString()
@@ -106,9 +136,13 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
         if (type == "entreprise") {
             pre.visibility = View.GONE
             us.visibility = View.GONE
+            dateNaissanceLayout.visibility = View.GONE
+            genreLayout.visibility = View.GONE
         } else {
             sect.visibility = View.GONE
         }
+        spGenre = findViewById(R.id.sp_genre)
+        spGenre.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, resources.getStringArray(R.array.genre))
 
         btn_sign_up.setOnClickListener {
             if (type == "entreprise") {
@@ -116,19 +150,26 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
                     signup()
                 }
             } else {
-                if (checkUsername() && checkNom() && checkEmail() && checkPrenom() && checkTel() && checkPass()) {
+                if (checkUsername() && checkNom() && checkEmail() && checkPrenom() && checkTel() && checkDateNaiss() && checkGenreInput() && checkPass() ) {
                     signup()
                 }
             }
         }
 
         val cgu = findViewById<TextView>(R.id.txt_cgu)
-        val cgu_txt = "<strong>En continuant d'utiliser l'application, vous indiquez que vous acceptez <u>les conditions générales de la politique d'utilisation</u></strong>"
+        val cgu_txt = "<u>En continuant d'utiliser l'application, vous indiquez que vous acceptez les conditions générales de la politique d'utilisation</u>"
         cgu.text = HtmlCompat.fromHtml(cgu_txt, HtmlCompat.FROM_HTML_MODE_LEGACY)
         cgu.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://fasobizness.com/uploads/cgu.pdf"))
             startActivity(intent)
         }
+    }
+
+    private fun updateDate() {
+        val format = "dd/MM/yyyy"
+        val simpleDateFormat = SimpleDateFormat(format, Locale.FRENCH)
+        dateNaissance.setText(simpleDateFormat.format(myCalendar.time))
+//        dateNaissance.editText!!.setText(simpleDateFormat.format(myCalendar.time))
     }
 
     private fun requestMultiplePermissions() {
@@ -195,6 +236,7 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
         val txPrenom = prenom.editText!!.text.toString()
         val txSectActivity = sectActivite.editText!!.text.toString()
         val txMdp: String = mdp.editText?.text.toString()
+        val txtDateNaissance: String = dateNaissance.text.toString()
         btn_sign_up.isEnabled = false
         btn_sign_up.setText(R.string.enregistrement_en_cours)
         val call: Call<User> = api.createUser(
@@ -204,8 +246,10 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
                 txPrenom,
                 txNomPers,
                 txSectActivity,
+                txtDateNaissance,
                 txMdp,
-                type
+                type,
+                spGenre.selectedItem.toString()
         )
         call.enqueue(object : Callback<User?> {
             override fun onResponse(call: Call<User?>, response: Response<User?>) {
@@ -237,6 +281,7 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
                             sharedManager.user = jwt.getClaim("sub").asString()
                             sharedManager.photo = jwt.getClaim("photo").asString()
                             sharedManager.email = jwt.getClaim("email").asString()
+                            sharedManager.type = type
                             sharedManager.token = auth
                             if (images.size > 0) {
                                 updateProfilePhoto(images[0].uri, sharedManager.user)
@@ -302,9 +347,9 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
 
     private fun prepareFilePart(part: String, uri: Uri): MultipartBody.Part {
         val file = getFile(this, uri)
-        val fileCompressingUtil = FileCompressingUtil()
-        val compressedFile = fileCompressingUtil.saveBitmapToFile(file)
-        val requestFile = ProgressRequestBody(compressedFile, this)
+        //val fileCompressingUtil = FileCompressingUtil()
+        //val compressedFile = fileCompressingUtil.saveBitmapToFile(file)
+        val requestFile = ProgressRequestBody(file, this)
         return MultipartBody.Part.createFormData(part, file!!.name, requestFile)
     }
 
@@ -379,6 +424,17 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
         }
     }
 
+    private fun checkDateNaiss(): Boolean {
+        val txtDateNaiss = dateNaissance.text.toString().trim()
+        return if (txtDateNaiss.isEmpty()) {
+            dateNaissance.error = getString(R.string.date_de_naissance_requise)
+            false
+        } else {
+            sectActivite.error = null
+            true
+        }
+    }
+
     private fun checkTel(): Boolean {
         val txtTel = telephone.editText?.text.toString().trim()
         return if (txtTel.isEmpty()) {
@@ -413,6 +469,24 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
             else -> {
                 mdp.error = null
                 confirm.error = null
+                true
+            }
+        }
+    }
+
+    private fun checkGenreInput(): Boolean {
+        val genre = spGenre.selectedItem.toString()
+        return when {
+            genre.isEmpty() -> {
+                txtGenreErreur.visibility = View.VISIBLE
+                false
+            }
+            (genre == "Choisir genre") -> {
+                txtGenreErreur.visibility = View.VISIBLE
+                false
+            }
+            else -> {
+                txtGenreErreur.visibility = View.GONE
                 true
             }
         }

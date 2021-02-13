@@ -6,7 +6,7 @@ class Constants {
     companion object HOST {
         fun api_server_url() : String{
             RemoteConfigUtils.init()
-            return RemoteConfigUtils.getServerUrl()
+             return RemoteConfigUtils.getServerUrl()
         }
     }
 

@@ -238,6 +238,68 @@
 
                 </RelativeLayout>
 
+                <LinearLayout
+                    android:id="@+id/genreLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <Spinner
+                        android:id="@+id/sp_genre"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:entries="@array/genre" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#B9B9B9" />
+
+                    <TextView
+                        android:id="@+id/txt_genre_erreur"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/design_default_color_error"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/dateNaissanceLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/dateNaissance"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:layout_marginTop="7dp"
+                        android:hint="@string/date_de_naissance"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:inputType="date"
+                        android:importantForAutofill="no" />
+
+                    <!--<com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/dateNaissance"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true"
+                        app:hintEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/date_de_naissance"
+                            android:inputType="date"
+                            android:singleLine="true" />
+
+                    </com.google.android.material.textfield.TextInputLayout>-->
+
+                </RelativeLayout>
+
                 <Button
                     android:id="@+id/btn_update_profil"
                     android:layout_width="match_parent"
@@ -247,7 +309,7 @@
                     android:background="@drawable/border_rounded_solid_primary"
                     android:elevation="6dp"
                     android:enabled="true"
-                    android:text="@string/enregistrer"
+                    android:text="@string/enregistrer_les_modifications"
                     android:textAllCaps="true"
                     android:textColor="#FFFFFF"
                     android:textSize="14sp"

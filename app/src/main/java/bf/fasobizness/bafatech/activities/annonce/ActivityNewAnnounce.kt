@@ -1,14 +1,20 @@
 package bf.fasobizness.bafatech.activities.annonce
 
 import android.Manifest
+import android.content.ContentValues
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
 import bf.fasobizness.bafatech.R
 import bf.fasobizness.bafatech.activities.user.LoginActivity
 import bf.fasobizness.bafatech.adapters.AnnoncePhotosAdapter
+import bf.fasobizness.bafatech.helper.AudioManager
 import bf.fasobizness.bafatech.helper.ProgressRequestBody
 import bf.fasobizness.bafatech.helper.RetrofitClient
 import bf.fasobizness.bafatech.interfaces.API
@@ -23,7 +30,6 @@ import bf.fasobizness.bafatech.interfaces.IllustrationInterface
 import bf.fasobizness.bafatech.interfaces.OnItemListener
 import bf.fasobizness.bafatech.interfaces.UploadCallbacks
 import bf.fasobizness.bafatech.models.MyResponse
-import bf.fasobizness.bafatech.utils.FileCompressingUtil
 import bf.fasobizness.bafatech.utils.MySharedManager
 import com.google.android.material.textfield.TextInputLayout
 import com.karumi.dexter.Dexter
@@ -44,10 +50,11 @@ import retrofit2.Response
 import java.io.File
 import java.util.*
 
+
 class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks {
     private var tag = "ActivtyAnnonce"
     private var images: ArrayList<Image> = ArrayList()
-    // private var pictures: ArrayList<Uri>? = null
+    private val CAMERA = 2
 
     private lateinit var tilTitreAnnonce: TextInputLayout
     private lateinit var tilDescAnnonce: TextInputLayout
@@ -74,6 +81,15 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
     private lateinit var linearSucces: LinearLayout
     private var api: API? = null
     private lateinit var sharedManager: MySharedManager
+    private var mCurrentPhotoPath: String = ""
+
+    private lateinit var btnDescriptionAudio: Button
+    private lateinit var btnSupprimerAudio: ImageView
+    private val PERMISSIONS_REQ = 1
+    private lateinit var audioManager: AudioManager
+    private var isRecording: Boolean = false
+    private var isPlaying: Boolean = false
+    private var audioPresent: Boolean = false
 
     private fun getFile(context: Context, uri: Uri): File? {
         val path = PathUtils.getPath(context, uri)
@@ -109,7 +125,6 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
         spVille = findViewById(R.id.sp_ville_annonce)
         overbox = findViewById(R.id.overbox)
         rlUploadPicture = findViewById(R.id.rl_upload_picture)
-
 
         tvVilleError = findViewById(R.id.tv_error_ville)
         tvCategorieError = findViewById(R.id.tv_error_catégorie)
@@ -179,6 +194,18 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
             }
         }
 
+        btnDescriptionAudio = findViewById(R.id.btn_description_audio)
+        btnSupprimerAudio = findViewById(R.id.btn_supprimer_audio)
+        btnDescriptionAudio.setOnClickListener { requestAudioPermissions() }
+        btnSupprimerAudio.setOnClickListener {
+            audioPresent = false
+            btnDescriptionAudio.text = getString(R.string.ajouter_description_audio)
+            // btnDescriptionAudio.background = ContextCompat.getDrawable(this@ActivityNewAnnounce, R.drawable.ic_baseline_mic)
+            btnDescriptionAudio.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_mic, 0, 0, 0)
+            btnSupprimerAudio.visibility = View.GONE
+        }
+        audioManager = AudioManager(this)
+
         val btnAddPicturesAnnounce = findViewById<Button>(R.id.btn_add_pictures_annonce)
         btnAddPicturesAnnounce.setOnClickListener { requestMultiplePermissions() }
     }
@@ -192,7 +219,7 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
                 .withListener(object : MultiplePermissionsListener {
                     override fun onPermissionsChecked(report: MultiplePermissionsReport) {
                         if (report.areAllPermissionsGranted()) {
-                            showChooser()
+                            popup()
                             // Log.v(tag, "All permissions are granted by user!")
                         }
                     }
@@ -204,6 +231,83 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
                 .onSameThread()
                 .check()
     }
+
+    private fun requestAudioPermissions() {
+        Dexter.withContext(this)
+                .withPermissions(
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.RECORD_AUDIO)
+                .withListener(object : MultiplePermissionsListener {
+                    override fun onPermissionsChecked(report: MultiplePermissionsReport) {
+                        if (report.areAllPermissionsGranted()) {
+                            recordAudio()
+                        }
+                    }
+
+                    override fun onPermissionRationaleShouldBeShown(permissions: List<PermissionRequest>, token: PermissionToken) {
+                        token.continuePermissionRequest()
+                    }
+                }).withErrorListener { Toast.makeText(applicationContext, "Erreur de permission! ", Toast.LENGTH_SHORT).show() }
+                .onSameThread()
+                .check()
+    }
+
+    private fun recordAudio() {
+        val handler = Handler()
+        var runnable = Runnable { }
+        if (isPlaying) {
+            audioManager.stopPlayback()
+            btnDescriptionAudio.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_play_black, 0, 0, 0)
+            btnDescriptionAudio.text = "Jouer audio"
+            isPlaying = false
+        } else {
+            if (audioPresent) {
+                isPlaying = true
+                // btnDescriptionAudio.text = "Arrêter "
+                btnDescriptionAudio.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_stop, 0, 0, 0)
+                btnSupprimerAudio.visibility = View.VISIBLE
+                audioManager.startPlayback(1)
+                btnDescriptionAudio.text = "Arrêter"
+                /*handler.apply {
+                    runnable = object : Runnable {
+                        override fun run() {
+                            btnDescriptionAudio.text = "Arrêter " + audioManager.getCurrentPosition() + "/" + audioManager.getDuration() + " Sec"
+                            postDelayed(this, 1000)
+                        }
+                    }
+                    postDelayed(runnable, 1000)
+                }*/
+                val runnable = Runnable {
+                    btnDescriptionAudio.text = "Arrêter " + audioManager.getDuration() + " Sec"
+                }
+                handler.postDelayed(runnable, 1000)
+
+                audioManager.mediaPlayer()?.setOnCompletionListener {
+                    handler.removeCallbacks(runnable)
+                    isPlaying = false
+                    btnDescriptionAudio.text = "Jouer audio"
+                    btnDescriptionAudio.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_play_black, 0, 0, 0)
+                }
+            } else {
+                if (isRecording) {
+                    audioManager.stopRecording()
+                    // btnDescriptionAudio.text = getString(R.string.ajouter_description_audio)
+                    btnDescriptionAudio.text = "Jouer audio"
+                    btnDescriptionAudio.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_play_black, 0, 0, 0)
+                    btnSupprimerAudio.visibility = View.VISIBLE
+                    isRecording = false
+                    audioPresent = true
+                } else {
+                    audioManager.startRecording(PERMISSIONS_REQ)
+                    btnDescriptionAudio.text = getString(R.string.arreter_l_enregistrement)
+                    isRecording = true
+                }
+            }
+        }
+
+
+    }
+
 
     private fun showChooser() {
         ImagePicker.with(this)
@@ -217,12 +321,12 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
                 .setLimitMessage("Vous pouvez selectionner 10 images")
                 .setSelectedImages(images)
                 .setRequestCode(100)
+                .setShowCamera(false)
                 .start()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (ImagePicker.shouldHandleResult(requestCode, resultCode, data, 100)) {
-            // images = ImagePicker.getImages(data)
             images.clear()
             images.addAll(ImagePicker.getImages(data))
             mAdapter.notifyDataSetChanged()
@@ -237,6 +341,19 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
                 }
 
             }*/
+        }
+        if (requestCode == CAMERA) {
+            val cursor = contentResolver.query(Uri.parse(mCurrentPhotoPath),
+                    Array(1) { MediaStore.Images.ImageColumns.DATA },
+                    null, null, null)
+            cursor?.moveToFirst()
+            val photoPath = cursor?.getString(0)
+            cursor?.close()
+            val file = File(photoPath)
+            val fileUri = Uri.fromFile(file)
+            val image = Image(0, "", fileUri, photoPath.toString(), 0, "")
+            images.add(image)
+            mAdapter.notifyDataSetChanged()
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
@@ -312,7 +429,7 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
                 tvVilleError.visibility = View.VISIBLE
                 false
             }
-            (villeInput == "Choisir ville" || villeInput == "Toutes les villes") -> {
+            (villeInput == "Choisir ville *") -> {
                 tvVilleError.visibility = View.VISIBLE
                 false
             }
@@ -330,7 +447,7 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
                 tvCategorieError.visibility = View.VISIBLE
                 false
             }
-            (catInput == "Toutes les catégories" || catInput == "Choisir catégorie") -> {
+            (catInput == "Choisir catégorie *") -> {
                 tvCategorieError.visibility = View.VISIBLE
                 false
             }
@@ -352,8 +469,6 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
     }
 
     override fun onItemClicked(position: Int) {
-        //val image = images[position]
-        //images.remove(image)
         mAdapter.remove(position)
         mAdapter.notifyItemRemoved(position)
     }
@@ -425,6 +540,10 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
                             btnPublishOffer.isEnabled = true
                         } else {
                             idAnnonceFk = response.body()!!.id
+                            if (audioPresent) {
+                                Toast.makeText(this@ActivityNewAnnounce, "envoi audio", Toast.LENGTH_SHORT).show()
+                                uploadAudio()
+                            }
                             uploadPictures()
                         }
                     } catch (e: java.lang.Exception) {
@@ -473,16 +592,89 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
         })
     }
 
+    private fun uploadAudio() {
+        val path = audioManager.filePathForId(PERMISSIONS_REQ)
+        val audio = File(path)
+        if (File(path).exists()) {
+            rlUploadPicture.visibility = View.VISIBLE
+            val parts: MutableList<MultipartBody.Part> = ArrayList()
+            val illustrationInterface = RetrofitClient.getClient().create(IllustrationInterface::class.java)
+            for (i in images.indices) {
+                parts.add(prepareAudioFilePart("audio", audio))
+            }
+            val idAnn = createPart(idAnnonceFk.toString())
+            val call = illustrationInterface.uploadAudio(idAnn, parts)
+            call.enqueue(object : Callback<ResponseBody?> {
+                override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
+                    Log.d(tag, response.toString())
+                    /*if (response.isSuccessful) {
+                        linearUploading.visibility = View.GONE
+                        linearSucces.visibility = View.VISIBLE
+                    }*/
+                }
+
+                override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                    /*rlUploadPicture.visibility = View.GONE
+                    overbox.visibility = View.GONE
+                    btnPublishOffer.isEnabled = true
+                    btnPublishOffer.setText(R.string.ressayer)*/
+                    Log.d(tag, t.toString())
+                }
+            })
+        }
+    }
+
     private fun prepareFilePart(part: String, image: Image): MultipartBody.Part {
         val file = getFile(this, image.uri)
-        val fileCompressingUtil = FileCompressingUtil()
-        val compressedFile = fileCompressingUtil.saveBitmapToFile(file)
-        val requestFile = ProgressRequestBody(compressedFile, this)
+        // val fileCompressingUtil = FileCompressingUtil()
+        // val compressedFile = fileCompressingUtil.saveBitmapToFile(file)
+        val requestFile = ProgressRequestBody(file, this)
         return MultipartBody.Part.createFormData(part, file!!.name, requestFile)
+    }
+
+    private fun prepareAudioFilePart(part: String, file: File): MultipartBody.Part {
+        val requestFile = ProgressRequestBody(file, this)
+        return MultipartBody.Part.createFormData(part, file.name, requestFile)
     }
 
     private fun createPart(id_ann: String): RequestBody {
         return RequestBody.create(
                 MultipartBody.FORM, id_ann)
+    }
+
+    private fun popup() {
+        val items = arrayOf<CharSequence>("Camera", "Galerie")
+        val builder = AlertDialog.Builder(this@ActivityNewAnnounce)
+        builder.setTitle("Choix de la source")
+        builder.setItems(items) { dialog: DialogInterface, i: Int ->
+            when {
+                items[i] == "Camera" -> {
+                    pickFromCamera()
+                }
+                items[i] == "Galerie" -> {
+                    showChooser()
+                }
+                else -> {
+                    dialog.dismiss()
+                }
+            }
+        }
+        builder.show()
+    }
+
+    private fun pickFromCamera() {
+        val values = ContentValues(1)
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
+        val fileUri = contentResolver
+                .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        values)
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (intent.resolveActivity(packageManager) != null) {
+            mCurrentPhotoPath = fileUri.toString()
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri)
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            startActivityForResult(intent, CAMERA)
+        }
     }
 }

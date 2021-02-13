@@ -69,6 +69,7 @@ public class ActivityInfos extends AppCompatActivity {
         CardView btn_appel = findViewById(R.id.btn_appel);
         CardView btn_facebook = findViewById(R.id.btn_facebook);
         CardView btn_whatsapp = findViewById(R.id.btn_whatsapp);
+        CardView btn_email = findViewById(R.id.btn_email);
 
         RelativeLayout btn_facebook_like = findViewById(R.id.btn_facebook_like);
 
@@ -121,6 +122,20 @@ public class ActivityInfos extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        });
+
+        btn_email.setOnClickListener( v -> {
+            Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                    "mailto", "contact@fasobizness.com", null));
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
+            emailIntent.putExtra(Intent.EXTRA_TEXT, "");
+            startActivity(Intent.createChooser(emailIntent, "Envoyer un email..."));
+        });
+
+        RelativeLayout conseilSecurite = findViewById(R.id.conseilSecurite);
+        conseilSecurite.setOnClickListener(v-> {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://fasobizness.com/uploads/CONSEILS DE SECURITE VENTE ET ACHATS EN LIGNE SUR FASO BIZ NESS.pdf"));
+            startActivity(intent);
         });
     }
 

@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="@string/comment_s_enregistrer"
+                android:text="@string/comment_s_inscrire"
                 android:textColor="#3E3E3E"
                 tools:ignore="RelativeOverlap" />
 
@@ -60,7 +60,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/pour_s_enregistrer_rendez_vous_dans_la_barre_de_navigation_et_cliquer_sur_connectez_vous_puis_cliquer_sur_s_inscrire_ici" />
+                android:text="@string/pour_vous_inscrire_rendez_vous_dans_la_barre_de_menu_de_navigation_lat_rale_et_cliquez_sur_connectez_vous_ici_puis_sur_la_touche_s_inscrire_ici_situ_e_vers_le_bas_de_la_page_de_connexion_vous_choisissez_entre_l_option_particulier_ou_entreprise_si_vous_tes_un_commer_ant_et_vous_remplissez_les_diff_rents_champs" />
 
         </LinearLayout>
 

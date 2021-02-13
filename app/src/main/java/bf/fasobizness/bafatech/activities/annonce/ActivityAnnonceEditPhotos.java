@@ -333,9 +333,9 @@ public class ActivityAnnonceEditPhotos extends AppCompatActivity implements OnIt
     private MultipartBody.Part prepareFilePart(String part, Uri uri) {
         File file = getFile(this, uri);
         assert file != null;
-        FileCompressingUtil fileCompressingUtil = new FileCompressingUtil();
-        File compressedFile = fileCompressingUtil.saveBitmapToFile(file);
-        ProgressRequestBody requestFile = new ProgressRequestBody(compressedFile, this);
+        // FileCompressingUtil fileCompressingUtil = new FileCompressingUtil();
+        // File compressedFile = fileCompressingUtil.saveBitmapToFile(file);
+        ProgressRequestBody requestFile = new ProgressRequestBody(file, this);
         return MultipartBody.Part.createFormData(part, file.getName(), requestFile);
     }
 

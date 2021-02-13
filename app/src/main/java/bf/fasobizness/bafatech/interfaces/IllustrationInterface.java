@@ -25,6 +25,13 @@ public interface IllustrationInterface {
             @Part List<MultipartBody.Part> files
     );
 
+    @Multipart
+    @POST("v1/audio")
+    Call<ResponseBody> uploadAudio(
+            @Part("id") RequestBody id_annonce_fk,
+            @Part List<MultipartBody.Part> audio
+    );
+
     @FormUrlEncoded
     @Headers({
             "Content-Type: application/x-www-form-urlencoded",

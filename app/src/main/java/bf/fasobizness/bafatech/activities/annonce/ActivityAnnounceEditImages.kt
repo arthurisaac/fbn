@@ -154,9 +154,9 @@ class ActivityAnnounceEditImages : AppCompatActivity(), OnItemListener, UploadCa
 
     private fun prepareFilePart(part: String, image: Image): MultipartBody.Part {
         val file = getFile(this, image.uri)!!
-        val fileCompressingUtil = FileCompressingUtil()
-        val compressedFile = fileCompressingUtil.saveBitmapToFile(file)
-        val requestFile = ProgressRequestBody(compressedFile, this)
+        // val fileCompressingUtil = FileCompressingUtil()
+        // val compressedFile = fileCompressingUtil.saveBitmapToFile(file)
+        val requestFile = ProgressRequestBody(file, this)
         return MultipartBody.Part.createFormData(part, file.name, requestFile)
     }
 

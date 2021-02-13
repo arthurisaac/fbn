@@ -11,7 +11,7 @@ public class Advertising {
     @SerializedName("data")
     public final List<Ads> adsList = new ArrayList<>();
 
-    public class Ads {
+    public class Ads implements Serializable {
 
         @SerializedName("id")
         private String id;
