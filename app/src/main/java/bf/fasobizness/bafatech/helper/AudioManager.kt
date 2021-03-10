@@ -35,8 +35,6 @@ class AudioManager(private val context: Context) {
     }
 
     fun startRecording(id: Int): Boolean {
-
-        //check the device has a microphone
         if (context.packageManager.hasSystemFeature(PackageManager.FEATURE_MICROPHONE)) {
 
             //create new instance of MediaRecorder

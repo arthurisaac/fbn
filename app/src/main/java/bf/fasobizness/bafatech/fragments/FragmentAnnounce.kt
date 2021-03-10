@@ -1,11 +1,13 @@
 package bf.fasobizness.bafatech.fragments
 
+import android.Manifest
 import android.content.DialogInterface
 import android.content.Intent
-import android.media.AudioManager
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.os.Handler
 import android.provider.Telephony
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,26 +20,36 @@ import bf.fasobizness.bafatech.R
 import bf.fasobizness.bafatech.activities.ActivityFullScreen
 import bf.fasobizness.bafatech.activities.ActivityPhotoList
 import bf.fasobizness.bafatech.activities.annonce.ActivityAnnounceFilter
-import bf.fasobizness.bafatech.activities.annonce.ActivityDetailsAnnonce
 import bf.fasobizness.bafatech.activities.annonce.ActivityUserProfile
 import bf.fasobizness.bafatech.activities.user.messaging.DefaultMessagesActivity
 import bf.fasobizness.bafatech.helper.RetrofitClient
 import bf.fasobizness.bafatech.interfaces.API
 import bf.fasobizness.bafatech.models.Announce.Annonce
 import bf.fasobizness.bafatech.models.MyResponse
+import bf.fasobizness.bafatech.utils.AppUtils
 import bf.fasobizness.bafatech.utils.MySharedManager
+import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.denzcoskun.imageslider.ImageSlider
 import com.denzcoskun.imageslider.interfaces.ItemClickListener
 import com.denzcoskun.imageslider.models.SlideModel
+import com.downloader.OnDownloadListener
+import com.downloader.PRDownloader
+import com.downloader.PRDownloaderConfig
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "id_ann"
@@ -84,13 +96,34 @@ class FragmentAnnounce : Fragment() {
     private lateinit var layout_busy_system: LinearLayout
     private lateinit var layout_ent_offline: LinearLayout
     private lateinit var bottom_buttons: LinearLayout
-    private lateinit var btnPlayAudio : ImageButton
+    private lateinit var btnPlayAudio: ImageButton
+    private lateinit var seek_bar: SeekBar
+    // private lateinit var audioProgress: ProgressBar
+
+    private lateinit var runnable: Runnable
+    private var handler: Handler = Handler()
+    //private val mediaPlayer: MediaPlayer
+    private var pause: Boolean = false
+    private lateinit var audioLayout: LinearLayout
 
     // layout_ent_offline
     private lateinit var fav: String  // layout_ent_offline
     private lateinit var token: String  // layout_ent_offline
     private lateinit var pager: ImageSlider
     private lateinit var api: API
+    private lateinit var audioFile: String
+    private val mediaPlayer = MediaPlayer()
+    private lateinit var lottieAudio: LottieAnimationView
+
+    val MediaPlayer.seconds:Int
+        get() {
+            return this.duration / 100
+        }
+
+    val MediaPlayer.currentSeconds:Int
+        get() {
+            return this.currentPosition/100
+        }
 
     private lateinit var progressBar: ProgressBar
 
@@ -101,8 +134,7 @@ class FragmentAnnounce : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         // return inflater.inflate(R.layout.fragment_announce, container, false)
 
@@ -143,17 +175,27 @@ class FragmentAnnounce : Fragment() {
         ann = rootView.findViewById(R.id.ann)
         layout_busy_system = rootView.findViewById(R.id.layout_busy_system)
         val btn_refresh = rootView.findViewById<Button>(R.id.btn_refresh)
+        btn_refresh.setOnClickListener { getAnnounce(id_ann.toString()) }
         btn_signaler = rootView.findViewById(R.id.signaler_annonce)
         bottom_buttons = rootView.findViewById(R.id.bottom_buttons)
         btnPlayAudio = rootView.findViewById(R.id.btn_play_audio)
+        seek_bar = rootView.findViewById(R.id.seek_bar)
+        // audioProgress = rootView.findViewById(R.id.audioProgress)
 
         see_more_annonce = rootView.findViewById(R.id.see_more_annonce)
+        audioLayout = rootView.findViewById(R.id.audioLayout)
+        audioLayout.visibility = View.GONE
 
         layout_ent_offline.visibility = View.GONE
         ann.visibility = View.GONE
         loading_indicator_ann.visibility = View.VISIBLE
         layout_no_annonce.visibility = View.GONE
         layout_busy_system.visibility = View.GONE
+        ajouterFavori.visibility = View.GONE
+        // audioProgress.visibility = View.GONE
+        lottieAudio = rootView.findViewById(R.id.audio_lottie)
+        lottieAudio.progress = 0.0f
+        lottieAudio.visibility = View.GONE
 
         images = ArrayList()
         imageList = ArrayList()
@@ -182,7 +224,7 @@ class FragmentAnnounce : Fragment() {
     }
 
     private fun getAnnounce(id_ann: String) {
-        if(isAdded) {
+        if (isAdded) {
             layout_ent_offline.visibility = View.GONE
             loading_indicator_ann.visibility = View.VISIBLE
             bottom_buttons.visibility = View.GONE
@@ -221,7 +263,7 @@ class FragmentAnnounce : Fragment() {
     }
 
     private fun populateData(annonce: Annonce) {
-        if(isAdded) {
+        if (isAdded) {
             try {
                 Glide.with(this)
                         .setDefaultRequestOptions(
@@ -238,6 +280,7 @@ class FragmentAnnounce : Fragment() {
             } catch (e: java.lang.Exception) {
                 e.printStackTrace()
             }
+            ajouterFavori.visibility = View.VISIBLE
             if (annonce.texte != null) {
                 txt_text.text = annonce.texte
             }
@@ -369,7 +412,15 @@ class FragmentAnnounce : Fragment() {
             btn_share.setOnClickListener {
                 val sharingIntent = Intent(Intent.ACTION_SEND)
                 sharingIntent.type = "text/plain"
-                val shareBodyText = "Salut, voici une annonce intéressante que je viens de découvrir sur Faso Biz Nèss : ${annonce.titre}\n ${annonce.texte}\n\nPour en savoir plus, clique ici : https://fasobizness.com/annonce/${annonce.id_ann}. \nSi tu n’as pas encore l’application tu peux la télécharger gratuitement sur Playstore : http://bit.ly/AndroidFBN"
+                val shareBodyText = """Salut, voici une annonce intéressante que je viens de découvrir sur Faso Biz Nèss : 
+
+${annonce.titre} 
+                    
+${annonce.texte}
+
+Pour en savoir plus, clique ici : https://fasobizness.com/annonce/${annonce.id_ann}.
+
+Si tu n’as pas encore l’application tu peux la télécharger gratuitement sur Playstore : http://bit.ly/AndroidFBN"""
                 sharingIntent.putExtra(Intent.EXTRA_SUBJECT, titre)
                 sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBodyText)
                 startActivity(Intent.createChooser(sharingIntent, getString(R.string.partager_avec)))
@@ -418,34 +469,164 @@ class FragmentAnnounce : Fragment() {
                 pager.setItemClickListener(object : ItemClickListener {
                     override fun onItemSelected(position: Int) {
                         // val intent = Intent(context, ActivityFullScreen::class.java)
-                        val intent = Intent(context, ActivityPhotoList::class.java)
-                        intent.putStringArrayListExtra("images", images)
-                        intent.putExtra("position", position)
-                        startActivity(intent)
+                        if (images.size > 1) {
+                            val intent = Intent(context, ActivityPhotoList::class.java)
+                            intent.putStringArrayListExtra("images", images)
+                            intent.putExtra("position", position)
+                            startActivity(intent)
+                        } else {
+                            val intent = Intent(context, ActivityFullScreen::class.java)
+                            intent.putStringArrayListExtra("images", images)
+                            intent.putExtra("position", position)
+                            startActivity(intent)
+                        }
                     }
                 })
+                if (annonce.audio != null) {
+                    lottieAudio.visibility = View.VISIBLE
+                    // audioProgress.visibility = View.VISIBLE
+                    // Enabling database for resume support even after the application is killed:
+
+                    // Enabling database for resume support even after the application is killed:
+                    val config = PRDownloaderConfig.newBuilder()
+                            .setDatabaseEnabled(true)
+                            .build()
+                    PRDownloader.initialize(context, config)
+
+                    val uri = Uri.parse(annonce.audio)
+                    val dirPath = AppUtils.getRootDirPath(context) + "/"
+                    //val dirPath = Environment.getExternalStorageDirectory().absolutePath + "/"
+                    Dexter.withContext(context)
+                            .withPermissions(
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                    Manifest.permission.READ_EXTERNAL_STORAGE)
+                            .withListener(object : MultiplePermissionsListener {
+                                override fun onPermissionsChecked(report: MultiplePermissionsReport) {
+                                    if (report.areAllPermissionsGranted()) {
+                                        PRDownloader.download(annonce.audio, dirPath, uri.lastPathSegment)
+                                                .build()
+                                                .setOnStartOrResumeListener { }
+                                                .setOnPauseListener { }
+                                                .setOnCancelListener {}
+                                                .setOnProgressListener {
+                                                    val progressPercent: Long = it.currentBytes * 100 / it.totalBytes
+                                                    // audioProgress.progress = progressPercent.toInt()
+                                                    lottieAudio.progress = progressPercent.toFloat()
+                                                }
+                                                .start(object : OnDownloadListener {
+
+                                                    override fun onDownloadComplete() {
+                                                        audioFile = dirPath + uri.lastPathSegment
+                                                        Log.d("Lien de audio", audioFile)
+                                                        mediaPlayer.setDataSource(audioFile)
+                                                        mediaPlayer.prepare()
+                                                        audioPermission()
+                                                    }
+
+                                                    override fun onError(error: com.downloader.Error?) {
+                                                        //Log.d("audio downloading", error.toString())
+                                                        Toast.makeText(context, R.string.une_erreur_sest_produite, Toast.LENGTH_SHORT).show()
+                                                    }
+                                                })
+                                    }
+                                }
+
+                                override fun onPermissionRationaleShouldBeShown(permissions: List<PermissionRequest>, token: PermissionToken) {
+                                    token.continuePermissionRequest()
+                                }
+                            }).withErrorListener { Toast.makeText(context, "Erreur de permission! ", Toast.LENGTH_SHORT).show() }
+                            .onSameThread()
+                            .check()
+
+
+
+//                    try {
+//                        audioProgress.visibility = View.VISIBLE
+//                        val uri = Uri.parse(annonce.audio)
+//                        val downloadManager = context?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager?
+//                        val request = DownloadManager.Request(uri)
+//                        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
+//                        request.setTitle("Faso Biz Ness")
+//                        request.setDescription("Téléchargement")
+//                        request.allowScanningByMediaScanner()
+//                        //request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+//                        //request.setDestinationInExternalPublicDir("/FasoBizNess", uri.lastPathSegment)
+//                        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, uri.lastPathSegment)
+//                        request.setMimeType("audio/*")
+//                        downloadManager?.enqueue(request)
+//                        audioFile = Environment.getExternalStorageDirectory().absolutePath + "/" + Environment.DIRECTORY_DOWNLOADS + "/" + uri.lastPathSegment
+//                        mediaPlayer.setDataSource(audioFile)
+//                        mediaPlayer.prepare()
+//
+//                        context?.registerReceiver(attachmentDownloadCompleteReceive, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+//                    } catch (e: java.lang.Exception) {
+//                        audioProgress.visibility = View.GONE
+//                        e.printStackTrace()
+//                    }
+                }
             } catch (e: java.lang.Exception) {
                 e.printStackTrace()
             }
         }
-        if (annonce.audio != null) {
-            Log.d("audio url is", annonce.audio)
-            btnPlayAudio.visibility = View.VISIBLE
-            btnPlayAudio.setOnClickListener {
-                val mediaPlayer = MediaPlayer()
-                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC)
-                try {
-                    mediaPlayer.setDataSource(annonce.audio)
-                    mediaPlayer.prepareAsync()
-                    mediaPlayer.setOnPreparedListener{
-                        it.start()
-                    }
-                } catch (e: java.lang.Exception) {
-                    e.printStackTrace()
-                    Toast.makeText(context, ""+ getString(R.string.une_erreur_sest_produite), Toast.LENGTH_SHORT).show()
+    }
+
+//    private var attachmentDownloadCompleteReceive: BroadcastReceiver = object : BroadcastReceiver() {
+//        override fun onReceive(context: Context, intent: Intent) {
+//            val action = intent.action
+//            if (DownloadManager.ACTION_DOWNLOAD_COMPLETE == action) {
+//                audioProgress.visibility = View.GONE
+//                audioPermission()
+//            }
+//        }
+//    }
+
+    fun audioPermission() {
+        btnPlayAudio.visibility = View.VISIBLE
+        audioLayout.visibility = View.VISIBLE
+        lottieAudio.visibility = View.GONE
+        // audioProgress.visibility = View.GONE
+        btnPlayAudio.setOnClickListener {
+            Dexter.withContext(context)
+                    .withPermissions(
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.READ_EXTERNAL_STORAGE)
+                    .withListener(object : MultiplePermissionsListener {
+                        override fun onPermissionsChecked(report: MultiplePermissionsReport) {
+                            if (report.areAllPermissionsGranted()) {
+                                playAudio()
+                            }
+                        }
+
+                        override fun onPermissionRationaleShouldBeShown(permissions: List<PermissionRequest>, token: PermissionToken) {
+                            token.continuePermissionRequest()
+                        }
+                    }).withErrorListener { Toast.makeText(context, "Erreur de permission! ", Toast.LENGTH_SHORT).show() }
+                    .onSameThread()
+                    .check()
+        }
+    }
+
+    fun playAudio() {
+        mediaPlayer.start()
+        seek_bar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
+                if (b) {
+                    mediaPlayer.seekTo(i * 100)
                 }
             }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+            }
+        })
+        seek_bar.max = mediaPlayer.seconds
+        runnable = Runnable {
+            seek_bar.progress = mediaPlayer.currentSeconds
+            handler.postDelayed(runnable, 100)
         }
+        handler.postDelayed(runnable, 100)
     }
 
     private fun createDiscussion(receiver_id: String, id_ann: String) {

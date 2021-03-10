@@ -95,8 +95,8 @@ class ActivityAnnonceEditer : AppCompatActivity() {
         )
         call.enqueue(object : Callback<MyResponse?> {
             override fun onResponse(call: Call<MyResponse?>, response: Response<MyResponse?>) {
-                btn_publish_offer!!.isEnabled = true
-                btn_publish_offer!!.setText(R.string.publier)
+                btn_publish_offer.isEnabled = true
+                btn_publish_offer.setText(R.string.publier)
                 progressDoalog.dismiss()
                 Log.d("Activity", response.toString())
                 if (response.isSuccessful) {

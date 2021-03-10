@@ -144,18 +144,19 @@ class ActivityDetailsRecrutement : AppCompatActivity(), OnItemListener {
                 startActivity(browserIntent)
             } catch (e: Exception) {
                 e.printStackTrace()
-                val uri = Uri.parse(nom)
-                Toast.makeText(this, R.string.telecharement_en_cours, Toast.LENGTH_SHORT).show()
-                val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
-                val request = DownloadManager.Request(uri)
-                request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
-                request.setTitle("Faso Biz Ness")
-                request.setDescription("Téléchargement")
-                request.allowScanningByMediaScanner()
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "faso_biz_ness_" + System.currentTimeMillis() + ".jpg")
-                request.setMimeType("*/*")
-                downloadManager.enqueue(request)
+                Toast.makeText(this, R.string.une_erreur_sest_produite, Toast.LENGTH_SHORT).show()
+//                val uri = Uri.parse(nom)
+//                Toast.makeText(this, R.string.telecharement_en_cours, Toast.LENGTH_SHORT).show()
+//                val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
+//                val request = DownloadManager.Request(uri)
+//                request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
+//                request.setTitle("Faso Biz Ness")
+//                request.setDescription("Téléchargement")
+//                request.allowScanningByMediaScanner()
+//                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+//                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "faso_biz_ness_" + System.currentTimeMillis() + ".jpg")
+//                request.setMimeType("*/*")
+//                downloadManager.enqueue(request)
             }
         } else {
             val intent = Intent(this, ActivityFullScreen::class.java)

@@ -19,6 +19,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
         <activity
+            android:name=".activities.ActivityAdvices"
+            android:theme="@style/AppTheme.Main" />
+        <activity
             android:name=".activities.AdvertisingActivity"
             android:theme="@style/AppTheme.Main" />
         <activity android:name=".activities.ActivityPhotoList" />

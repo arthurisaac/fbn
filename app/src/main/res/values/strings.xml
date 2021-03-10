@@ -254,7 +254,7 @@
     <string name="date_de_naissance">Date de naissance</string>
     <string name="invit_les_amis">Inviter les amis</string>
     <string name="pour_vous_inscrire_rendez_vous_dans_la_barre_de_menu_de_navigation_lat_rale_et_cliquez_sur_connectez_vous_ici_puis_sur_la_touche_s_inscrire_ici_situ_e_vers_le_bas_de_la_page_de_connexion_vous_choisissez_entre_l_option_particulier_ou_entreprise_si_vous_tes_un_commer_ant_et_vous_remplissez_les_diff_rents_champs"><![CDATA[Pour vous inscrire, rendez-vous dans la barre de menu de navigation latérale, et cliquez sur « Connectez-vous ici », puis sur la touche « S’inscrire ici », située vers le bas de la page de connexion. Vous choisissez entre l’option Particulier ou Entreprise (si vous êtes un commerçant), et vous remplissez les différents champs.]]></string>
-    <string name="en_page_d_accueil_de_l_application_cliquez_sur_la_touche_publier_annonce_situ_e_vers_le_bas_de_votre_cran_puis_remplissez_les_diff_rents_champs_et_cliquez_sur_publier_nb_pour_publier_vos_offres_vous_devez_tre_inscrit_sur_faso_biz_n_ss_et_connect_votre_compte"><![CDATA[En page d’accueil de l’application, cliquez sur la touche « Publier annonce » située vers le bas de votre écran. Puis remplissez les différents champs, et cliquez sur Publier. NB :pour publier vos offres, vous devez être inscrit sur Faso Biz Nèss et connecté à votre compte.]]></string>
+    <string name="en_page_d_accueil_de_l_application_cliquez_sur_la_touche_publier_annonce_situ_e_vers_le_bas_de_votre_cran_puis_remplissez_les_diff_rents_champs_et_cliquez_sur_publier_nb_pour_publier_vos_offres_vous_devez_tre_inscrit_sur_faso_biz_n_ss_et_connect_votre_compte"><![CDATA[NB :pour publier vos offres, vous devez être inscrit sur Faso Biz Nèss et connecté à votre compte. \nEn page d’accueil de l’application, cliquez sur la touche « Publier annonce » située vers le bas de votre écran. Puis remplissez les différents champs, et cliquez sur Publier.]]></string>
     <string name="conseils_de_securite">Conseils de sécurité</string>
     <string name="comment_creer_une_offre_irresistible">Comment créer une offre irrésistible ?</string>
     <string name="application_en_maintenance">Application en maintenance</string>
@@ -266,4 +266,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="suivant">Suivant</string>
     <string name="page_suivante">Page suivante</string>
+    <string name="messages">Messages</string>
+    <string name="le_genre_est_requis">Le genre est requis</string>
 </resources>

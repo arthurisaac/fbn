@@ -229,7 +229,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="70dp"
         android:contentDescription="@string/haut_de_page"
         android:src="@drawable/ic_baseline_arrow_upward_24" />
 
@@ -296,7 +296,7 @@
                     android:id="@+id/tab_chat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/discussions"
+                    android:text="@string/messages"
                     android:textAlignment="center"
                     android:textSize="@dimen/tab_text_size"
                     app:drawableTopCompat="@drawable/chat_bubble" />

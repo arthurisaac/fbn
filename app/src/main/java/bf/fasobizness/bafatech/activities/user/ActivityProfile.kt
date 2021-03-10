@@ -66,7 +66,8 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
     private lateinit var prenom: TextInputLayout
     private lateinit var sectActivite: TextInputLayout
     // private lateinit var dateNaissance: TextInputLayout
-    private lateinit var dateNaissance: EditText
+    private lateinit var dateNaissance: br.com.sapereaude.maskedEditText.MaskedEditText
+    private lateinit var dateNaissanceTI: TextInputLayout
     private lateinit var photoProfile: CircleImageView
     private lateinit var sharedManager: MySharedManager
     private lateinit var user: String
@@ -131,10 +132,11 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
         progressBar = findViewById(R.id.progress_bar_photo)
         progressBarHead = findViewById(R.id.progress_bar_head)
         dateNaissanceLayout = findViewById(R.id.dateNaissanceLayout)
+        dateNaissanceTI = findViewById(R.id.dateNaissanceTI)
         genreLayout = findViewById(R.id.genreLayout)
         txtGenreErreur = findViewById(R.id.txt_genre_erreur)
         spGenre = findViewById(R.id.sp_genre)
-        spGenre.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, resources.getStringArray(R.array.genre))
+        spGenre.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, resources.getStringArray(R.array.genre_without_label))
 
         photoProfile.setOnClickListener { requestMultiplePermissions() }
 
@@ -149,11 +151,11 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
         btnUpdateProfile = findViewById(R.id.btn_update_profil)
         btnUpdateProfile.setOnClickListener {
             if (type == "entreprise") {
-                if (checkEmail() or checkSect() or checkNom()) {
+                if (checkEmail() && checkSect() && checkNom() && checkTel()) {
                      updateProfile()
                 }
             } else {
-                if (checkUsername() && checkNom() && checkEmail() && checkDateNaiss() && checkPrenom()) {
+                if (checkUsername() && checkNom() && checkEmail() && checkDateNaiss() && checkPrenom() && checkTel() && checkGenreInput()) {
                     updateProfile()
                 }
             }
@@ -173,7 +175,6 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
                 sectActivite.visibility = View.GONE
             }*/
         }
-        Toast.makeText(this@ActivityProfile, "" + type, Toast.LENGTH_SHORT).show()
 
         api = RetrofitClient.getClient().create(API::class.java)
         getUserProfile()
@@ -185,10 +186,10 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
             updateDate()
         }
 
-        dateNaissance.setOnClickListener {
+        /*dateNaissance.setOnClickListener {
             DatePickerDialog(this@ActivityProfile, date, myCalendar[Calendar.YEAR], myCalendar[Calendar.MONTH],
                     myCalendar[Calendar.DAY_OF_MONTH]).show()
-        }
+        }*/
 
         val btnRefresh = findViewById<Button>(R.id.btn_refresh)
         btnRefresh.setOnClickListener { getUserProfile() }
@@ -219,13 +220,16 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
                         if (user.genre != null) {
                             spGenre.setSelection(arrayAdapter.getPosition(user.genre))
                         }
-                        Toast.makeText(this@ActivityProfile, "" + user.type, Toast.LENGTH_SHORT).show()
                         if (user.type == "particulier" || user.type == "utilisateur") {
                             sect.visibility = View.GONE
+                            spGenre.visibility = View.VISIBLE
                         } else {
                             pre.visibility = View.GONE
                             sect.visibility = View.GONE
                             us.visibility = View.GONE
+                            genreLayout.visibility = View.GONE
+                            sect.visibility = View.VISIBLE
+                            dateNaissanceLayout.visibility = View.GONE
                         }
                         sharedManager.username = user.username
                         sharedManager.email = user.email
@@ -249,6 +253,7 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
                     layoutBusy.visibility = View.VISIBLE
                     layoutProfile.visibility = View.GONE
                     Toast.makeText(this@ActivityProfile, response.message(), Toast.LENGTH_SHORT).show()
+                    disconnect()
                 }
             }
 
@@ -396,7 +401,8 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
         val call = api.uploadPhotos(user, parts)
         call.enqueue(object : Callback<ResponseBody?> {
             override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
-                Log.d("activity", response.toString())
+                //Log.d("activity", response.toString())
+                sharedManager.photo = uri.path
                 Glide.with(this@ActivityProfile)
                         .setDefaultRequestOptions(
                                 RequestOptions()
@@ -437,6 +443,10 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
         val txtnom = nom.editText?.text.toString().trim()
         val txtprenom = prenom.editText?.text.toString().trim()
         val txtsectActivite = sectActivite.editText?.text.toString().trim()
+        var txtGenre = ""
+        if (spGenre.selectedItem != null) {
+            txtGenre = spGenre.selectedItem.toString()
+        }
         // val txtDateNaissance: String = dateNaissance.editText?.text.toString()
         val txtDateNaissance: String = dateNaissance.text.toString()
         val call = api.updateUser(
@@ -447,7 +457,7 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
                 txtprenom,
                 txtsectActivite,
                 txtDateNaissance,
-                spGenre.selectedItem.toString() + "",
+                txtGenre,
                 user,
                 "Bearer " + sharedManager.token
         )
@@ -628,10 +638,16 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
     private fun checkDateNaiss(): Boolean {
         val txtDateNaiss = dateNaissance.text.toString().trim()
         return if (txtDateNaiss.isEmpty()) {
-            dateNaissance.error = getString(R.string.date_de_naissance_requise)
+            // dateNaissance.error = getString(R.string.date_de_naissance_requise)
+            dateNaissanceTI.error = getString(R.string.date_de_naissance_requise)
+            false
+        } else if (txtDateNaiss == "jj/mm/aaaa") {
+            // dateNaissance.error = getString(R.string.date_de_naissance_requise)
+            dateNaissanceTI.error = getString(R.string.date_de_naissance_requise)
             false
         } else {
-            sectActivite.error = null
+            // dateNaissance.error = null
+            dateNaissanceTI.error = null
             true
         }
     }
@@ -651,6 +667,17 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
                 txtGenreErreur.visibility = View.GONE
                 true
             }
+        }
+    }
+
+    private fun checkTel(): Boolean {
+        val txtTel = telephone.editText?.text.toString().trim()
+        return if (txtTel.isEmpty()) {
+            telephone.error = getString(R.string.numero_de_telephone_requis)
+            false
+        } else {
+            telephone.error = null
+            true
         }
     }
 

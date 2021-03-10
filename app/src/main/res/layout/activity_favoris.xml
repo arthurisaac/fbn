@@ -7,8 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".activities.annonce.ActivityFavorite">
 
-    <include layout="@layout/layout_offline" />
-
     <include layout="@layout/layout_busy_system" />
 
     <com.google.android.material.appbar.AppBarLayout
@@ -127,5 +125,7 @@
             android:visibility="visible" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <include layout="@layout/layout_offline" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

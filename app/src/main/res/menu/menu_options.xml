@@ -19,8 +19,7 @@
         android:id="@+id/nav_favori"
         android:icon="@drawable/ic_star_white"
         android:orderInCategory="100"
-        android:title="@string/favoris"
-        app:showAsAction="always|withText" />
+        app:showAsAction="ifRoom|withText" />
 
 
     <!--<item

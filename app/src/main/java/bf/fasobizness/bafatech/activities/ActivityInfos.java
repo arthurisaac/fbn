@@ -73,6 +73,10 @@ public class ActivityInfos extends AppCompatActivity {
 
         RelativeLayout btn_facebook_like = findViewById(R.id.btn_facebook_like);
 
+        RelativeLayout btn_conseil_annonce = findViewById(R.id.conseilAnnonce);
+
+        btn_conseil_annonce.setOnClickListener(v -> startActivity(new Intent(this, ActivityAdvices.class)));
+
         btn_sms.setOnClickListener(v -> {
             try {
                 Uri uri = Uri.parse("smsto:+22666691915");
@@ -124,7 +128,7 @@ public class ActivityInfos extends AppCompatActivity {
             }
         });
 
-        btn_email.setOnClickListener( v -> {
+        btn_email.setOnClickListener(v -> {
             Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                     "mailto", "contact@fasobizness.com", null));
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
@@ -133,7 +137,7 @@ public class ActivityInfos extends AppCompatActivity {
         });
 
         RelativeLayout conseilSecurite = findViewById(R.id.conseilSecurite);
-        conseilSecurite.setOnClickListener(v-> {
+        conseilSecurite.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://fasobizness.com/uploads/CONSEILS DE SECURITE VENTE ET ACHATS EN LIGNE SUR FASO BIZ NESS.pdf"));
             startActivity(intent);
         });

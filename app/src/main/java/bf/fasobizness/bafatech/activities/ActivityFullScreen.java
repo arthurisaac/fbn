@@ -116,8 +116,13 @@ public class ActivityFullScreen extends AppCompatActivity implements OnItemListe
         this.downloadUrl = images.get(viewPager.getCurrentItem());
         this.downloadFileName = downloadUrl.substring(downloadUrl.lastIndexOf('/'));//Create file name by picking download file name from URL
         try {
+
+            File direct = new File(Environment.getExternalStorageDirectory() + "/FasoBizNess");
+            if (!direct.exists()) {
+                direct.mkdirs();
+            }
+
             Uri uri = Uri.parse(downloadUrl);
-            Toast.makeText(this, R.string.telecharement_en_cours, Toast.LENGTH_SHORT).show();
             DownloadManager downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
             DownloadManager.Request request = new DownloadManager.Request(uri);
             request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
@@ -125,13 +130,14 @@ public class ActivityFullScreen extends AppCompatActivity implements OnItemListe
             request.setDescription("Téléchargement");
             request.allowScanningByMediaScanner();
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-            request.setDestinationInExternalPublicDir("/FasoBizNess", uri.getLastPathSegment());
-            request.setMimeType("*/*");
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES, "/FasoBizNess/" + uri.getLastPathSegment());
+            request.setMimeType("image/*");
             if (downloadManager != null) {
                 downloadManager.enqueue(request);
             }
         } catch (Exception e) {
-            new DownloadingTask().execute();
+            //new DownloadingTask().execute();
+            e.printStackTrace();
         }
 
     }
@@ -175,7 +181,7 @@ public class ActivityFullScreen extends AppCompatActivity implements OnItemListe
                     ContextThemeWrapper ctw = new ContextThemeWrapper(ActivityFullScreen.this, R.style.AppTheme);
                     final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ctw);
                     alertDialogBuilder.setTitle("Faso Biz Ness");
-                    alertDialogBuilder.setMessage("Document Downloaded Successfully ");
+                    alertDialogBuilder.setMessage("Image téléchargée");
                     alertDialogBuilder.setCancelable(false);
                     alertDialogBuilder.setPositiveButton("ok", (dialog, id) -> {
 

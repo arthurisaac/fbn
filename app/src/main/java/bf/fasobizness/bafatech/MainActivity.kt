@@ -210,7 +210,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val username = sharedManager.username
         val email = sharedManager.email
-        val photo = sharedManager.photo
 
         btnPromouvoir.setOnClickListener {
             if (user.isNotEmpty()) {
@@ -229,6 +228,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     txtLoggedEmail.text = email
                     txtLoggedEmail.visibility = View.VISIBLE
                     txtLoggedUsername.text = username
+                    val photo = sharedManager.photo
                     navPost.isVisible = true
                     Glide.with(this@MainActivity)
                             .setDefaultRequestOptions(

@@ -222,7 +222,6 @@
                             android:gravity="top"
                             android:hint="@string/description_de_l_annonce"
                             android:inputType="textMultiLine"
-                            android:maxLength="1000"
                             android:maxLines="8"
                             android:textColorLink="@color/colorPrimaryDark"
                             android:textSize="14sp" />
@@ -240,30 +239,31 @@
                         android:id="@+id/btn_description_audio"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:drawableStart="@drawable/ic_baseline_mic"
-                        android:drawableTint="@color/colorPrimaryDark"
                         android:layout_marginTop="11dp"
                         android:layout_marginBottom="10dp"
+                        android:layout_weight="1"
                         android:background="@drawable/frame_primary_tiny"
+                        android:drawableStart="@drawable/ic_baseline_mic"
+                        android:drawableTint="@color/colorPrimaryDark"
                         android:text="@string/ajouter_description_audio"
                         android:textAllCaps="false"
-                        android:textColor="@color/colorPrimaryDark" />
+                        android:textColor="@color/colorPrimaryDark"
+                        android:visibility="visible" />
 
                     <ImageView
                         android:id="@+id/btn_supprimer_audio"
                         android:layout_width="30dp"
-                        android:scaleType="fitXY"
                         android:layout_height="30dp"
-                        android:layout_weight="0"
-                        android:src="@drawable/ic_delete_forever_accent_24dp"
-                        android:drawableTint="@color/design_default_color_error"
                         android:layout_marginTop="21dp"
                         android:layout_marginBottom="10dp"
+                        android:layout_weight="0"
+                        android:contentDescription="@string/supprimer_description_audio"
+                        android:drawableTint="@color/design_default_color_error"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_delete_forever_accent_24dp"
                         android:textAllCaps="false"
                         android:textColor="@color/colorPrimaryDark"
-                        android:visibility="gone"
-                        android:contentDescription="@string/supprimer_description_audio" />
+                        android:visibility="gone" />
 
                 </LinearLayout>
 

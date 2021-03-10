@@ -304,10 +304,7 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
                 }
             }
         }
-
-
     }
-
 
     private fun showChooser() {
         ImagePicker.with(this)
@@ -384,10 +381,10 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
                     tilDescAnnonce.error = getString(R.string.description_annonce_requis)
                     false
                 }
-                descInput.length > 600 -> {
+                /*descInput.length > 1000 -> {
                     tilDescAnnonce.error = getString(R.string.description_de_lannonce_trop_longue)
                     false
-                }
+                }*/
                 else -> {
                     tilDescAnnonce.error = null
                     true

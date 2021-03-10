@@ -62,12 +62,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/en_page_d_accueil_de_l_application_cliquez_sur_la_touche_publier_annonce_situ_e_vers_le_bas_de_votre_cran_puis_remplissez_les_diff_rents_champs_et_cliquez_sur_publier_nb_pour_publier_vos_offres_vous_devez_tre_inscrit_sur_faso_biz_n_ss_et_connect_votre_compte" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:fontFamily="@font/raleway_medium"
-                android:text="@string/remarque_pour_publier_une_annonce_il_faudra_tre_connect_au_pr_alable" />
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:fontFamily="@font/raleway_medium"-->
+<!--                android:text="@string/remarque_pour_publier_une_annonce_il_faudra_tre_connect_au_pr_alable" />-->
 
         </LinearLayout>
 

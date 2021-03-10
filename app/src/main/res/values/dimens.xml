@@ -7,5 +7,5 @@
     <dimen name="grid_expected_size">120dp</dimen>
     <dimen name="chargement_en_cours_message_size">30sp</dimen>
     <dimen name="text_size">17sp</dimen>
-    <dimen name="tab_text_size">14sp</dimen>
+    <dimen name="tab_text_size">12sp</dimen>
 </resources>

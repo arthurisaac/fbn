@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:mask="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linear_sign_up_base"
     android:layout_width="match_parent"
@@ -205,14 +206,26 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <EditText
-                            android:id="@+id/dateNaissance"
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/dateNaissanceTI"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:clickable="true"
-                            android:editable="false"
-                            android:inputType="text"
-                            android:hint="@string/date_de_naissance" />
+                            android:hint="@string/date_de_naissance"
+                            app:errorEnabled="true"
+                            app:hintEnabled="true">
+
+                            <br.com.sapereaude.maskedEditText.MaskedEditText
+                                android:id="@+id/dateNaissance"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="jjmmaaaa"
+                                android:importantForAutofill="no"
+                                android:inputType="date"
+                                app:keep_hint="true"
+                                mask:allowed_chars="1234567890"
+                                mask:mask="##/##/####" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
 
                     </RelativeLayout>
 
@@ -220,14 +233,13 @@
                         android:id="@+id/genreLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:layout_marginBottom="20dp">
 
                         <Spinner
                             android:id="@+id/sp_genre"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
                             android:entries="@array/genre" />
 
                         <View
@@ -238,8 +250,9 @@
                         <TextView
                             android:id="@+id/txt_genre_erreur"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:textColor="@color/design_default_color_error"
+                            android:text="@string/le_genre_est_requis"
                             android:visibility="gone" />
 
                     </LinearLayout>

@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.SearchView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -103,70 +104,6 @@ class ActivityRecrutements : AppCompatActivity(), OnItemListener {
         recruits
     }
 
-    /*private void refresh() {
-        mShimmerViewContainer.setVisibility(View.VISIBLE);
-        mRecrutementAdapter.clearAll();
-        mRecrutements.clear();
-        mRecrutementAdapter.notifyDataSetChanged();
-
-        jsonParse();
-    }*/
-    /*private void jsonParse() {
-              offline_layout.setVisibility(View.GONE);
-              mShimmerViewContainer.setVisibility(View.VISIBLE);
-              API api = RetrofitClient.getClient().create(API.class);
-              Call<Recruit> call = api.getRecruits();
-              call.enqueue(new Callback<Recruit>() {
-                  @Override
-                  public void onResponse(@NonNull Call<Recruit> call, @NonNull Response<Recruit> response) {
-                      mShimmerViewContainer.setVisibility(View.GONE);
-                      mSwipeRefreshLayout.setRefreshing(false);
-                      Log.d(TAG, response.toString());
-                      Recruit recruit = response.body();
-                      List<Recruit.Recrutement> recrutements = null;
-                      if (recruit != null) {
-                          recrutements = recruit.recrutements;
-                      }
-                      if (recrutements != null) {
-                          mRecrutements.addAll(recrutements);
-      
-                          for (Recruit.Recrutement recrutement: recrutements) {
-                              databaseManager.insertRecrutement(
-                                      recrutement.getNom_ent(),
-                                      recrutement.getDomaine(),
-                                      recrutement.getDescription(),
-                                      recrutement.getDesc(),
-                                      recrutement.getDate_pub(),
-                                      recrutement.getDate_fin(),
-                                      recrutement.getHeure_fin(),
-                                      recrutement.getNom_r(),
-                                      recrutement.getVue(),
-                                      recrutement.getLien(),
-                                      recrutement.getShare()
-                              );
-      
-                              for (Recruit.Recrutement.Affiche affiche: recrutement.affiches)
-                              databaseManager.insertRecruitAttachment(
-                                      affiche.getNom(),
-                                      affiche.getThumbnail()
-                              );
-                          }
-                          databaseManager.close();
-                      }
-                      mRecrutementAdapter.notifyDataSetChanged();
-                  }
-      
-                  @Override
-                  public void onFailure(@NonNull Call<Recruit> call, @NonNull Throwable t) {
-                      mShimmerViewContainer.setVisibility(View.GONE);
-                      mSwipeRefreshLayout.setRefreshing(false);
-                      offline_layout.setVisibility(View.VISIBLE);
-                      Log.d(TAG, t.toString());
-                  }
-              });
-      
-          }*/
-
     private val recruits: Unit
         get() {
             // val recrutementList = databaseManager!!.recruits
@@ -245,6 +182,28 @@ class ActivityRecrutements : AppCompatActivity(), OnItemListener {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_recruit, menu)
+
+        val item = menu.findItem(R.id.nav_recherche)
+        val searchView = item.actionView as SearchView
+        searchView.queryHint = getString(R.string.rechercher_dans_espace_emplois)
+        searchView.maxWidth = Int.MAX_VALUE
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                mRecrutementAdapter.filter.filter(query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                mRecrutementAdapter.filter.filter(newText)
+
+                // TODO
+                /*if (mAnnonceAdapter.getItemCount() == 0) {
+                    layout_no_annonce.setVisibility(View.VISIBLE);
+                } else {
+                    layout_no_annonce.setVisibility(View.GONE);
+                }*/return false
+            }
+        })
         return true
     }
 

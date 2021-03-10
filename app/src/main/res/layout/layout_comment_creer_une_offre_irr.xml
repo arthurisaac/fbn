@@ -15,6 +15,7 @@
         app:expansion_toggleOnClick="true">
 
         <RelativeLayout
+            android:id="@+id/conseilAnnonce"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@android:color/white"
@@ -43,7 +44,7 @@
 
     </com.github.florent37.expansionpanel.ExpansionHeader>
 
-    <com.github.florent37.expansionpanel.ExpansionLayout
+    <!--<com.github.florent37.expansionpanel.ExpansionLayout
         android:id="@+id/expansionLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,5 +65,5 @@
 
         </LinearLayout>
 
-    </com.github.florent37.expansionpanel.ExpansionLayout>
+    </com.github.florent37.expansionpanel.ExpansionLayout>-->
 </LinearLayout>

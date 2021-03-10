@@ -12,6 +12,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -60,6 +61,8 @@ class ActivityAnnounceEditImages : AppCompatActivity(), OnItemListener, UploadCa
     private lateinit var no_picture: LinearLayout
     private lateinit var progressDoalog: ProgressDialog
     private lateinit var illustrationInterface: IllustrationInterface
+    private lateinit var loadingIndicatorAnn: LinearLayout
+    private lateinit var progressBar: ProgressBar
 
     private fun getFile(context: Context, uri: Uri): File? {
         val path = PathUtils.getPath(context, uri)
@@ -77,7 +80,6 @@ class ActivityAnnounceEditImages : AppCompatActivity(), OnItemListener, UploadCa
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_annonce_edit_photos)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -91,6 +93,9 @@ class ActivityAnnounceEditImages : AppCompatActivity(), OnItemListener, UploadCa
         no_picture.setOnClickListener { requestMultiplePermissions() }
 
         illustrationInterface = RetrofitClient.getClient().create(IllustrationInterface::class.java)
+        loadingIndicatorAnn = findViewById(R.id.loading_indicator_ann)
+        loadingIndicatorAnn.visibility = View.GONE
+        progressBar = findViewById(R.id.progress_bar)
 
         images = ArrayList()
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview_photos)
@@ -104,13 +109,11 @@ class ActivityAnnounceEditImages : AppCompatActivity(), OnItemListener, UploadCa
         val extras = intent
         val annonce = extras.getSerializableExtra("annonce") as Annonce
 
-        val arrayList: List<Illustration>
-        arrayList = annonce.illustrations
+        val arrayList: List<Illustration> = annonce.illustrations
         illustration.addAll(arrayList)
         adapter.notifyDataSetChanged()
         idAnnonce = annonce.id_ann
         countPictures()
-
     }
 
     private fun countPictures() {
@@ -123,12 +126,15 @@ class ActivityAnnounceEditImages : AppCompatActivity(), OnItemListener, UploadCa
 
     private fun getAllPictures() {
         images.clear()
+        adapter.clearAll()
         adapter.notifyDataSetChanged()
+        loadingIndicatorAnn.visibility = View.VISIBLE
         if (idAnnonce.isNotEmpty()) {
             val illustrationInterface = RetrofitClient.getClient().create(IllustrationInterface::class.java)
             val call = illustrationInterface.getIllustrations(idAnnonce)
             call.enqueue(object : Callback<Annonce?> {
                 override fun onResponse(call: Call<Annonce?>, response: Response<Annonce?>) {
+                    loadingIndicatorAnn.visibility = View.GONE
                     if (response.isSuccessful) {
                         val annonce = response.body()
                         var arrayList: List<Illustration>? = null
@@ -146,6 +152,7 @@ class ActivityAnnounceEditImages : AppCompatActivity(), OnItemListener, UploadCa
                 }
 
                 override fun onFailure(call: Call<Annonce?>, t: Throwable) {
+                    loadingIndicatorAnn.visibility = View.GONE
                     Toast.makeText(this@ActivityAnnounceEditImages, R.string.pas_d_acces_internet, Toast.LENGTH_SHORT).show()
                 }
             })
@@ -169,6 +176,7 @@ class ActivityAnnounceEditImages : AppCompatActivity(), OnItemListener, UploadCa
         progressDoalog = ProgressDialog(this)
         progressDoalog.setTitle(R.string.chargement_en_cours)
         progressDoalog.show()
+        loadingIndicatorAnn.visibility = View.VISIBLE
         val parts: MutableList<MultipartBody.Part> = ArrayList()
         for (i in images.indices) {
             parts.add(prepareFilePart("image$i", images[i]))
@@ -179,9 +187,9 @@ class ActivityAnnounceEditImages : AppCompatActivity(), OnItemListener, UploadCa
         call.enqueue(object : Callback<ResponseBody?> {
             override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
                 Log.d(tag, response.toString())
+                loadingIndicatorAnn.visibility = View.GONE
+                progressDoalog.dismiss()
                 if (response.isSuccessful) {
-                    progressDoalog.dismiss()
-                    Toast.makeText(this@ActivityAnnounceEditImages, R.string.succes, Toast.LENGTH_SHORT).show()
                     getAllPictures()
                 } else {
                     Toast.makeText(this@ActivityAnnounceEditImages, R.string.une_erreur_sest_produite, Toast.LENGTH_SHORT).show()
@@ -190,6 +198,7 @@ class ActivityAnnounceEditImages : AppCompatActivity(), OnItemListener, UploadCa
 
             override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
                 progressDoalog.dismiss()
+                loadingIndicatorAnn.visibility = View.VISIBLE
                 Toast.makeText(this@ActivityAnnounceEditImages, R.string.pas_d_acces_internet, Toast.LENGTH_SHORT).show()
             }
         })
@@ -198,15 +207,16 @@ class ActivityAnnounceEditImages : AppCompatActivity(), OnItemListener, UploadCa
     private fun showChooser() {
         ImagePicker.with(this)
                 .setFolderMode(true)
-                .setFolderTitle("Album")
+                .setFolderTitle("Photos")
                 .setRootDirectoryName(Config.ROOT_DIR_DCIM)
-                .setDirectoryName("Image Picker")
+                .setDirectoryName("Faso Biz Ness")
                 .setMultipleMode(true)
                 .setShowNumberIndicator(true)
                 .setMaxSize(10)
                 .setLimitMessage("Vous pouvez selectionner 10 images")
                 .setSelectedImages(images)
                 .setRequestCode(100)
+                .setShowCamera(false)
                 .start()
     }
 
@@ -306,14 +316,16 @@ class ActivityAnnounceEditImages : AppCompatActivity(), OnItemListener, UploadCa
     }
 
     private fun delete(ids: String) {
-        Log.d(tag, ids)
+        progressBar.visibility = View.VISIBLE
         val call = illustrationInterface.deleteIllustrations(ids)
         call.enqueue(object : Callback<MyResponse?> {
             override fun onResponse(call: Call<MyResponse?>, response: Response<MyResponse?>) {
+                progressBar.visibility = View.GONE
                 Log.d(tag, response.toString())
             }
 
             override fun onFailure(call: Call<MyResponse?>, t: Throwable) {
+                progressBar.visibility = View.VISIBLE
                 Log.d(tag, t.toString())
             }
         })

@@ -73,11 +73,15 @@ public class IllustrationEditAdapter extends RecyclerView.Adapter<IllustrationEd
         return mIllustrations.size();
     }
 
+    public void clearAll() {
+        mIllustrations.clear();
+    }
+
     public ArrayList<Announce.Annonce.Illustration> getChecked() {
         return checked;
     }
 
-    class IllustrationHolder extends RecyclerView.ViewHolder {
+    static class IllustrationHolder extends RecyclerView.ViewHolder {
         private final ImageView illView;
         private final CheckBox cb_ill;
 

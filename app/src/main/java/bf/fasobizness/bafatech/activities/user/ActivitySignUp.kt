@@ -1,8 +1,6 @@
 package bf.fasobizness.bafatech.activities.user
 
 import android.Manifest
-import android.app.DatePickerDialog
-import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -21,7 +19,6 @@ import bf.fasobizness.bafatech.helper.RetrofitClient
 import bf.fasobizness.bafatech.interfaces.API
 import bf.fasobizness.bafatech.interfaces.UploadCallbacks
 import bf.fasobizness.bafatech.models.User
-import bf.fasobizness.bafatech.utils.FileCompressingUtil
 import bf.fasobizness.bafatech.utils.MySharedManager
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
@@ -47,9 +44,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
-import java.text.SimpleDateFormat
 import java.util.*
-
 
 class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
     private val tag = "ActivityProfile"
@@ -62,19 +57,20 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
     private lateinit var sectActivite: TextInputLayout
     private lateinit var mdp: TextInputLayout
     private lateinit var confirm: TextInputLayout
-    private lateinit var dateNaissance: EditText
+    private lateinit var dateNaissance: br.com.sapereaude.maskedEditText.MaskedEditText
+    private lateinit var dateNaissanceTI: TextInputLayout
     private lateinit var sharedManager: MySharedManager
     private lateinit var requestQueue: RequestQueue
-    private lateinit var linear_sign_up_base: LinearLayout
+    private lateinit var linearSignUpBase: LinearLayout
     private lateinit var dateNaissanceLayout: RelativeLayout
     private lateinit var genreLayout: LinearLayout
     private lateinit var txtGenreErreur: TextView
 
     private lateinit var type: String
-    private lateinit var btn_sign_up: Button
+    private lateinit var btnSignUp: Button
     private var api: API = RetrofitClient.getClient().create(API::class.java)
     private var images: ArrayList<Image> = ArrayList()
-    private val myCalendar = Calendar.getInstance()
+    // private val myCalendar = Calendar.getInstance()
 
     private lateinit var spGenre: Spinner
 
@@ -82,7 +78,7 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
-        val toolbar: Toolbar = findViewById(bf.fasobizness.bafatech.R.id.toolbar)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.title = "Inscription"
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -105,30 +101,33 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
         mdp = findViewById(R.id.password)
         confirm = findViewById(R.id.passwordConfirm)
         dateNaissance = findViewById(R.id.dateNaissance)
+        dateNaissanceTI = findViewById(R.id.dateNaissanceTI)
         genreLayout = findViewById(R.id.genreLayout)
         txtGenreErreur = findViewById(R.id.txt_genre_erreur)
-        val date = OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+
+        /*val date = OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
             myCalendar[Calendar.YEAR] = year
             myCalendar[Calendar.MONTH] = monthOfYear
             myCalendar[Calendar.DAY_OF_MONTH] = dayOfMonth
             updateDate()
-        }
+        }*/
 
-        dateNaissance.setOnClickListener {
+        /*dateNaissance.setOnClickListener {
             DatePickerDialog(this@ActivitySignUp, date, myCalendar[Calendar.YEAR], myCalendar[Calendar.MONTH],
                     myCalendar[Calendar.DAY_OF_MONTH]).show()
-        }
+        }*/
+        // dateNaissance.addTextChangedListener(textWatcher)
 
-        btn_sign_up = findViewById(R.id.btn_sign_up)
+        btnSignUp = findViewById(R.id.btn_sign_up)
         sharedManager = MySharedManager(this)
 
         requestQueue = Volley.newRequestQueue(this)
-        linear_sign_up_base = findViewById(R.id.linear_sign_up_base)
+        linearSignUpBase = findViewById(R.id.linear_sign_up_base)
         dateNaissanceLayout = findViewById(R.id.dateNaissanceLayout)
-        dateNaissanceLayout.setOnClickListener {
+        /*dateNaissanceLayout.setOnClickListener {
             DatePickerDialog(this@ActivitySignUp, date, myCalendar[Calendar.YEAR], myCalendar[Calendar.MONTH],
                     myCalendar[Calendar.DAY_OF_MONTH]).show()
-        }
+        }*/
 
         val extras = intent
         type = extras.getStringExtra("type").toString()
@@ -144,7 +143,7 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
         spGenre = findViewById(R.id.sp_genre)
         spGenre.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, resources.getStringArray(R.array.genre))
 
-        btn_sign_up.setOnClickListener {
+        btnSignUp.setOnClickListener {
             if (type == "entreprise") {
                 if (checkEmail() && checkSect() && checkNom() && checkTel() && checkPass()) {
                     signup()
@@ -157,20 +156,20 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
         }
 
         val cgu = findViewById<TextView>(R.id.txt_cgu)
-        val cgu_txt = "<u>En continuant d'utiliser l'application, vous indiquez que vous acceptez les conditions générales de la politique d'utilisation</u>"
-        cgu.text = HtmlCompat.fromHtml(cgu_txt, HtmlCompat.FROM_HTML_MODE_LEGACY)
+        val cguTxt = "<u>En vous inscrivant vous confirmez avoir lu et accepté nos termes et conditions ainsi que notre politique de confidentialité</u>"
+        cgu.text = HtmlCompat.fromHtml(cguTxt, HtmlCompat.FROM_HTML_MODE_LEGACY)
         cgu.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://fasobizness.com/uploads/cgu.pdf"))
             startActivity(intent)
         }
     }
 
-    private fun updateDate() {
+    /*private fun updateDate() {
         val format = "dd/MM/yyyy"
         val simpleDateFormat = SimpleDateFormat(format, Locale.FRENCH)
         dateNaissance.setText(simpleDateFormat.format(myCalendar.time))
 //        dateNaissance.editText!!.setText(simpleDateFormat.format(myCalendar.time))
-    }
+    }*/
 
     private fun requestMultiplePermissions() {
         Dexter.withContext(this)
@@ -237,8 +236,8 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
         val txSectActivity = sectActivite.editText!!.text.toString()
         val txMdp: String = mdp.editText?.text.toString()
         val txtDateNaissance: String = dateNaissance.text.toString()
-        btn_sign_up.isEnabled = false
-        btn_sign_up.setText(R.string.enregistrement_en_cours)
+        btnSignUp.isEnabled = false
+        btnSignUp.setText(R.string.enregistrement_en_cours)
         val call: Call<User> = api.createUser(
                 txEmail,
                 txTel,
@@ -253,8 +252,8 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
         )
         call.enqueue(object : Callback<User?> {
             override fun onResponse(call: Call<User?>, response: Response<User?>) {
-                btn_sign_up.isEnabled = true
-                btn_sign_up.setText(R.string.enregistrer)
+                btnSignUp.isEnabled = true
+                btnSignUp.setText(R.string.enregistrer)
                 if (response.isSuccessful) {
                     val user: User? = response.body()
                     if (user != null) {
@@ -293,15 +292,15 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
                         }
                     }
                 } else {
-                    Snackbar.make(linear_sign_up_base, response.message(), Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(linearSignUpBase, response.message(), Snackbar.LENGTH_SHORT).show()
                     Log.d(tag, response.errorBody()?.contentType().toString())
                 }
             }
 
             override fun onFailure(call: Call<User?>, t: Throwable) {
                 Toast.makeText(this@ActivitySignUp, t.message, Toast.LENGTH_SHORT).show()
-                btn_sign_up.isEnabled = true
-                btn_sign_up.text = getString(R.string.enregistrer)
+                btnSignUp.isEnabled = true
+                btnSignUp.text = getString(R.string.enregistrer)
             }
         })
     }
@@ -426,12 +425,22 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
 
     private fun checkDateNaiss(): Boolean {
         val txtDateNaiss = dateNaissance.text.toString().trim()
-        return if (txtDateNaiss.isEmpty()) {
-            dateNaissance.error = getString(R.string.date_de_naissance_requise)
-            false
-        } else {
-            sectActivite.error = null
-            true
+        return when {
+            txtDateNaiss.isEmpty() -> {
+                // dateNaissance.error = getString(R.string.date_de_naissance_requise)
+                dateNaissanceTI.error = getString(R.string.date_de_naissance_requise)
+                false
+            }
+            txtDateNaiss == "jj/mm/aaaa" -> {
+                // dateNaissance.error = getString(R.string.date_de_naissance_requise)
+                dateNaissanceTI.error = getString(R.string.date_de_naissance_requise)
+                false
+            }
+            else -> {
+                // dateNaissance.error = null
+                dateNaissanceTI.error = null
+                true
+            }
         }
     }
 
@@ -493,21 +502,21 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
     }
 
     override fun onProgressUpdate(percentage: Int) {
-        btn_sign_up.setText(R.string.chargement_en_cours)
+        btnSignUp.setText(R.string.chargement_en_cours)
     }
 
     override fun onError() {
-        btn_sign_up.isEnabled = true
-        btn_sign_up.setText(R.string.enregistrer)
+        btnSignUp.isEnabled = true
+        btnSignUp.setText(R.string.enregistrer)
     }
 
     override fun onFinish() {
-        btn_sign_up.isEnabled = true
-        btn_sign_up.setText(R.string.enregistrer)
+        btnSignUp.isEnabled = true
+        btnSignUp.setText(R.string.enregistrer)
     }
 
     override fun uploadStart() {
-        btn_sign_up.isEnabled = false
-        btn_sign_up.setText(R.string.enregistrement_en_cours)
+        btnSignUp.isEnabled = false
+        btnSignUp.setText(R.string.enregistrement_en_cours)
     }
 }

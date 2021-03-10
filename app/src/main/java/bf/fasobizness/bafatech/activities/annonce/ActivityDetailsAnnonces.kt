@@ -20,7 +20,7 @@ class ActivityDetailsAnnonces : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         toolbar.title = ""
         setSupportActionBar(toolbar)
-        Objects.requireNonNull(supportActionBar)!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationIcon(R.drawable.left_white)
         toolbar.setNavigationOnClickListener { finish() }
         val list: MutableList<Fragment> = ArrayList()

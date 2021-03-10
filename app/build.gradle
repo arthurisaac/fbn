@@ -14,7 +14,7 @@ android {
         applicationId "bf.fasobizness.bafatech"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 183
+        versionCode 192
         versionName "2.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -66,8 +66,10 @@ dependencies {
     implementation 'com.github.nguyenhoanglam:ImagePicker:1.4.3'
     implementation 'com.github.stfalcon:chatkit:0.3.3'
     implementation 'com.devlomi.record-view:record-view:2.0.1'
+    implementation 'ru.egslava:MaskedEditText:1.0.5'
+    implementation 'com.mindorks.android:prdownloader:0.6.0'
 
-    implementation 'com.google.firebase:firebase-config-ktx:20.0.3'
+    implementation 'com.google.firebase:firebase-config-ktx:20.0.4'
     implementation 'com.google.firebase:firebase-analytics-ktx:18.0.2'
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-analytics'
