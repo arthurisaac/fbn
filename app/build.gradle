@@ -14,7 +14,7 @@ android {
         applicationId "bf.fasobizness.bafatech"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 192
+        versionCode 193
         versionName "2.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -68,6 +68,7 @@ dependencies {
     implementation 'com.devlomi.record-view:record-view:2.0.1'
     implementation 'ru.egslava:MaskedEditText:1.0.5'
     implementation 'com.mindorks.android:prdownloader:0.6.0'
+    implementation 'id.zelory:compressor:3.0.0'
 
     implementation 'com.google.firebase:firebase-config-ktx:20.0.4'
     implementation 'com.google.firebase:firebase-analytics-ktx:18.0.2'

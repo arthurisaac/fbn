@@ -1,17 +1,24 @@
 package bf.fasobizness.bafatech.activities.user
 
 import android.Manifest
+import android.app.Activity
+import android.content.ContentValues
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.util.Patterns
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.text.HtmlCompat
+import androidx.lifecycle.lifecycleScope
 import bf.fasobizness.bafatech.MainActivity
 import bf.fasobizness.bafatech.R
 import bf.fasobizness.bafatech.helper.ProgressRequestBody
@@ -32,11 +39,10 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
-import com.nguyenhoanglam.imagepicker.model.Config
-import com.nguyenhoanglam.imagepicker.model.Image
-import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker
 import com.zhihu.matisse.internal.utils.PathUtils
 import de.hdodenhof.circleimageview.CircleImageView
+import id.zelory.compressor.Compressor
+import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -48,6 +54,10 @@ import java.util.*
 
 class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
     private val tag = "ActivityProfile"
+    private val CAMERA = 2
+    private val GALLERY = 1
+    private var mCurrentPhotoPath: String = ""
+
     private lateinit var photoProfile: CircleImageView
     private lateinit var username: TextInputLayout
     private lateinit var email: TextInputLayout
@@ -69,7 +79,7 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
     private lateinit var type: String
     private lateinit var btnSignUp: Button
     private var api: API = RetrofitClient.getClient().create(API::class.java)
-    private var images: ArrayList<Image> = ArrayList()
+    private var images: Uri? = null
     // private val myCalendar = Calendar.getInstance()
 
     private lateinit var spGenre: Spinner
@@ -180,7 +190,7 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
                 .withListener(object : MultiplePermissionsListener {
                     override fun onPermissionsChecked(report: MultiplePermissionsReport) {
                         if (report.areAllPermissionsGranted()) {
-                            selectImage()
+                            options()
                             Log.d(tag, "All permissions are granted by user!")
                         }
                     }
@@ -193,7 +203,25 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
                 .check()
     }
 
-    private fun selectImage() {
+    private fun options() {
+        val items = arrayOf<CharSequence>("Camera", "Galerie")
+        val builder = AlertDialog.Builder(this@ActivitySignUp)
+        builder.setTitle(R.string.choisir_la_source)
+        builder.setItems(items) { _: DialogInterface?, i: Int ->
+            when {
+                items[i] == "Camera" -> {
+                    // pickFromCamera()
+                    pickFromCamera()
+                }
+                items[i] == "Galerie" -> {
+                    pickFromGallery()
+                }
+            }
+        }
+        builder.show()
+    }
+
+    /*private fun selectImage() {
         ImagePicker.with(this)
                 .setFolderMode(true)
                 .setFolderTitle("Photos")
@@ -206,9 +234,65 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
                 .setSelectedImages(images)
                 .setRequestCode(100)
                 .start()
+    }*/
+
+    private fun pickFromGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent, GALLERY)
+    }
+
+    private fun pickFromCamera() {
+        val values = ContentValues(1)
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
+        val fileUri = contentResolver
+                .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        values)
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if(intent.resolveActivity(packageManager) != null) {
+            mCurrentPhotoPath = fileUri.toString()
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri)
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            startActivityForResult(intent, CAMERA)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode != Activity.RESULT_CANCELED) {
+            if (requestCode == GALLERY) {
+                if (data != null) {
+                    val contentURI = data.data
+                    try {
+                        val protection = Array(1) { MediaStore.Images.Media.DATA }
+                        val cursor = this.managedQuery(contentURI, protection, null, null, null)
+                        cursor?.moveToFirst()
+                        val photoPath = cursor?.getString(0)
+                        cursor?.close()
+                        val file = File(photoPath)
+                        prepareToUpload(file)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            } else if (requestCode == CAMERA) {
+                val cursor = contentResolver.query(Uri.parse(mCurrentPhotoPath),
+                        Array(1) { MediaStore.Images.ImageColumns.DATA },
+                        null, null, null)
+                cursor?.moveToFirst()
+                val photoPath = cursor?.getString(0)
+                cursor?.close()
+                val file = File(photoPath)
+                prepareToUpload(file)
+                    //val uri = Uri.fromFile(file)
+                //updateProfilePhoto(uri)
+            }
+        }
+
+    }
+
+    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (ImagePicker.shouldHandleResult(requestCode, resultCode, data, 100)) {
             images = ImagePicker.getImages(data)
             Glide.with(this@ActivitySignUp)
@@ -225,9 +309,15 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
                     .into(photoProfile)
         }
         super.onActivityResult(requestCode, resultCode, data)
-    }
+    }*/
 
     private fun signup() {
+        try {
+            val imm: InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
         val txEmail = email.editText!!.text.toString()
         val txNomPers = username.editText!!.text.toString()
         val txTel = telephone.editText!!.text.toString()
@@ -278,12 +368,12 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
                             val jwt = JWT(auth)
                             sharedManager.username = jwt.getClaim("username").asString()
                             sharedManager.user = jwt.getClaim("sub").asString()
-                            sharedManager.photo = jwt.getClaim("photo").asString()
                             sharedManager.email = jwt.getClaim("email").asString()
                             sharedManager.type = type
                             sharedManager.token = auth
-                            if (images.size > 0) {
-                                updateProfilePhoto(images[0].uri, sharedManager.user)
+                            if (images != null) {
+                                updateProfilePhoto(images!!, sharedManager.user)
+                                sharedManager.photo = images!!.path
                             } else {
                                 val intent = Intent(this@ActivitySignUp, MainActivity::class.java)
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -303,6 +393,30 @@ class ActivitySignUp : AppCompatActivity(), UploadCallbacks {
                 btnSignUp.text = getString(R.string.enregistrer)
             }
         })
+    }
+
+    private fun prepareToUpload(file: File) {
+        lifecycleScope.launch{
+            val compressedImageFile = Compressor.compress(this@ActivitySignUp, file)
+            val uri = Uri.fromFile(compressedImageFile)
+            images = uri
+            showPicture(uri)
+        }
+    }
+
+    private fun showPicture(uri: Uri) {
+        Glide.with(this@ActivitySignUp)
+                .setDefaultRequestOptions(
+                        RequestOptions()
+                                .placeholder(R.drawable.user)
+                                .error(R.drawable.user)
+                                .centerCrop()
+                                .override(400, 400)
+                )
+                .asBitmap()
+                .load(uri)
+                .thumbnail(0.1f)
+                .into(photoProfile)
     }
 
     private fun updateProfilePhoto(uri: Uri, id: String) {

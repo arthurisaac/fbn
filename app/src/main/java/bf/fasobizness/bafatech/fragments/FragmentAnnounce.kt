@@ -367,7 +367,7 @@ class FragmentAnnounce : Fragment() {
                     }
                 }
             }
-            fav = if (annonce.favori == null) "0" else "1"
+            fav = if (annonce.favori == null) "0" else annonce.favori
             if (fav == "1") {
                 ajouterFavori.setImageResource(R.drawable.ic_star_yellow)
             }

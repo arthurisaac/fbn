@@ -2,12 +2,9 @@ package bf.fasobizness.bafatech.activities.user
 
 import android.Manifest
 import android.app.Activity
-import android.app.DatePickerDialog
 import android.content.*
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.util.Patterns
@@ -19,6 +16,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.lifecycleScope
 import bf.fasobizness.bafatech.MainActivity
 import bf.fasobizness.bafatech.R
 import bf.fasobizness.bafatech.fragments.FragmentPasswordUpdate
@@ -27,7 +25,6 @@ import bf.fasobizness.bafatech.helper.RetrofitClient
 import bf.fasobizness.bafatech.interfaces.API
 import bf.fasobizness.bafatech.interfaces.UploadCallbacks
 import bf.fasobizness.bafatech.models.User
-import bf.fasobizness.bafatech.utils.FileCompressingUtil
 import bf.fasobizness.bafatech.utils.MySharedManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -38,11 +35,10 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
-import com.nguyenhoanglam.imagepicker.model.Config
-import com.nguyenhoanglam.imagepicker.model.Image
-import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker
 import com.zhihu.matisse.internal.utils.PathUtils
 import de.hdodenhof.circleimageview.CircleImageView
+import id.zelory.compressor.Compressor
+import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -50,7 +46,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.*
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -179,12 +174,12 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
         api = RetrofitClient.getClient().create(API::class.java)
         getUserProfile()
 
-        val date = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+        /*val date = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
             myCalendar[Calendar.YEAR] = year
             myCalendar[Calendar.MONTH] = monthOfYear
             myCalendar[Calendar.DAY_OF_MONTH] = dayOfMonth
             updateDate()
-        }
+        }*/
 
         /*dateNaissance.setOnClickListener {
             DatePickerDialog(this@ActivityProfile, date, myCalendar[Calendar.YEAR], myCalendar[Calendar.MONTH],
@@ -207,7 +202,8 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
                 if (response.isSuccessful) {
                     layoutProfile.visibility = View.VISIBLE
                     val user: User? = response.body()
-                    val arrayAdapter = ArrayAdapter(this@ActivityProfile, android.R.layout.simple_list_item_1, resources.getStringArray(R.array.genre))
+                    val arrayAdapter = ArrayAdapter(this@ActivityProfile, android.R.layout.simple_list_item_1, resources.getStringArray(R.array.genre_without_label))
+                    spGenre.adapter = ArrayAdapter(this@ActivityProfile, android.R.layout.simple_list_item_1, resources.getStringArray(R.array.genre_without_label))
 
                     if (user != null) {
                         username.editText!!.setText(user.username)
@@ -218,8 +214,12 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
                         dateNaissance.setText(user.date_naissance)
                         nom.editText?.setText(user.nom)
                         if (user.genre != null) {
-                            spGenre.setSelection(arrayAdapter.getPosition(user.genre))
+                            val spinnerPosition: Int = arrayAdapter.getPosition(user.genre)
+                            spGenre.setSelection(spinnerPosition)
                         }
+                        /*if (user.genre != null) {
+                            spGenre.setSelection(arrayAdapter.getPosition(user.genre))
+                        }*/
                         if (user.type == "particulier" || user.type == "utilisateur") {
                             sect.visibility = View.GONE
                             spGenre.visibility = View.VISIBLE
@@ -358,39 +358,24 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
                 }
             } else if (requestCode == CAMERA) {
                 val cursor = contentResolver.query(Uri.parse(mCurrentPhotoPath),
-                        Array(1) { MediaStore.Images.ImageColumns.DATA},
+                        Array(1) { MediaStore.Images.ImageColumns.DATA },
                         null, null, null)
                 cursor?.moveToFirst()
                 val photoPath = cursor?.getString(0)
                 cursor?.close()
                 val file = File(photoPath)
-                val uri = Uri.fromFile(file)
-                updateProfilePhoto(uri)
+                prepareToUpload(file)
             }
         }
 
     }
 
-    private fun bitmapToUri(bitmap: Bitmap): Uri {
-        /*val wrapper = ContextWrapper(applicationContext)
-        var file = wrapper.getDir("Pictures", Context.MODE_PRIVATE)
-        file = File(file, "${UUID.randomUUID()}.jpg")
-        try {
-            val stream:OutputStream = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream)
-            stream.flush()
-            stream.close()
-        } catch (e:IOException) {
-            e.printStackTrace()
-            Toast.makeText(this, "Erreur", Toast.LENGTH_SHORT).show()
+    private fun prepareToUpload(file: File) {
+        lifecycleScope.launch{
+            val compressedImageFile = Compressor.compress(this@ActivityProfile, file)
+            val uri = Uri.fromFile(compressedImageFile)
+            updateProfilePhoto(uri)
         }
-        return Uri.parse(file.absolutePath)*/
-        val file = File(Environment.getExternalStorageDirectory().toString() + File.separator + "Pictures" + File.separator + "${UUID.randomUUID()}.jpg")
-        file.createNewFile()
-        val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos)
-        val bitmapData = baos.toByteArray()
-        return Uri.parse(file.absolutePath)
     }
 
     private fun updateProfilePhoto(uri: Uri) {
@@ -550,11 +535,11 @@ class ActivityProfile : AppCompatActivity(), UploadCallbacks {
         })
     }
 
-    private fun updateDate() {
+    /*private fun updateDate() {
         val format = "dd/MM/yyyy"
         val simpleDateFormat = SimpleDateFormat(format, Locale.FRENCH)
         dateNaissance.setText(simpleDateFormat.format(myCalendar.time))
-    }
+    }*/
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_profile, menu)

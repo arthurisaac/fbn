@@ -17,6 +17,7 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import bf.fasobizness.bafatech.R
@@ -30,6 +31,7 @@ import bf.fasobizness.bafatech.interfaces.IllustrationInterface
 import bf.fasobizness.bafatech.interfaces.OnItemListener
 import bf.fasobizness.bafatech.interfaces.UploadCallbacks
 import bf.fasobizness.bafatech.models.MyResponse
+import bf.fasobizness.bafatech.utils.FileCompressingUtil
 import bf.fasobizness.bafatech.utils.MySharedManager
 import com.google.android.material.textfield.TextInputLayout
 import com.karumi.dexter.Dexter
@@ -41,6 +43,8 @@ import com.nguyenhoanglam.imagepicker.model.Config
 import com.nguyenhoanglam.imagepicker.model.Image
 import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker
 import com.zhihu.matisse.internal.utils.PathUtils
+import id.zelory.compressor.Compressor
+import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -254,7 +258,7 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
 
     private fun recordAudio() {
         val handler = Handler()
-        var runnable = Runnable { }
+        Runnable { }
         if (isPlaying) {
             audioManager.stopPlayback()
             btnDescriptionAudio.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_play_black, 0, 0, 0)
@@ -327,17 +331,6 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
             images.clear()
             images.addAll(ImagePicker.getImages(data))
             mAdapter.notifyDataSetChanged()
-            /*val photos = ImagePicker.getImages(data)
-            for (photon photos) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    // path
-                    pictures!!.add(photo.uri)
-                } else {
-                    // uri
-                    Log.d(tag, photo.path)
-                }
-
-            }*/
         }
         if (requestCode == CAMERA) {
             val cursor = contentResolver.query(Uri.parse(mCurrentPhotoPath),
@@ -347,10 +340,13 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
             val photoPath = cursor?.getString(0)
             cursor?.close()
             val file = File(photoPath)
-            val fileUri = Uri.fromFile(file)
-            val image = Image(0, "", fileUri, photoPath.toString(), 0, "")
-            images.add(image)
-            mAdapter.notifyDataSetChanged()
+            lifecycleScope.launch{
+                val compressedImageFile = Compressor.compress(this@ActivityNewAnnounce, file)
+                val fileUri = Uri.fromFile(compressedImageFile)
+                val image = Image(0, "", fileUri, photoPath.toString(), 0, "")
+                images.add(image)
+                mAdapter.notifyDataSetChanged()
+            }
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
@@ -623,10 +619,10 @@ class ActivityNewAnnounce : AppCompatActivity(), OnItemListener, UploadCallbacks
 
     private fun prepareFilePart(part: String, image: Image): MultipartBody.Part {
         val file = getFile(this, image.uri)
-        // val fileCompressingUtil = FileCompressingUtil()
-        // val compressedFile = fileCompressingUtil.saveBitmapToFile(file)
-        val requestFile = ProgressRequestBody(file, this)
-        return MultipartBody.Part.createFormData(part, file!!.name, requestFile)
+        val fileCompressingUtil = FileCompressingUtil()
+        val compressedFile = fileCompressingUtil.saveBitmapToFile(file)
+        val requestFile = ProgressRequestBody(compressedFile, this)
+        return MultipartBody.Part.createFormData(part, compressedFile!!.name, requestFile)
     }
 
     private fun prepareAudioFilePart(part: String, file: File): MultipartBody.Part {
