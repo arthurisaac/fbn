@@ -33,6 +33,7 @@ import bf.fasobizness.bafatech.activities.user.LoginActivity
 import bf.fasobizness.bafatech.activities.user.messaging.ActivityDiscussions
 import bf.fasobizness.bafatech.activities.user.messaging.DefaultMessagesActivity
 import bf.fasobizness.bafatech.adapters.AnnounceAdapter
+import bf.fasobizness.bafatech.adapters.AnnounceHorizontaleAdapter
 import bf.fasobizness.bafatech.fragments.FragmentMaintenance
 import bf.fasobizness.bafatech.fragments.FragmentNotConnected
 import bf.fasobizness.bafatech.helper.RetrofitClient
@@ -76,8 +77,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var filtre = "id"
     private var arguments = " "
     private lateinit var mAnnonceAdapter: AnnounceAdapter
+    private lateinit var mAnnonceOrAdapter: AnnounceHorizontaleAdapter
     private lateinit var mAnnonces: ArrayList<Annonce>
+    private lateinit var mAnnoncesOr: ArrayList<Annonce>
     private lateinit var mRecyclerView: RecyclerView
+    private lateinit var mRecyclerViewOr: RecyclerView
     private lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
     private lateinit var shimmerViewContainer: ShimmerFrameLayout
     private lateinit var imageSlider: ImageSlider
@@ -293,13 +297,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         // Fetch annonces
         mAnnonces = ArrayList()
+        mAnnoncesOr = ArrayList()
         mRecyclerView = findViewById(R.id.annonces_card_view)
+        mRecyclerViewOr = findViewById(R.id.annonces_en_or_card_view)
         val manager: LinearLayoutManager = GridLayoutManager(applicationContext, 2)
+        val manager1: LinearLayoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
         mRecyclerView.setHasFixedSize(true)
+        mRecyclerViewOr.setHasFixedSize(true)
         mRecyclerView.layoutManager = manager
+        mRecyclerViewOr.layoutManager = manager1
         mAnnonceAdapter = AnnounceAdapter(this@MainActivity, mAnnonces)
+        mAnnonceOrAdapter = AnnounceHorizontaleAdapter(this@MainActivity, mAnnoncesOr)
         mRecyclerView.adapter = mAnnonceAdapter
+        mRecyclerViewOr.adapter = mAnnonceOrAdapter
         mAnnonceAdapter.setOnItemListener(this)
+        mAnnonceOrAdapter.setOnItemListener(this)
         mAnnonceAdapter.setOnLongItemListener(this)
         mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -338,8 +350,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         searchLayout.setOnClickListener { startActivity(Intent(this, ActivitySearchAnnonce::class.java)) }
 
         user = sharedManager.user
+        val goToActivityCategory:ImageView = findViewById(R.id.iv_go_to_categories);
+        goToActivityCategory.setOnClickListener { startActivity(Intent(this, ActivityAnnonceCategory::class.java))}
+        val goToActivityOffreOr:ImageView = findViewById(R.id.iv_go_to_offre_en_or);
+        goToActivityOffreOr.setOnClickListener { startActivity(Intent(this, ActivityOffreOr::class.java))}
         checkUser()
         jsonParse()
+        offreEnOr()
         ads()
         if (user.isNotEmpty()) {
             checkNewMessage()
@@ -608,6 +625,28 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
             override fun onFailure(call: Call<Advertising?>, t: Throwable) {}
+        })
+    }
+
+    private fun offreEnOr() {
+        val call = api.filterAnnounce("vip", "1")
+        call.enqueue(object : Callback<Announce?> {
+            override fun onResponse(call: Call<Announce?>, response: Response<Announce?>) {
+                var annonces: List<Annonce>? = null
+                val announce = response.body()
+                if (announce != null) {
+                    annonces = announce.annonces
+                }
+                if (annonces != null) {
+                    mAnnoncesOr.addAll(annonces)
+                }
+                mAnnonceOrAdapter.notifyDataSetChanged()
+            }
+
+            override fun onFailure(call: Call<Announce?>, t: Throwable) {
+                // TODO
+                Toast.makeText(this@MainActivity, "erreur réseau", Toast.LENGTH_SHORT).show()
+            }
         })
     }
 
