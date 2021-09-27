@@ -3,6 +3,7 @@ package bf.fasobizness.bafatech.activities
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import bf.fasobizness.bafatech.R
@@ -20,6 +21,12 @@ class ActivityPhotoList : AppCompatActivity(), OnItemListener {
         setContentView(R.layout.activity_photo_list)
 
 
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        toolbar.title = ""
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationIcon(R.drawable.left_white)
+        toolbar.setNavigationOnClickListener { finish() }
         val intent = intent
         images = intent.getStringArrayListExtra("images") as ArrayList<String>
         // val position = intent.getIntExtra("position", 0)

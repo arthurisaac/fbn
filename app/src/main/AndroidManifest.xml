@@ -24,7 +24,9 @@
         <activity
             android:name=".activities.AdvertisingActivity"
             android:theme="@style/AppTheme.Main" />
-        <activity android:name=".activities.ActivityPhotoList" />
+        <activity
+            android:name=".activities.ActivityPhotoList"
+            android:theme="@style/AppTheme.Main"/>
         <activity
             android:name=".activities.user.messaging.DefaultMessagesActivity"
             android:theme="@style/AppTheme.Main" />

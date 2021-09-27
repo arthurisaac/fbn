@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/nav_recherche"
+        android:icon="@drawable/ic_search_white"
+        android:orderInCategory="105"
+        android:title="@string/rechercher"
+        app:showAsAction="always"
+        app:actionViewClass="android.widget.SearchView"/>
+
+    <item
+        android:id="@+id/nav_change"
+        android:icon="@drawable/ic_baseline_view_list_24"
+        android:orderInCategory="106"
+        android:title="Changer vue"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/nav_supprimer"
+        android:icon="@drawable/ic_delete_forever_white_24dp"
+        android:orderInCategory="106"
+        android:visible="false"
+        app:showAsAction="ifRoom"
+        android:title="@string/supprimer"/>
+
+</menu>
