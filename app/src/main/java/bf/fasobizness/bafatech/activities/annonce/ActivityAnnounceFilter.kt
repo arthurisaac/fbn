@@ -142,84 +142,6 @@ class ActivityAnnounceFilter : AppCompatActivity(), OnAnnonceListener {
         })
     }
 
-    /*private void jsonParse() {
-        layout_ent_offline.setVisibility(View.GONE);
-        layout_busy_system.setVisibility(View.GONE);
-        layout_no_annonce.setVisibility(View.GONE);
-
-        String url = Constants.HOST_URL + "annonce/all";
-        StringRequest request = new StringRequest(Request.Method.POST, url, response -> {
-            shimmer_view_container.setVisibility(View.GONE);
-            mSwipeRefreshLayout.setRefreshing(false);
-             Log.v(TAG, response);
-            try {
-                JSONObject jsonObject = new JSONObject(response);
-                JSONArray jsonArray = jsonObject.getJSONArray("data");
-                if (!jsonObject.get("total").equals("null")) {
-                    total = jsonObject.getInt("total");
-                }
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject data = jsonArray.getJSONObject(i);
-
-                    String titre = data.getString("titre");
-                    String vue = data.getString("vue");
-                    String id_ann = data.getString("id_ann");
-                    String categorie = data.getString("categorie");
-                    String vip = data.getString("vip");
-
-                    String affiche = data.getString("illNom");
-
-                    Annonce annonce = new Annonce();
-                    annonce.setAffiche(affiche);
-                    annonce.setVue(vue);
-                    annonce.setId_ann(id_ann);
-                    annonce.setCategorie(categorie);
-                    annonce.setTitre(titre);
-                    annonce.setVip(vip);
-
-                    mAnnonces.add(annonce);
-                }
-                if (mAnnonces.size() == 0) {
-                    layout_no_annonce.setVisibility(View.VISIBLE);
-                    layout_ent_offline.setVisibility(View.GONE);
-                }
-                page++;
-                mAnnonceAdapter.notifyDataSetChanged();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                if (page <= 1) {
-                    layout_busy_system.setVisibility(View.VISIBLE);
-                } else {
-                    Toast.makeText(this, "Fin", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-        }, error -> {
-            Log.d(TAG, "" + error.toString());
-            error.printStackTrace();
-            mSwipeRefreshLayout.setRefreshing(false);
-            layout_ent_offline.setVisibility(View.VISIBLE);
-            shimmer_view_container.setVisibility(View.GONE);
-            // page++;
-        }){
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("id_pers_fk", user);
-                params.put("page", page+"");
-                params.put("filtre", filtre);
-                params.put("params", params);
-                return params;
-            }
-        };
-        request.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 40,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES * 4,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT * 2)
-        );
-        requestQueue.add(request);
-    }*/
     private fun refresh() {
         page = 1
         mAnnonceAdapter.clearAll()
@@ -231,9 +153,14 @@ class ActivityAnnounceFilter : AppCompatActivity(), OnAnnonceListener {
 
     override fun onAnnonceClicked(position: Int) {
         val annonce = mAnnonces[position]
-        val intent = Intent(this, ActivityDetailsAnnonce::class.java)
+        //val intent = Intent(this, ActivityDetailsAnnonce::class.java)
+        //intent.putExtra("id_ann", annonce.id_ann)
+        //intent.putExtra("affiche", annonce.affiche)
+        val intent = Intent(this, ActivityDetailsAnnonces::class.java)
         intent.putExtra("id_ann", annonce.id_ann)
         intent.putExtra("affiche", annonce.affiche)
+        intent.putExtra("annonces", mAnnonces)
+        intent.putExtra("position", position)
         startActivity(intent)
     }
 }

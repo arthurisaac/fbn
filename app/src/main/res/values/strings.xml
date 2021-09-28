@@ -37,7 +37,7 @@
     <string name="recommander_un_ami">Recommander à un ami</string>
     <string name="rechercher">Rechercher</string>
     <string name="favoris">Favoris</string>
-    <string name="ajouter_annonce">Ajouter annonce</string>
+    <string name="ajouter_annonce">Ajouter une annonce</string>
     <string name="veuillez_patienter_pendant_le_chargement">Veuillez patienter svp pendant le chargement</string>
     <string name="pas_d_acces_internet">Pas d\'acces internet</string>
     <string name="aucune_annonce_trouv_e">Aucune annonce trouvée</string>
@@ -105,7 +105,7 @@
     <string name="titre_de_l_annonce">Titre de l\'annonce *</string>
     <string name="description_de_l_annonce">Description de l\'annonce *</string>
     <string name="publier">Publier</string>
-    <string name="publier_annonce">Publier annonce</string>
+    <string name="publier_annonce">Publier une annonce</string>
     <string name="no_de_tel_requis">Numéro de téléphone requis</string>
     <string name="no_de_tel_invalide">Numéro de téléphone invalide</string>
     <string name="description_annonce_requis">Veuillez entrer une description svp</string>

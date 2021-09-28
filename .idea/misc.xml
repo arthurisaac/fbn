@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/BAFATECH/Documents/Arthur/fbn/app/src/main/res/layout/activity_annonce_editer.xml" value="0.1984375" />
+        <entry key="..\:/Users/BAFATECH/Documents/Arthur/fbn/app/src/main/res/layout/activity_annonces_publiees.xml" value="0.18" />
+        <entry key="..\:/Users/BAFATECH/Documents/Arthur/fbn/app/src/main/res/layout/activity_details_annonce.xml" value="0.1" />
+        <entry key="..\:/Users/BAFATECH/Documents/Arthur/fbn/app/src/main/res/layout/activity_full_screen.xml" value="0.1" />
+        <entry key="..\:/Users/BAFATECH/Documents/Arthur/fbn/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Users/BAFATECH/Documents/Arthur/fbn/app/src/main/res/layout/activity_new_announce.xml" value="0.1984375" />
+        <entry key="..\:/Users/BAFATECH/Documents/Arthur/fbn/app/src/main/res/layout/app_bar_main.xml" value="0.18" />
+        <entry key="..\:/Users/BAFATECH/Documents/Arthur/fbn/app/src/main/res/layout/fragment_annonce.xml" value="0.1" />
+        <entry key="..\:/Users/BAFATECH/Documents/Arthur/fbn/app/src/main/res/layout/row_annonce_slider.xml" value="0.14953271028037382" />
+        <entry key="..\:/Users/BAFATECH/Documents/Arthur/fbn/app/src/main/res/layout/swipe_layout_pager.xml" value="0.1" />
+      </map>
+    </option>
+  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="JavaScriptSettings">
     <option name="languageLevel" value="ES6" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
 </project>

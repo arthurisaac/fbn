@@ -1,6 +1,7 @@
 package bf.fasobizness.bafatech.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bf.fasobizness.bafatech.R;
+import bf.fasobizness.bafatech.activities.annonce.ActivityDetailsAnnonces;
 import bf.fasobizness.bafatech.fragments.FragmentNotConnected;
 import bf.fasobizness.bafatech.helper.RetrofitClient;
 import bf.fasobizness.bafatech.interfaces.API;
@@ -44,8 +46,6 @@ public class AnnounceHorizontaleAdapter extends RecyclerView.Adapter<AnnounceHor
     private ArrayList<Announce.Annonce> mAnnoncesFiltre;
     // private SparseBooleanArray mSelectedItems;
     private final SparseBooleanArray mSelectedItems = new SparseBooleanArray();
-    private OnAnnonceListener onAnnonceListener;
-    private OnLongItemListener onLongItemListener;
     private final API api = RetrofitClient.getClient().create(API.class);
     private final MySharedManager sharedManager;
 
@@ -102,14 +102,6 @@ public class AnnounceHorizontaleAdapter extends RecyclerView.Adapter<AnnounceHor
         sharedManager = new MySharedManager(context);
     }
 
-    public void setOnItemListener(OnAnnonceListener onItemListener) {
-        this.onAnnonceListener = onItemListener;
-    }
-
-    public void setOnLongItemListener(OnLongItemListener onLongItemListener) {
-        this.onLongItemListener = onLongItemListener;
-    }
-
     @NonNull
     @Override
     public AnnonceHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -133,7 +125,6 @@ public class AnnounceHorizontaleAdapter extends RecyclerView.Adapter<AnnounceHor
         annonceHolder.AfficheView.setContentDescription(annonce.getTitre());
 
         try {
-
             Glide.with(mContext)
                     .setDefaultRequestOptions(
                             new RequestOptions()
@@ -147,6 +138,14 @@ public class AnnounceHorizontaleAdapter extends RecyclerView.Adapter<AnnounceHor
                     .thumbnail(0.1f)
                     .into(annonceHolder.AfficheView);
             annonceHolder.AfficheView.setCornerRadius(8);
+            annonceHolder.AfficheView.setOnClickListener(v -> {
+                Intent intent = new Intent(mContext, ActivityDetailsAnnonces.class);
+                intent.putExtra("id_ann", annonce.getId_ann());
+                intent.putExtra("affiche", annonce.getAffiche());
+                intent.putExtra("annonces", mAnnonces);
+                intent.putExtra("position", i);
+                mContext.startActivity(intent);
+            });
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -174,14 +173,8 @@ public class AnnounceHorizontaleAdapter extends RecyclerView.Adapter<AnnounceHor
             annonceHolder.checkBox.setVisibility(View.GONE);
         }
 
-        // ViewCompat.setTransitionName(annonceHolder.AfficheView, annonce.getId_ann());
-
-        annonceHolder.itemView.setOnClickListener(view -> onAnnonceListener.onAnnonceClicked(annonceHolder.getAdapterPosition()));
-        annonceHolder.checkBox.setOnClickListener(view -> onAnnonceListener.onAnnonceClicked(annonceHolder.getAdapterPosition()));
-        annonceHolder.itemView.setOnLongClickListener(view -> onLongItemListener.onLongItemClicked(annonceHolder.getAdapterPosition()));
         annonceHolder.favoriteView.setOnClickListener(v -> {
             if (!sharedManager.getUser().isEmpty()) {
-
                 Integer resource = (Integer) annonceHolder.favoriteView.getTag();
                 if ( (resource != null) && resource == R.drawable.ic_star_white) {
                     annonceHolder.favoriteView.setImageResource(R.drawable.ic_star_yellow);

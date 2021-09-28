@@ -28,6 +28,9 @@
             android:name=".activities.ActivityPhotoList"
             android:theme="@style/AppTheme.Main"/>
         <activity
+            android:name=".activities.ActivityAnnoncePhotoList"
+            android:theme="@style/AppTheme.Main"/>
+        <activity
             android:name=".activities.user.messaging.DefaultMessagesActivity"
             android:theme="@style/AppTheme.Main" />
         <activity
@@ -148,6 +151,9 @@
             android:theme="@style/AppTheme.Main" />
         <activity
             android:name=".activities.ActivityFullScreen"
+            android:theme="@style/AppTheme.TranslucideBar" />
+        <activity
+            android:name=".activities.ActivityAnnoncePhotoFullScreen"
             android:theme="@style/AppTheme.TranslucideBar" />
         <activity
             android:name=".activities.user.messaging.ActivityMessage"

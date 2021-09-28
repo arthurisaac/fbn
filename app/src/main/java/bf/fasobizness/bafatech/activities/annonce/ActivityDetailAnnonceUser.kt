@@ -23,6 +23,7 @@ import bf.fasobizness.bafatech.interfaces.OnImageListener
 import bf.fasobizness.bafatech.models.Announce.Annonce
 import bf.fasobizness.bafatech.models.MyResponse
 import bf.fasobizness.bafatech.utils.MySharedManager
+import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -233,17 +234,17 @@ class ActivityDetailAnnonceUser : AppCompatActivity(), OnImageListener {
         btnShare.setOnClickListener {
             val sharingIntent = Intent(Intent.ACTION_SEND)
             sharingIntent.type = "text/plain"
-            val shareBodyText = """Salut, voici une annonce intéressante que je viens de découvrir sur Faso Biz Nèss : 
-${annonce.titre} 
-
-${annonce.texte}
+            // String shareBodyText = annonce.getTitre() + "\n" +annonce.getTexte() + "\n" + getString(R.string.telecharger_et_partager_l_application);
+            val shareBodyText = """Salut, voici une annonce intéressante que je viens de découvrir sur Faso Biz Nèss : ${annonce.titre} ${annonce.texte}
 
 Pour en savoir plus, clique ici : https://fasobizness.com/annonce/${annonce.id_ann}. 
+
 
 Si tu n’as pas encore l’application tu peux la télécharger gratuitement sur Playstore : http://bit.ly/AndroidFBN"""
             sharingIntent.putExtra(Intent.EXTRA_SUBJECT, annonce.titre)
             sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBodyText)
             startActivity(Intent.createChooser(sharingIntent, getString(R.string.partager_avec)))
+            shareAnn(idAnn)
         }
     }
 
@@ -276,6 +277,19 @@ Si tu n’as pas encore l’application tu peux la télécharger gratuitement su
         intent.putStringArrayListExtra("images", imagesList)
         intent.putExtra("position", position)
         startActivity(intent)
+    }
+
+    private fun shareAnn(id_ann: String) {
+        val call = api.setAnnouncesActions("share", id_ann, user)
+        call.enqueue(object : Callback<MyResponse?> {
+            override fun onResponse(call: Call<MyResponse?>, response: Response<MyResponse?>) {
+                Log.d("AnnonceDetails", response.body().toString())
+            }
+
+            override fun onFailure(call: Call<MyResponse?>, t: Throwable) {
+                Toast.makeText(this@ActivityDetailAnnonceUser, R.string.pas_d_acces_internet, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     override fun onStart() {

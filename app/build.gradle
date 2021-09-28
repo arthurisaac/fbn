@@ -14,7 +14,7 @@ android {
         applicationId "bf.fasobizness.bafatech"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 193
+        versionCode 206
         versionName "2.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -62,6 +62,7 @@ dependencies {
     implementation 'com.github.shts:StoriesProgressView:3.0.0'
     implementation 'com.github.florent37:expansionpanel:1.2.2'
     implementation 'com.github.denzcoskun:ImageSlideshow:0.0.6'
+    implementation 'com.github.smarteist:autoimageslider:1.4.0'
     implementation 'com.auth0.android:jwtdecode:1.4.0'
     implementation 'com.github.nguyenhoanglam:ImagePicker:1.4.3'
     implementation 'com.github.stfalcon:chatkit:0.3.3'
@@ -69,6 +70,8 @@ dependencies {
     implementation 'ru.egslava:MaskedEditText:1.0.5'
     implementation 'com.mindorks.android:prdownloader:0.6.0'
     implementation 'id.zelory:compressor:3.0.0'
+    implementation 'com.github.piasy:BigImageViewer:1.8.1'
+    implementation 'com.github.piasy:GlideImageLoader:1.8.1'
 
     implementation 'com.google.firebase:firebase-config-ktx:20.0.4'
     implementation 'com.google.firebase:firebase-analytics-ktx:18.0.2'

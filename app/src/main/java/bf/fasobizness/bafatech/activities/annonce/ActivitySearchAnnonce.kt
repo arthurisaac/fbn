@@ -128,9 +128,14 @@ class ActivitySearchAnnonce : AppCompatActivity(), OnAnnonceListener {
 
     override fun onAnnonceClicked(position: Int) {
         val annonce = mAnnonces[position]
-        val intent = Intent(this, ActivityDetailsAnnonce::class.java)
+        //val intent = Intent(this, ActivityDetailsAnnonce::class.java)
+        //intent.putExtra("id_ann", annonce.id_ann)
+        //intent.putExtra("affiche", annonce.affiche)
+        val intent = Intent(this, ActivityDetailsAnnonces::class.java)
         intent.putExtra("id_ann", annonce.id_ann)
         intent.putExtra("affiche", annonce.affiche)
+        intent.putExtra("annonces", mAnnonces)
+        intent.putExtra("position", position)
         startActivity(intent)
     }
 

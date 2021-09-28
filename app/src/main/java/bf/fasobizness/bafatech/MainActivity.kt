@@ -267,6 +267,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val tabOffreEnOr = findViewById<TextView>(R.id.tab_offre_en_or)
         val tabEntreprise = findViewById<TextView>(R.id.tab_entrepise)
         val tabCategorie = findViewById<TextView>(R.id.tab_categorie)
+        loadingIndicator = findViewById(R.id.loading_indicator)
+
         badgeDiscussions = findViewById(R.id.badge_discussions)
         tabBoutiques.setOnClickListener { startActivity(Intent(this, ActivityBoutique::class.java)) }
         tabOffreEnOr.setOnClickListener { startActivity(Intent(this, ActivityOffreOr::class.java)) }
@@ -311,20 +313,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mRecyclerView.adapter = mAnnonceAdapter
         mRecyclerViewOr.adapter = mAnnonceOrAdapter
         mAnnonceAdapter.setOnItemListener(this)
-        mAnnonceOrAdapter.setOnItemListener(this)
         mAnnonceAdapter.setOnLongItemListener(this)
         mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy < 0) {
                     fab.visibility = View.VISIBLE
                     fabUp.visibility = View.VISIBLE
+                    loadingIndicator.visibility = View.GONE
                 } else if (dy > 0) {
                     fab.visibility = View.GONE
                     fabUp.visibility = View.GONE
+                    loadingIndicator.visibility = View.GONE
                 }
             }
         })
-        loadingIndicator = findViewById(R.id.loading_indicator)
         loadingIndicator.visibility = View.GONE
 
         //Loading more data
@@ -515,6 +517,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         shimmerViewContainer.visibility = View.VISIBLE
         shimmerViewContainer.startShimmer()
         jsonParse()
+        offreEnOr()
         // ads();
         if (user.isNotEmpty()) {
             checkNewMessage()

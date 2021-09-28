@@ -20,17 +20,16 @@ class ActivityPhotoList : AppCompatActivity(), OnItemListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_photo_list)
 
-
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        toolbar.title = ""
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationIcon(R.drawable.left_white)
         toolbar.setNavigationOnClickListener { finish() }
         val intent = intent
         images = intent.getStringArrayListExtra("images") as ArrayList<String>
+        //val title = intent.getStringExtra("title")
         // val position = intent.getIntExtra("position", 0)
-
+        toolbar.title = ""
         mRecyclerView = findViewById(R.id.recyclerView)
         val manager = LinearLayoutManager(this)
         mRecyclerView.setHasFixedSize(true)

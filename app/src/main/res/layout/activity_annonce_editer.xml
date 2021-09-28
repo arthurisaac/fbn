@@ -346,6 +346,44 @@
                     android:textColor="#FF0059"
                     android:visibility="gone" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_description_audio"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="11dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/frame_primary_tiny"
+                        android:drawableStart="@drawable/ic_baseline_mic"
+                        android:drawableTint="@color/colorPrimaryDark"
+                        android:text="@string/ajouter_description_audio"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:visibility="visible" />
+
+                    <ImageView
+                        android:id="@+id/btn_supprimer_audio"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="21dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_weight="0"
+                        android:contentDescription="@string/supprimer_description_audio"
+                        android:drawableTint="@color/design_default_color_error"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_delete_forever_accent_24dp"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
                 <Button
                     android:id="@+id/btn_publish"
                     android:layout_width="match_parent"

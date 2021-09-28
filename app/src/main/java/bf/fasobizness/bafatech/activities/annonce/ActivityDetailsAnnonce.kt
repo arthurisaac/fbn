@@ -309,15 +309,7 @@ class ActivityDetailsAnnonce : AppCompatActivity() {
                 e.printStackTrace()
             }
         }
-        /*if (annonce.getEmail().length() == 0) {
-            txt_email.setVisibility(View.GONE);
-        } else {
-            try {
-                txt_email.setOnClickListener(v -> sendEmail(annonce.getEmail(), annonce.getTitre()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }*/if (annonce.prix.isEmpty()) {
+        if (annonce.prix.isEmpty()) {
             txtPrix.setText(R.string.prix_sur_demande)
         }
         if (annonce.location.isEmpty()) {
@@ -338,7 +330,7 @@ Pour en savoir plus, clique ici : https://fasobizness.com/annonce/${annonce.id_a
 
 
 Si tu n’as pas encore l’application tu peux la télécharger gratuitement sur Playstore : http://bit.ly/AndroidFBN"""
-            sharingIntent.putExtra(Intent.EXTRA_SUBJECT, titre)
+            sharingIntent.putExtra(Intent.EXTRA_SUBJECT, annonce.titre)
             sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBodyText)
             startActivity(Intent.createChooser(sharingIntent, getString(R.string.partager_avec)))
             shareAnn(idAnn)

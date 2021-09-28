@@ -22,6 +22,7 @@ import bf.fasobizness.bafatech.activities.ActivityPhotoList
 import bf.fasobizness.bafatech.activities.annonce.ActivityAnnounceFilter
 import bf.fasobizness.bafatech.activities.annonce.ActivityUserProfile
 import bf.fasobizness.bafatech.activities.user.messaging.DefaultMessagesActivity
+import bf.fasobizness.bafatech.adapters.AnnoncePhotoSlidesAdapter
 import bf.fasobizness.bafatech.helper.RetrofitClient
 import bf.fasobizness.bafatech.interfaces.API
 import bf.fasobizness.bafatech.models.Announce.Annonce
@@ -44,6 +45,7 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import com.smarteist.autoimageslider.SliderView
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -66,7 +68,7 @@ class FragmentAnnounce : Fragment() {
 
     private lateinit var ajouterFavori: FloatingActionButton
     private lateinit var images: ArrayList<String>
-    private lateinit var imageList: ArrayList<SlideModel>
+    private lateinit var imageList: ArrayList<Annonce.Illustration>
 
     private var user: String = ""
     private lateinit var txt_titre_annonce: TextView
@@ -109,7 +111,7 @@ class FragmentAnnounce : Fragment() {
     // layout_ent_offline
     private lateinit var fav: String  // layout_ent_offline
     private lateinit var token: String  // layout_ent_offline
-    private lateinit var pager: ImageSlider
+    private lateinit var pager: SliderView
     private lateinit var api: API
     private lateinit var audioFile: String
     private val mediaPlayer = MediaPlayer()
@@ -458,14 +460,17 @@ Si tu n’as pas encore l’application tu peux la télécharger gratuitement su
             }
             try {
                 val arrayList = annonce.illustrations
+                val annoncePhotoSlidesAdapter = AnnoncePhotoSlidesAdapter(context)
                 for (data in arrayList) {
-                    imageList.add(SlideModel(data.nom))
-                    images.add(data.nom)
+                    imageList.add(data)
+                    annoncePhotoSlidesAdapter.addItem(data)
+                    //images.add(data.nom)
                 }
+                pager.setSliderAdapter(annoncePhotoSlidesAdapter)
                 if (arrayList.size == 0) {
                     pager.visibility = View.GONE
                 }
-                pager.setImageList(imageList, true)
+                /*pager.setImageList(imageList, true)
                 pager.setItemClickListener(object : ItemClickListener {
                     override fun onItemSelected(position: Int) {
                         // val intent = Intent(context, ActivityFullScreen::class.java)
@@ -481,7 +486,8 @@ Si tu n’as pas encore l’application tu peux la télécharger gratuitement su
                             startActivity(intent)
                         }
                     }
-                })
+                })*/
+
                 if (annonce.audio != null) {
                     lottieAudio.visibility = View.VISIBLE
                     // audioProgress.visibility = View.VISIBLE
